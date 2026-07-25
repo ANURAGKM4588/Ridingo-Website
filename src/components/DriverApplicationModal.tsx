@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ridingoLogo from "@/assets/ridingo-logo.png";
 
 interface DriverApplicationModalProps {
   isOpen: boolean;
@@ -106,7 +107,7 @@ export function DriverApplicationModal({
         <div className="flex items-center justify-between border-b border-border px-6 py-5 sm:px-8 bg-background sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <img
-              src="/Ridingo logo.png"
+              src={ridingoLogo}
               alt="Ridingo Logo"
               className="h-8 w-8 object-contain rounded-lg"
             />

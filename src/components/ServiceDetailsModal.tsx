@@ -1,4 +1,5 @@
 import React from "react";
+import ridingoLogo from "@/assets/ridingo-logo.png";
 
 export type ServicePackageDetails = {
   id: string;
@@ -52,7 +53,7 @@ export function ServiceDetailsModal({
         <div className="flex items-center justify-between border-b border-border px-6 py-5 sm:px-8 bg-card sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <img
-              src="/Ridingo logo.png"
+              src={ridingoLogo}
               alt="Ridingo Logo"
               className="h-9 w-9 object-contain rounded-xl"
             />

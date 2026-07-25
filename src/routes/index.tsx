@@ -5,6 +5,8 @@ import { Reveal } from "@/components/Reveal";
 import { ScrollCinematic } from "@/components/ScrollCinematic";
 import bannerDriver from "@/assets/banner-driver.jpg";
 import carBlack from "@/assets/car-black.png";
+import ridingoLogo from "@/assets/ridingo-logo.png";
+import ridingoLogoWhite from "@/assets/ridingo-logo-white.png";
 import { DriverTermsModal } from "@/components/DriverTermsModal";
 import { DriverApplicationModal } from "@/components/DriverApplicationModal";
 import { ServiceDetailsModal, type ServicePackageDetails } from "@/components/ServiceDetailsModal";
@@ -110,7 +112,7 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 lg:px-10">
         <a href="#top" onClick={scrollTo("top")} className="flex items-center">
           <img
-            src="/Ridingo logo.png"
+            src={ridingoLogo}
             alt="Ridingo"
             className="h-12 sm:h-14 w-auto object-contain transition-all"
           />
@@ -1456,7 +1458,7 @@ function AppCTA() {
                   {/* App Logo Branding */}
                   <div className="text-center pt-2">
                     <img
-                      src="/Ridingo logo white.png"
+                      src={ridingoLogoWhite}
                       alt="Ridingo"
                       className="h-12 w-auto object-contain mx-auto drop-shadow-md"
                     />
@@ -1567,7 +1569,7 @@ function Footer({
           <div className="md:col-span-6 flex flex-col items-start text-left">
             <div className="flex items-center justify-start text-left w-full">
               <img
-                src="/Ridingo logo.png"
+                src={ridingoLogo}
                 alt="Ridingo"
                 className="h-12 sm:h-14 w-auto object-contain object-left -ml-1 transition-all"
               />
