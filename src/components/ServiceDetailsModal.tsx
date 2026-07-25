@@ -51,9 +51,11 @@ export function ServiceDetailsModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-border px-6 py-5 sm:px-8 bg-card sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink text-taxi font-display font-bold text-sm shadow-inner">
-              P
-            </span>
+            <img
+              src="/Ridingo logo.png"
+              alt="Ridingo Logo"
+              className="h-9 w-9 object-contain rounded-xl"
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-display text-xl font-bold tracking-tight text-foreground">

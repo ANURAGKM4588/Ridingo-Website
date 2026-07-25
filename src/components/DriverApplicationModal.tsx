@@ -105,9 +105,11 @@ export function DriverApplicationModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-border px-6 py-5 sm:px-8 bg-background sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-taxi font-display font-bold text-sm">
-              P
-            </span>
+            <img
+              src="/Ridingo logo.png"
+              alt="Ridingo Logo"
+              className="h-8 w-8 object-contain rounded-lg"
+            />
             <div>
               <h3 className="font-display text-lg font-bold tracking-tight text-foreground">
                 Apply for Driver Partner Position

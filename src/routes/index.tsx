@@ -108,10 +108,12 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 lg:px-10">
-        <a href="#top" onClick={scrollTo("top")} className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-md bg-ink text-taxi font-display font-bold text-sm">
-            R
-          </span>
+        <a href="#top" onClick={scrollTo("top")} className="flex items-center gap-2.5">
+          <img
+            src="/Ridingo logo.png"
+            alt="Ridingo Logo"
+            className="h-8 w-auto object-contain rounded-md"
+          />
           <span className="font-display text-lg font-bold tracking-tight">
             Ridingo
           </span>
@@ -1456,9 +1458,11 @@ function AppCTA() {
 
                   {/* App Logo Branding */}
                   <div className="text-center pt-2 space-y-1">
-                    <div className="inline-grid h-12 w-12 place-items-center rounded-2xl bg-taxi text-ink font-display font-black text-2xl shadow-md mx-auto">
-                      R
-                    </div>
+                    <img
+                      src="/Ridingo logo.png"
+                      alt="Ridingo Logo"
+                      className="h-12 w-auto object-contain mx-auto drop-shadow-md"
+                    />
                     <h3 className="font-display text-2xl font-black text-white tracking-widest uppercase">Ridingo</h3>
                   </div>
 
@@ -1566,9 +1570,11 @@ function Footer({
           {/* Brand & Description */}
           <div className="md:col-span-6 flex flex-col items-start text-left">
             <div className="flex items-center gap-2.5">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-taxi font-display font-extrabold text-base shadow-sm">
-                R
-              </span>
+              <img
+                src="/Ridingo logo.png"
+                alt="Ridingo Logo"
+                className="h-8 w-auto object-contain rounded-md"
+              />
               <span className="font-display text-xl font-bold tracking-tight">
                 Ridingo
               </span>
