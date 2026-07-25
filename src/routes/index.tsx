@@ -110,11 +110,11 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 lg:px-10">
-        <a href="#top" onClick={scrollTo("top")} className="flex items-center">
+        <a href="#top" onClick={scrollTo("top")} className="flex items-center overflow-hidden">
           <img
             src={ridingoLogo}
             alt="Ridingo"
-            className="h-12 sm:h-14 w-auto object-contain transition-all"
+            className="h-12 sm:h-14 w-auto object-contain object-left -ml-2 transition-all"
           />
         </a>
         <nav className="hidden gap-7 text-xs font-semibold uppercase tracking-wider text-muted-foreground lg:flex">
@@ -1571,7 +1571,7 @@ function Footer({
               <img
                 src={ridingoLogo}
                 alt="Ridingo"
-                className="h-12 sm:h-14 w-auto object-contain object-left -ml-1 transition-all"
+                className="h-12 sm:h-14 w-auto object-contain object-left -ml-3.5 sm:-ml-4 transition-all"
               />
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed text-left">
