@@ -1565,11 +1565,11 @@ function Footer({
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 lg:gap-16 text-left">
           {/* Brand & Description */}
           <div className="md:col-span-6 flex flex-col items-start text-left">
-            <div className="flex items-center">
+            <div className="flex items-center justify-start text-left w-full">
               <img
                 src="/Ridingo logo.png"
                 alt="Ridingo"
-                className="h-12 sm:h-14 w-auto object-contain transition-all"
+                className="h-12 sm:h-14 w-auto object-contain object-left -ml-1 transition-all"
               />
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed text-left">
