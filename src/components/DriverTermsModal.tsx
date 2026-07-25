@@ -120,10 +120,10 @@ export function DriverTermsModal({
             </h4>
             <div className="rounded-2xl bg-secondary/50 p-4 border border-border text-xs space-y-2">
               <p>
-                As a PILOTED Chauffeur, you represent the highest standard of personal driving service:
+                As a Ridingo Chauffeur, you represent the highest standard of personal driving service:
               </p>
               <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
-                <li>Must wear the official PILOTED uniform (Dark trousers, ironed uniform shirt/polo, polished shoes).</li>
+                <li>Must wear the official Ridingo uniform (Dark trousers, ironed uniform shirt/polo, polished shoes).</li>
                 <li>Zero-tolerance policy for alcohol, drugs, or smoking during or immediately prior to shifts.</li>
                 <li>Strict client privacy: No phone photography, video recording, or unauthorized disclosure of client whereabouts.</li>
                 <li>Careful vehicle handling: Smooth braking, defensive driving, and respectful treatment of the client's private car.</li>
@@ -138,7 +138,7 @@ export function DriverTermsModal({
               4. Commercial Insurance Protection
             </h4>
             <p className="text-xs">
-              During an active PILOTED dispatch, all trips are insured under our master commercial liability policy. Drivers are protected against third-party liability claims provided all operating guidelines are strictly followed.
+              During an active Ridingo dispatch, all trips are insured under our master commercial liability policy. Drivers are protected against third-party liability claims provided all operating guidelines are strictly followed.
             </p>
           </section>
         </div>
@@ -146,7 +146,7 @@ export function DriverTermsModal({
         {/* Modal Footer */}
         <div className="border-t border-border px-6 py-4 sm:px-8 bg-background flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground text-center sm:text-left">
-            By applying, you agree to PILOTED's Partner Terms of Service.
+            By applying, you agree to Ridingo's Partner Terms of Service.
           </p>
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button

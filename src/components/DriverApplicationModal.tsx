@@ -164,7 +164,7 @@ export function DriverApplicationModal({
                 </span>
               </div>
               <p className="max-w-md text-sm text-muted-foreground leading-relaxed">
-                Thank you for applying to PILOTED, <strong>{formData.fullName || "Partner"}</strong>. Our recruitment & verification team will review your credentials and contact you at <strong>{formData.phone || "your phone number"}</strong> within 24 hours for driving test scheduling and background clearance.
+                Thank you for applying to Ridingo, <strong>{formData.fullName || "Partner"}</strong>. Our recruitment & verification team will review your credentials and contact you at <strong>{formData.phone || "your phone number"}</strong> within 24 hours for driving test scheduling and background clearance.
               </p>
               <button
                 onClick={resetAndClose}

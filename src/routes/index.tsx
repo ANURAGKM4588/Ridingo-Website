@@ -12,13 +12,13 @@ import { ServiceDetailsModal, type ServicePackageDetails } from "@/components/Se
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "PILOTED — Your car. Our driver." },
+      { title: "Ridingo — Your car. Our driver." },
       {
         name: "description",
         content:
-          "PILOTED is a driver-providing agency. You keep the wheel of your own car — we bring the hands. Vetted professional drivers, on demand.",
+          "Ridingo is a driver-providing agency. You keep the wheel of your own car — we bring the hands. Vetted professional drivers, on demand.",
       },
-      { property: "og:title", content: "PILOTED — Your car. Our driver." },
+      { property: "og:title", content: "Ridingo — Your car. Our driver." },
       {
         property: "og:description",
         content:
@@ -110,10 +110,10 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 lg:px-10">
         <a href="#top" onClick={scrollTo("top")} className="flex items-center gap-2">
           <span className="grid h-7 w-7 place-items-center rounded-md bg-ink text-taxi font-display font-bold text-sm">
-            P
+            R
           </span>
           <span className="font-display text-lg font-bold tracking-tight">
-            PILOTED
+            Ridingo
           </span>
         </a>
         <nav className="hidden gap-7 text-xs font-semibold uppercase tracking-wider text-muted-foreground lg:flex">
@@ -292,7 +292,7 @@ function Hero() {
                 mounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
               }`}
             >
-              — PILOTED
+              — Ridingo
             </div>
 
             <h1 className="font-display text-4xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight text-center w-full mx-auto">
@@ -400,7 +400,7 @@ function Hero() {
             <div className="relative">
               <img
                 src={carBlack}
-                alt="PILOTED Black Luxury Sedan"
+                alt="Ridingo Black Luxury Sedan"
                 className="block w-full"
               />
               {[
@@ -554,7 +554,7 @@ function Manifesto() {
           <div className="lg:col-span-7 space-y-8 text-base leading-relaxed text-foreground/80 sm:text-lg lg:text-xl text-left">
             <Reveal as="p" variant="up" delay={140}>
               Every other service asks you to give something up — your car, your
-              route, your control. PILOTED starts from the opposite idea. You
+              route, your control. Ridingo starts from the opposite idea. You
               already have a car you love. What you don't always have is the time,
               the energy, or the licence to drive it.
             </Reveal>
@@ -588,7 +588,7 @@ function How() {
     {
       n: "02",
       t: "We dispatch a driver",
-      d: "A vetted PILOTED driver arrives at your door — uniformed, on time, ready.",
+      d: "A vetted Ridingo driver arrives at your door — uniformed, on time, ready.",
     },
     {
       n: "03",
@@ -609,7 +609,7 @@ function How() {
             One driver.
           </Reveal>
           <Reveal as="p" variant="up" delay={240} className="mx-auto mt-6 max-w-lg text-bone/60 text-center">
-            Bookings happen in the PILOTED app. This site is here to tell you
+            Bookings happen in the Ridingo app. This site is here to tell you
             who we are before you download it.
           </Reveal>
         </div>
@@ -671,13 +671,13 @@ function Standards() {
           </div>
 
           {/* Right Column: Standards Cards Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="lg:col-span-7 grid grid-cols-1 gap-4 sm:grid-cols-2 auto-rows-fr">
             {items.map((it, i) => (
               <Reveal
                 key={it.t}
                 variant="up"
                 delay={i * 120}
-                className="group flex flex-col justify-start rounded-3xl border border-border bg-background p-8 text-left transition-colors hover:bg-taxi/10"
+                className="group h-full flex flex-col justify-start rounded-3xl border border-border bg-background p-8 text-left transition-colors hover:bg-taxi/10"
               >
                 <div className="flex items-center gap-3">
                   <span className="h-2.5 w-2.5 rounded-full bg-taxi transition-transform duration-500 group-hover:scale-150" />
@@ -710,7 +710,7 @@ function Insurance() {
     {
       title: "Passenger Medical Payments",
       tag: "Occupant Protection",
-      desc: "Medical expense coverage for all passengers, family members, and occupants inside your car during active PILOTED dispatches.",
+      desc: "Medical expense coverage for all passengers, family members, and occupants inside your car during active Ridingo dispatches.",
     },
     {
       title: "Zero-Deductible Guarantee",
@@ -733,7 +733,7 @@ function Insurance() {
               Comprehensive insurance. Every single mile<span className="text-taxi-deep">.</span>
             </Reveal>
             <Reveal as="p" variant="up" delay={220} className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-md">
-              You keep your car. We cover the risk. Every trip booked through PILOTED includes complete commercial insurance protection while our driver is at the wheel.
+              You keep your car. We cover the risk. Every trip booked through Ridingo includes complete commercial insurance protection while our driver is at the wheel.
             </Reveal>
             <Reveal variant="up" delay={300} className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-taxi/40 bg-taxi/10 p-4 text-xs font-semibold text-foreground">
               <span className="grid h-7 w-7 place-items-center rounded-full bg-ink text-taxi font-bold">
@@ -744,17 +744,19 @@ function Insurance() {
           </div>
 
           {/* Right Column: 2x2 Coverage Grid Cards */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-6 text-left">
             {coverageItems.map((c, i) => (
-              <Reveal key={c.title} variant="up" delay={i * 100}>
-                <div className="group rounded-3xl border border-border bg-card p-8 transition-all hover:border-taxi hover:shadow-lg">
-                  <span className="inline-block rounded-full bg-taxi/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-taxi-deep mb-4">
-                    {c.tag}
-                  </span>
-                  <h3 className="font-display text-xl font-bold tracking-tight text-ink mb-2">
-                    {c.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+              <Reveal key={c.title} variant="up" delay={i * 100} className="h-full">
+                <div className="group h-full flex flex-col justify-start rounded-3xl border border-border bg-card p-8 transition-all hover:border-taxi hover:shadow-lg">
+                  <div>
+                    <span className="inline-block rounded-full bg-taxi/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-taxi-deep mb-4">
+                      {c.tag}
+                    </span>
+                    <h3 className="font-display text-xl font-bold tracking-tight text-ink mb-2">
+                      {c.title}
+                    </h3>
+                  </div>
+                  <p className="text-sm leading-relaxed text-muted-foreground mt-1">
                     {c.desc}
                   </p>
                 </div>
@@ -863,7 +865,7 @@ function Packages() {
       tone: "bone",
       fullDetails: {
         description:
-          "Perfect for flexible day-to-day driving needs. You keep your car in your driveway while a uniformed PILOTED driver arrives at your location to handle city traffic, parking hassle, and navigation.",
+          "Perfect for flexible day-to-day driving needs. You keep your car in your driveway while a uniformed Ridingo driver arrives at your location to handle city traffic, parking hassle, and navigation.",
         whatsIncluded: [
           "Vetted & Uniformed Professional Driver",
           "Commercial Supplemental Liability Insurance",
@@ -962,7 +964,7 @@ function Packages() {
           { label: "Target Launch", value: "Q4 2026" },
         ],
         termsAndConditions: [
-          "Sign up in the PILOTED mobile app to get notified when Out of State trips launch!",
+          "Sign up in the Ridingo mobile app to get notified when Out of State trips launch!",
         ],
       },
     },
@@ -1151,7 +1153,7 @@ function Cities() {
             Every moment.
           </Reveal>
           <Reveal as="p" variant="up" delay={200} className="mx-auto mt-6 max-w-xl text-bone/60 text-center lg:text-lg">
-            PILOTED runs a single, tightly-held driver network — one country,
+            Ridingo runs a single, tightly-held driver network — one country,
             one standard, one number to call. Dispatch under 25 minutes,
             from the first street to the last.
           </Reveal>
@@ -1204,7 +1206,7 @@ function DriverCareers({
               — Join the Network
             </Reveal>
             <Reveal as="h2" variant="gradient" delay={120} className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-bone text-left">
-              Drive with PILOTED<span className="text-taxi">.</span>
+              Drive with Ridingo<span className="text-taxi">.</span>
             </Reveal>
             <Reveal as="p" variant="up" delay={220} className="mt-6 text-bone/70 text-left text-base leading-relaxed max-w-md">
               Earn premium rates driving luxury sedans, SUVs, and personal vehicles. Flexible hours, verified clients, and weekly direct payouts.
@@ -1269,7 +1271,7 @@ function Testimonials() {
       role: "Managing partner, Riyadh",
     },
     {
-      q: "I don't drink and drive anymore. I just PILOTED it home.",
+      q: "I don't drink and drive anymore. I just Ridingo it home.",
       who: "Sara D.",
       role: "Photographer, Beirut",
     },
@@ -1316,7 +1318,7 @@ function FAQ() {
   const faqs = [
     {
       q: "So you don't provide the car?",
-      a: "Correct. PILOTED is a driver-only agency. You keep your car — we bring the professional who drives it.",
+      a: "Correct. Ridingo is a driver-only agency. You keep your car — we bring the professional who drives it.",
     },
     {
       q: "How are drivers vetted?",
@@ -1324,11 +1326,11 @@ function FAQ() {
     },
     {
       q: "Is my car insured while your driver is behind the wheel?",
-      a: "Yes. Every PILOTED trip is covered end-to-end with a supplemental commercial policy on top of your own.",
+      a: "Yes. Every Ridingo trip is covered end-to-end with a supplemental commercial policy on top of your own.",
     },
     {
       q: "Can I book on this website?",
-      a: "No — bookings, dispatch and tracking all live inside the PILOTED app. This site is our story; the app does the work.",
+      a: "No — bookings, dispatch and tracking all live inside the Ridingo app. This site is our story; the app does the work.",
     },
     {
       q: "Can I request the same driver every time?",
@@ -1349,7 +1351,7 @@ function FAQ() {
               Everything you'd ask<span className="text-taxi-deep">.</span>
             </Reveal>
             <Reveal as="p" variant="up" delay={220} className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-sm">
-              Got questions before downloading? Here is how PILOTED keeps your car, trip, and keys completely safe.
+              Got questions before downloading? Here is how Ridingo keeps your car, trip, and keys completely safe.
             </Reveal>
           </div>
 
@@ -1455,9 +1457,9 @@ function AppCTA() {
                   {/* App Logo Branding */}
                   <div className="text-center pt-2 space-y-1">
                     <div className="inline-grid h-12 w-12 place-items-center rounded-2xl bg-taxi text-ink font-display font-black text-2xl shadow-md mx-auto">
-                      P
+                      R
                     </div>
-                    <h3 className="font-display text-2xl font-black text-white tracking-widest uppercase">PILOTED</h3>
+                    <h3 className="font-display text-2xl font-black text-white tracking-widest uppercase">Ridingo</h3>
                   </div>
 
                   {/* Clean Input Fields */}
@@ -1491,7 +1493,7 @@ function AppCTA() {
             </Reveal>
 
             <Reveal as="p" variant="up" delay={200} className="text-ink/85 text-base sm:text-lg leading-relaxed font-medium max-w-lg">
-              Make your chauffeur experience easier and faster. Bookings, live driver tracking, and dispatch live entirely inside the PILOTED app.
+              Make your chauffeur experience easier and faster. Bookings, live driver tracking, and dispatch live entirely inside the Ridingo app.
             </Reveal>
 
             {/* Side-by-Side White Pill Store Buttons */}
@@ -1523,7 +1525,7 @@ function WhiteStorePill({
       href="#app"
       onClick={(e) => {
         e.preventDefault();
-        alert("PILOTED mobile app is available on the iOS App Store & Google Play Store.");
+        alert("Ridingo mobile app is available on the iOS App Store & Google Play Store.");
       }}
       className="group flex min-w-[195px] items-center justify-center gap-3.5 rounded-2xl bg-white hover:bg-ink text-ink hover:text-taxi px-6 py-4 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-2xl cursor-pointer border border-ink/10"
     >
@@ -1565,10 +1567,10 @@ function Footer({
           <div className="md:col-span-6 flex flex-col items-start text-left">
             <div className="flex items-center gap-2.5">
               <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-taxi font-display font-extrabold text-base shadow-sm">
-                P
+                R
               </span>
               <span className="font-display text-xl font-bold tracking-tight">
-                PILOTED
+                Ridingo
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed text-left">
@@ -1614,7 +1616,7 @@ function Footer({
           <div className="md:col-span-3 text-left">
             <FooterCol
               title="Contact & Social"
-              items={["hello@piloted.co", "+000 000 0000", "Instagram", "LinkedIn"]}
+              items={["hello@ridingo.co", "+000 000 0000", "Instagram", "LinkedIn"]}
             />
           </div>
         </div>
@@ -1622,7 +1624,7 @@ function Footer({
         {/* Bottom Copyright & Links */}
         <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-border/80 pt-8 text-xs text-muted-foreground md:flex-row md:items-center text-left">
           <div className="text-left">
-            © {new Date().getFullYear()} PILOTED Inc. All rights reserved.
+            © {new Date().getFullYear()} Ridingo Inc. All rights reserved.
           </div>
           <div className="flex items-center gap-6 text-left">
             <button

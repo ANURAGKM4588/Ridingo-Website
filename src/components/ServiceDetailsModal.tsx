@@ -66,7 +66,7 @@ export function ServiceDetailsModal({
                 )}
               </div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">
-                {tag} — PILOTED Service Details & Policy
+                {tag} — Ridingo Service Details & Policy
               </p>
             </div>
           </div>
@@ -158,7 +158,7 @@ export function ServiceDetailsModal({
         {/* Modal Footer */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border px-6 py-4 sm:px-8 bg-card">
           <span className="text-xs text-muted-foreground text-center sm:text-left">
-            Bookings and transparent quotes process directly in the PILOTED mobile app.
+            Bookings and transparent quotes process directly in the Ridingo mobile app.
           </span>
           <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
             <button
