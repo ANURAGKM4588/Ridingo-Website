@@ -108,15 +108,12 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 lg:px-10">
-        <a href="#top" onClick={scrollTo("top")} className="flex items-center gap-2.5">
+        <a href="#top" onClick={scrollTo("top")} className="flex items-center">
           <img
             src="/Ridingo logo.png"
-            alt="Ridingo Logo"
-            className="h-8 w-auto object-contain rounded-md"
+            alt="Ridingo"
+            className="h-9 w-auto object-contain"
           />
-          <span className="font-display text-lg font-bold tracking-tight">
-            Ridingo
-          </span>
         </a>
         <nav className="hidden gap-7 text-xs font-semibold uppercase tracking-wider text-muted-foreground lg:flex">
           <a href="#story" onClick={scrollTo("story")} className="link-underline hover:text-foreground transition-colors">Story</a>
@@ -1457,13 +1454,12 @@ function AppCTA() {
                   </div>
 
                   {/* App Logo Branding */}
-                  <div className="text-center pt-2 space-y-1">
+                  <div className="text-center pt-2">
                     <img
-                      src="/Ridingo logo.png"
-                      alt="Ridingo Logo"
+                      src="/Ridingo logo white.png"
+                      alt="Ridingo"
                       className="h-12 w-auto object-contain mx-auto drop-shadow-md"
                     />
-                    <h3 className="font-display text-2xl font-black text-white tracking-widest uppercase">Ridingo</h3>
                   </div>
 
                   {/* Clean Input Fields */}
@@ -1569,15 +1565,12 @@ function Footer({
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 lg:gap-16 text-left">
           {/* Brand & Description */}
           <div className="md:col-span-6 flex flex-col items-start text-left">
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center">
               <img
                 src="/Ridingo logo.png"
-                alt="Ridingo Logo"
-                className="h-8 w-auto object-contain rounded-md"
+                alt="Ridingo"
+                className="h-9 w-auto object-contain"
               />
-              <span className="font-display text-xl font-bold tracking-tight">
-                Ridingo
-              </span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed text-left">
               A driver-providing agency. Your car. Our driver. Professional, vetted, insured chauffeurs dispatched directly to your vehicle.
