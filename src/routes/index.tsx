@@ -112,7 +112,7 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
           <img
             src="/Ridingo logo.png"
             alt="Ridingo"
-            className="h-9 w-auto object-contain"
+            className="h-12 sm:h-14 w-auto object-contain transition-all"
           />
         </a>
         <nav className="hidden gap-7 text-xs font-semibold uppercase tracking-wider text-muted-foreground lg:flex">
@@ -1569,7 +1569,7 @@ function Footer({
               <img
                 src="/Ridingo logo.png"
                 alt="Ridingo"
-                className="h-9 w-auto object-contain"
+                className="h-12 sm:h-14 w-auto object-contain transition-all"
               />
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed text-left">
