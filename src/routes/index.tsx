@@ -886,45 +886,16 @@ function Packages() {
       },
     },
     {
-      id: "full-day",
-      name: "Full day",
-      tag: "Most Popular",
-      lead: "8 to 12 hours of a dedicated driver for business, weddings, family events, or city days.",
-      unit: "Quoted in-app / 8-12 Hrs",
-      bullets: ["Dedicated All-Day Driver", "Unlimited City Stops", "Zero Waiting Charges"],
+      id: "airport",
+      name: "Airport",
+      tag: "Airport Transfers",
+      lead: "Seamless stress-free airport drop-offs, pickups, terminal transfers, and flight connections.",
+      unit: "Quoted in-app / Trip",
+      bullets: ["Flight Status Tracking", "Luggage & Door Assistance", "24/7 Red-Eye Dispatch"],
       tone: "taxi",
       fullDetails: {
         description:
-          "Our signature full-day chauffeur service. Have a dedicated professional driver at your beck and call all day for back-to-back corporate meetings, shopping sprees, family events, or city tours.",
-        whatsIncluded: [
-          "Dedicated Senior Executive Driver",
-          "Unlimited Multi-Stop City Driving",
-          "Zero Extra Waiting Time Fees",
-          "Formal Uniform & Door Assistance",
-        ],
-        packageSpecs: [
-          { label: "Standard Shift", value: "8 to 12 Hours" },
-          { label: "Coverage Area", value: "Full Metropolitan Area" },
-          { label: "Overtime Rate", value: "Flat In-App Add-on" },
-        ],
-        termsAndConditions: [
-          "Driver meal break of 30 minutes recommended during 8+ hour shifts.",
-          "Parking and state entry permits (if applicable) paid by vehicle owner.",
-          "Overtime after standard shift hours calculated automatically in app.",
-        ],
-      },
-    },
-    {
-      id: "airport",
-      name: "Airport and Other Trips",
-      tag: "Point-to-Point",
-      lead: "Seamless stress-free airport drop-offs, pickups, corporate transfers, and event shuttles.",
-      unit: "Quoted in-app / Trip",
-      bullets: ["Flight Status Tracking", "Luggage & Door Assistance", "24/7 Red-Eye Dispatch"],
-      tone: "ink",
-      fullDetails: {
-        description:
-          "Never worry about airport parking fees or early morning flight fatigue. Our driver arrives at your home, loads your luggage, drives you safely to the departure terminal, and parks your car back in your garage.",
+          "Never worry about airport parking fees or early morning flight fatigue. Our driver arrives at your home, loads your luggage, drives you safely to the departure terminal, and returns your car safely to your home garage.",
         whatsIncluded: [
           "Real-Time Flight Status Monitoring",
           "Luggage Handling & Terminal Drop-off",
@@ -932,7 +903,7 @@ function Packages() {
           "24/7 Red-Eye Flight Dispatch",
         ],
         packageSpecs: [
-          { label: "Service Type", value: "Point-to-Point Transfer" },
+          { label: "Service Type", value: "Airport Express Transfer" },
           { label: "Flight Delay Buffer", value: "60 Mins Free Wait" },
           { label: "Vehicle Return", value: "Safe Home Garage Drop" },
         ],
@@ -940,6 +911,35 @@ function Packages() {
           "Flight number required during booking for real-time delay tracking.",
           "Toll plaza fees and airport parking passes added to final invoice.",
           "Driver will wait up to 60 minutes post flight landing at no extra fee.",
+        ],
+      },
+    },
+    {
+      id: "other-trips",
+      name: "Other Trips",
+      tag: "Office, Hospital & Errands",
+      lead: "Dedicated drivers for office commutes, corporate meetings, hospital & doctor visits, and daily errands.",
+      unit: "Quoted in-app / Trip",
+      bullets: ["Office & Corporate Commutes", "Hospital & Doctor Visits", "Shopping & Daily Errands"],
+      tone: "ink",
+      fullDetails: {
+        description:
+          "Tailored driving support for all your specialized daily trips — including morning and evening office commutes, hospital appointments, client visits, and family errands. Have a professional handle the wheel while you focus on work or health.",
+        whatsIncluded: [
+          "Office & Corporate Drop-offs & Pickups",
+          "Hospital & Medical Appointment Support",
+          "Waiting Time during Doctor Visits",
+          "Custom Multi-Stop City Travel",
+        ],
+        packageSpecs: [
+          { label: "Popular Trips", value: "Office, Hospital, Events" },
+          { label: "Booking Mode", value: "One-Way or Round-Trip" },
+          { label: "Wait Time Support", value: "Flexible On-Demand" },
+        ],
+        termsAndConditions: [
+          "Hospital and office parking fees are borne by the vehicle owner.",
+          "Flexible scheduling allows multi-destination stops within the city.",
+          "Transparent fixed trip quotes calculated in the Ridingo app.",
         ],
       },
     },
