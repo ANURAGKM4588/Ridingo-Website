@@ -1483,17 +1483,17 @@ function Footer() {
                 <li className="text-left">
                   <a
                     href="mailto:teme.ridingo@gmail.com"
-                    className="inline-flex items-center gap-2 hover:text-taxi-deep transition-colors text-left"
+                    className="hover:text-taxi-deep transition-colors text-left"
                   >
-                    <span className="text-taxi-deep font-bold">✉</span> teme.ridingo@gmail.com
+                    teme.ridingo@gmail.com
                   </a>
                 </li>
                 <li className="text-left">
                   <a
-                    href="tel:8156938843"
-                    className="inline-flex items-center gap-2 hover:text-taxi-deep transition-colors text-left"
+                    href="tel:+918156938843"
+                    className="hover:text-taxi-deep transition-colors text-left"
                   >
-                    <span className="text-taxi-deep font-bold">📞</span> +91 8156938843
+                    +91 8156938843
                   </a>
                 </li>
               </ul>
