@@ -6,9 +6,6 @@ import { ScrollCinematic } from "@/components/ScrollCinematic";
 import bannerDriver from "@/assets/banner-driver.jpg";
 import carBlack from "@/assets/car-black.png";
 import ridingoLogo from "@/assets/ridingo-logo.png";
-import ridingoLogoWhite from "@/assets/ridingo-logo-white.png";
-import { DriverTermsModal } from "@/components/DriverTermsModal";
-import { DriverApplicationModal } from "@/components/DriverApplicationModal";
 import { ServiceDetailsModal, type ServicePackageDetails } from "@/components/ServiceDetailsModal";
 
 export const Route = createFileRoute("/")({
@@ -34,9 +31,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [isTermsOpen, setIsTermsOpen] = useState(false);
-  const [isApplyOpen, setIsApplyOpen] = useState(false);
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       if ("scrollRestoration" in window.history) {
@@ -58,7 +52,7 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Nav onOpenApply={() => setIsApplyOpen(true)} />
+      <Nav />
       <Hero />
       <Ticker />
       <Manifesto />
@@ -71,30 +65,12 @@ function Index() {
       <Testimonials />
       <FAQ />
       <AppCTA />
-      <DriverCareers
-        onOpenTerms={() => setIsTermsOpen(true)}
-        onOpenApply={() => setIsApplyOpen(true)}
-      />
-      <Footer
-        onOpenTerms={() => setIsTermsOpen(true)}
-        onOpenCareers={() => setIsApplyOpen(true)}
-      />
-
-      {/* Driver Job Application & Qualification Modals */}
-      <DriverTermsModal
-        isOpen={isTermsOpen}
-        onClose={() => setIsTermsOpen(false)}
-        onOpenApply={() => setIsApplyOpen(true)}
-      />
-      <DriverApplicationModal
-        isOpen={isApplyOpen}
-        onClose={() => setIsApplyOpen(false)}
-      />
+      <Footer />
     </div>
   );
 }
 
-function Nav({ onOpenApply }: { onOpenApply: () => void }) {
+function Nav() {
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     if (id === "top") {
@@ -123,16 +99,9 @@ function Nav({ onOpenApply }: { onOpenApply: () => void }) {
           <a href="#standards" onClick={scrollTo("standards")} className="link-underline hover:text-foreground transition-colors">Standards</a>
           <a href="#insurance" onClick={scrollTo("insurance")} className="link-underline hover:text-foreground transition-colors">Insurance</a>
           <a href="#packages" onClick={scrollTo("packages")} className="link-underline hover:text-foreground transition-colors">Packages</a>
-          <a href="#careers" onClick={scrollTo("careers")} className="link-underline hover:text-foreground transition-colors">Driver Jobs</a>
           <a href="#faq" onClick={scrollTo("faq")} className="link-underline hover:text-foreground transition-colors">FAQ</a>
         </nav>
         <div className="flex items-center gap-3">
-          <button
-            onClick={onOpenApply}
-            className="hidden sm:inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider hover:border-taxi hover:text-taxi-deep transition-colors"
-          >
-            Apply as Driver
-          </button>
           <a
             href="#app"
             onClick={scrollTo("app")}
@@ -1183,81 +1152,7 @@ function Cities() {
   );
 }
 
-function DriverCareers({
-  onOpenTerms,
-  onOpenApply,
-}: {
-  onOpenTerms: () => void;
-  onOpenApply: () => void;
-}) {
-  const requirements = [
-    { title: "21+ Years Old & Commercial License", desc: "Valid Indian LMV / Transport license with 3+ years active driving experience." },
-    { title: "Clean Driving Record", desc: "Zero major violations, suspensions, or DUI records in the last 5 years." },
-    { title: "Police Clearance Verified", desc: "PCC background clearance and identity verification mandatory." },
-    { title: "Uniform & Professional Code", desc: "Ironed uniform standards, client confidentiality, and defensive driving." },
-  ];
 
-  return (
-    <section id="careers" className="border-b border-border bg-ink text-bone">
-      <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-10 lg:py-28 text-left">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
-          {/* Left Column: Heading & CTA Buttons */}
-          <div className="lg:col-span-5 text-left">
-            <Reveal variant="up" className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-taxi">
-              — Join the Network
-            </Reveal>
-            <Reveal as="h2" variant="gradient" delay={120} className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-bone text-left">
-              Drive with Ridingo<span className="text-taxi">.</span>
-            </Reveal>
-            <Reveal as="p" variant="up" delay={220} className="mt-6 text-bone/70 text-left text-base leading-relaxed max-w-md">
-              Earn premium rates driving luxury sedans, SUVs, and personal vehicles. Flexible hours, verified clients, and weekly direct payouts.
-            </Reveal>
-
-            {/* Action Buttons */}
-            <Reveal variant="up" delay={300} className="mt-10 flex flex-wrap items-center gap-4 relative z-10">
-              <button
-                type="button"
-                onClick={onOpenApply}
-                className="group relative inline-flex items-center gap-3 rounded-full bg-taxi px-7 py-4 text-sm font-bold uppercase tracking-wider text-ink transition-transform hover:-translate-y-0.5 shadow-lg cursor-pointer"
-              >
-                Apply Now
-                <span className="transition-transform group-hover:translate-x-1" aria-hidden>→</span>
-              </button>
-              <button
-                type="button"
-                onClick={onOpenTerms}
-                className="rounded-full border border-bone/30 px-6 py-4 text-sm font-semibold uppercase tracking-wider text-bone hover:border-taxi hover:text-taxi transition-colors cursor-pointer"
-              >
-                View More Details
-              </button>
-            </Reveal>
-          </div>
-
-          {/* Right Column: Qualifications Checklist */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
-            {requirements.map((r, i) => (
-              <Reveal key={r.title} variant="up" delay={i * 100}>
-                <div className="rounded-3xl border border-bone/15 bg-bone/5 p-7">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="grid h-7 w-7 place-items-center rounded-full bg-taxi text-ink font-bold text-xs">
-                      ✓
-                    </span>
-                    <h3 className="font-display text-base font-bold text-bone">
-                      {r.title}
-                    </h3>
-                  </div>
-                  <p className="text-xs leading-relaxed text-bone/60 pl-10">
-                    {r.desc}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Testimonials() {
   const notes = [
@@ -1554,13 +1449,7 @@ function WhiteStorePill({
   );
 }
 
-function Footer({
-  onOpenTerms,
-  onOpenCareers,
-}: {
-  onOpenTerms: () => void;
-  onOpenCareers: () => void;
-}) {
+function Footer() {
   return (
     <footer className="border-t border-border bg-background text-foreground text-left">
       <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-10 lg:py-20">
@@ -1583,7 +1472,7 @@ function Footer({
           <div className="md:col-span-3 text-left">
             <div className="flex flex-col items-start text-left">
               <div className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground text-left">
-                Company & Driver Jobs
+                Company
               </div>
               <ul className="mt-4 space-y-3 text-sm text-left">
                 <li className="text-left">
@@ -1600,14 +1489,6 @@ function Footer({
                   <a href="#insurance" className="hover:text-taxi-deep transition-colors text-left">
                     Insurance Coverage
                   </a>
-                </li>
-                <li className="text-left">
-                  <button
-                    onClick={onOpenCareers}
-                    className="hover:text-taxi-deep transition-colors text-left font-semibold text-foreground"
-                  >
-                    Apply for Driver Job
-                  </button>
                 </li>
               </ul>
             </div>
@@ -1629,8 +1510,8 @@ function Footer({
           </div>
           <div className="flex items-center gap-6 text-left">
             <button
-              onClick={onOpenTerms}
-              className="hover:text-ink transition-colors text-left font-medium"
+              onClick={() => alert("Terms & Conditions will be available upon official app release.")}
+              className="hover:text-ink transition-colors text-left font-medium cursor-pointer"
             >
               Terms & Conditions
             </button>
