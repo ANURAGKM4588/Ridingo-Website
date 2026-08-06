@@ -6,6 +6,7 @@ import { ScrollCinematic } from "@/components/ScrollCinematic";
 import bannerDriver from "@/assets/banner-driver.jpg";
 import carBlack from "@/assets/car-black.png";
 import ridingoLogo from "@/assets/ridingo-logo.png";
+import ridingoLogoWhite from "@/assets/ridingo-logo-white.png";
 import { ServiceDetailsModal, type ServicePackageDetails } from "@/components/ServiceDetailsModal";
 
 export const Route = createFileRoute("/")({
