@@ -48,10 +48,7 @@ export function ScrollCinematic({ children, className }: ScrollCinematicProps) {
       // reveal window: 0 when top hits bottom of viewport, 1 near 35% up
       const revealStart = vh;
       const revealEnd = vh * 0.35;
-      const rp = Math.max(
-        0,
-        Math.min(1, (revealStart - rect.top) / (revealStart - revealEnd)),
-      );
+      const rp = Math.max(0, Math.min(1, (revealStart - rect.top) / (revealStart - revealEnd)));
       // easeOutExpo — dramatic opening
       const eased = rp === 1 ? 1 : 1 - Math.pow(2, -10 * rp);
 
@@ -127,8 +124,7 @@ export function ScrollCinematic({ children, className }: ScrollCinematicProps) {
           style={
             {
               height: "100%",
-              transform:
-                "translate3d(0, var(--ap-img-y, 0px), 0) scale(var(--ap-scale, 1.18))",
+              transform: "translate3d(0, var(--ap-img-y, 0px), 0) scale(var(--ap-scale, 1.18))",
               filter:
                 "blur(var(--ap-blur, 14px)) saturate(var(--ap-sat, 0.35)) contrast(calc(0.9 + 0.15 * var(--ap-sat, 0.35)))",
               transition: "transform 160ms linear, filter 160ms linear",
@@ -150,8 +146,7 @@ export function ScrollCinematic({ children, className }: ScrollCinematicProps) {
             right: "var(--ap-inset-x, 8%)",
             top: "var(--ap-inset-y, 48%)",
             height: "1px",
-            background:
-              "linear-gradient(90deg, transparent 0%, #f5c518 50%, transparent 100%)",
+            background: "linear-gradient(90deg, transparent 0%, #f5c518 50%, transparent 100%)",
             opacity: "var(--ap-rule, 0)",
             transition:
               "top 180ms cubic-bezier(0.22, 1, 0.36, 1), left 180ms, right 180ms, opacity 180ms",
@@ -169,8 +164,7 @@ export function ScrollCinematic({ children, className }: ScrollCinematicProps) {
             right: "var(--ap-inset-x, 8%)",
             bottom: "var(--ap-inset-y, 48%)",
             height: "1px",
-            background:
-              "linear-gradient(90deg, transparent 0%, #f5c518 50%, transparent 100%)",
+            background: "linear-gradient(90deg, transparent 0%, #f5c518 50%, transparent 100%)",
             opacity: "var(--ap-rule, 0)",
             transition:
               "bottom 180ms cubic-bezier(0.22, 1, 0.36, 1), left 180ms, right 180ms, opacity 180ms",
@@ -186,8 +180,7 @@ export function ScrollCinematic({ children, className }: ScrollCinematicProps) {
           position: "absolute",
           inset: 0,
           pointerEvents: "none",
-          background:
-            "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.35) 100%)",
+          background: "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.35) 100%)",
           borderRadius: 24,
         }}
       />

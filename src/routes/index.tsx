@@ -21,8 +21,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Ridingo — Your car. Our driver." },
       {
         property: "og:description",
-        content:
-          "A driver-providing agency. Keep your car, borrow a professional to drive it.",
+        content: "A driver-providing agency. Keep your car, borrow a professional to drive it.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -95,12 +94,48 @@ function Nav() {
           />
         </a>
         <nav className="hidden gap-7 text-xs font-semibold uppercase tracking-wider text-muted-foreground lg:flex">
-          <a href="#story" onClick={scrollTo("story")} className="link-underline hover:text-foreground transition-colors">Story</a>
-          <a href="#how" onClick={scrollTo("how")} className="link-underline hover:text-foreground transition-colors">How it works</a>
-          <a href="#standards" onClick={scrollTo("standards")} className="link-underline hover:text-foreground transition-colors">Standards</a>
-          <a href="#insurance" onClick={scrollTo("insurance")} className="link-underline hover:text-foreground transition-colors">Insurance</a>
-          <a href="#packages" onClick={scrollTo("packages")} className="link-underline hover:text-foreground transition-colors">Packages</a>
-          <a href="#faq" onClick={scrollTo("faq")} className="link-underline hover:text-foreground transition-colors">FAQ</a>
+          <a
+            href="#story"
+            onClick={scrollTo("story")}
+            className="link-underline hover:text-foreground transition-colors"
+          >
+            Story
+          </a>
+          <a
+            href="#how"
+            onClick={scrollTo("how")}
+            className="link-underline hover:text-foreground transition-colors"
+          >
+            How it works
+          </a>
+          <a
+            href="#standards"
+            onClick={scrollTo("standards")}
+            className="link-underline hover:text-foreground transition-colors"
+          >
+            Standards
+          </a>
+          <a
+            href="#insurance"
+            onClick={scrollTo("insurance")}
+            className="link-underline hover:text-foreground transition-colors"
+          >
+            Insurance
+          </a>
+          <a
+            href="#packages"
+            onClick={scrollTo("packages")}
+            className="link-underline hover:text-foreground transition-colors"
+          >
+            Packages
+          </a>
+          <a
+            href="#faq"
+            onClick={scrollTo("faq")}
+            className="link-underline hover:text-foreground transition-colors"
+          >
+            FAQ
+          </a>
         </nav>
         <div className="flex items-center gap-3">
           <a
@@ -109,7 +144,9 @@ function Nav() {
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-widest text-taxi transition-transform hover:-translate-y-0.5 cursor-pointer"
           >
             Download Now
-            <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            <span aria-hidden className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </a>
         </div>
       </div>
@@ -185,7 +222,7 @@ function Hero() {
   const seg = (start: number, end: number) => clamp((p - start) / (end - start));
 
   // 1. Initial 'Who drives your car when you can't?' headline fades out first (0.0 -> 0.20)
-  const introProgress = seg(0.0, 0.20);
+  const introProgress = seg(0.0, 0.2);
 
   // 2. Car drives across (0.0 -> 0.85)
   const carP = seg(0.0, 0.85);
@@ -193,7 +230,7 @@ function Hero() {
   const wheelRotate = carP * 1440;
 
   // 3. First scroll phase: 'Your car. Our driver.' headline reveals first (0.20 -> 0.45)
-  const titleP = seg(0.20, 0.45);
+  const titleP = seg(0.2, 0.45);
 
   // 4. Next scroll phase: Description text AND buttons appear together simultaneously (0.48 -> 0.72)
   const subAndCtaP = seg(0.48, 0.72);
@@ -245,14 +282,9 @@ function Hero() {
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-background"
-      style={{ height: "260vh" }}
-    >
+    <section ref={sectionRef} className="relative bg-background" style={{ height: "260vh" }}>
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden border-b border-border text-center">
         <div className="relative mx-auto flex h-full w-full max-w-[1400px] flex-col items-center justify-center px-6 text-center lg:px-10">
-
           {/* 1. Initial Intro headline (Original Typography + Page-Reload Entrance Animation) */}
           <div
             className="absolute inset-0 z-20 flex flex-col items-center justify-center sm:justify-start pt-6 sm:pt-20 lg:pt-24 px-4 sm:px-6 text-center pointer-events-none w-full mx-auto"
@@ -327,9 +359,8 @@ function Hero() {
               style={gradientPopupStyle(subAndCtaP, 50)}
               className="mx-auto mt-8 max-w-md text-base leading-relaxed text-muted-foreground text-center"
             >
-              You already own the car you love. We bring the professional who
-              drives it — for the school run, the long night home, the airport
-              dash, the workday behind you.
+              You already own the car you love. We bring the professional who drives it — for the
+              school run, the long night home, the airport dash, the workday behind you.
             </p>
 
             <div
@@ -345,7 +376,9 @@ function Hero() {
                 className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-ink px-6 py-4 text-sm font-semibold uppercase tracking-widest text-taxi transition-transform hover:-translate-y-0.5 cursor-pointer"
               >
                 Book on the app
-                <span className="transition-transform group-hover:translate-x-1" aria-hidden>→</span>
+                <span className="transition-transform group-hover:translate-x-1" aria-hidden>
+                  →
+                </span>
               </a>
               <a
                 href="#story"
@@ -369,11 +402,7 @@ function Hero() {
             }}
           >
             <div className="relative">
-              <img
-                src={carBlack}
-                alt="Ridingo Black Luxury Sedan"
-                className="block w-full"
-              />
+              <img src={carBlack} alt="Ridingo Black Luxury Sedan" className="block w-full" />
               {[
                 { left: "26.3%", top: "57.9%", width: "10.4%" },
                 { left: "79.2%", top: "57.9%", width: "10.4%" },
@@ -401,10 +430,21 @@ function Hero() {
 
                     {/* Rubber Tire Ring (100% Transparent Center) */}
                     <circle cx="50" cy="50" r="48" fill="none" stroke="#0a0a0d" strokeWidth="4" />
-                    <circle cx="50" cy="50" r="45.5" fill="none" stroke="#222228" strokeWidth="1.2" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45.5"
+                      fill="none"
+                      stroke="#222228"
+                      strokeWidth="1.2"
+                    />
 
                     {/* Yellow Performance Brake Caliper Accent */}
-                    <path d="M 20 44 A 32 32 0 0 1 36 20 L 41 26 A 25 25 0 0 0 27 46 Z" fill="#f5c518" opacity="0.9" />
+                    <path
+                      d="M 20 44 A 32 32 0 0 1 36 20 L 41 26 A 25 25 0 0 0 27 46 Z"
+                      fill="#f5c518"
+                      opacity="0.9"
+                    />
 
                     {/* Polished Metallic Outer Rim Lip */}
                     <circle cx="50" cy="50" r="44" fill="none" stroke="#444" strokeWidth="1.5" />
@@ -415,8 +455,18 @@ function Hero() {
                       return (
                         <g key={k} transform={`rotate(${angle} 50 50)`}>
                           {/* Y-Spoke Base to Branch */}
-                          <path d="M 48.5 40 L 46 22 L 39 9 L 43 9 L 48 20 L 50 40 Z" fill="url(#ySpokeGrad)" stroke="#000" strokeWidth="0.5" />
-                          <path d="M 51.5 40 L 54 22 L 61 9 L 57 9 L 52 20 L 50 40 Z" fill="url(#ySpokeGrad)" stroke="#000" strokeWidth="0.5" />
+                          <path
+                            d="M 48.5 40 L 46 22 L 39 9 L 43 9 L 48 20 L 50 40 Z"
+                            fill="url(#ySpokeGrad)"
+                            stroke="#000"
+                            strokeWidth="0.5"
+                          />
+                          <path
+                            d="M 51.5 40 L 54 22 L 61 9 L 57 9 L 52 20 L 50 40 Z"
+                            fill="url(#ySpokeGrad)"
+                            stroke="#000"
+                            strokeWidth="0.5"
+                          />
                           {/* CNC Machined Edge Highlights */}
                           <line x1="48" y1="20" x2="41" y2="9" stroke="#666" strokeWidth="0.75" />
                           <line x1="52" y1="20" x2="59" y2="9" stroke="#666" strokeWidth="0.75" />
@@ -425,7 +475,14 @@ function Hero() {
                     })}
 
                     {/* Center Lock Hub & Cap */}
-                    <circle cx="50" cy="50" r="11" fill="#0d0e12" stroke="#f5c518" strokeWidth="1.5" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="11"
+                      fill="#0d0e12"
+                      stroke="#f5c518"
+                      strokeWidth="1.5"
+                    />
                     <circle cx="50" cy="50" r="5.5" fill="#f5c518" />
                     <circle cx="50" cy="50" r="2" fill="#141414" />
                   </svg>
@@ -496,9 +553,6 @@ function Ticker() {
   );
 }
 
-
-
-
 function Manifesto() {
   return (
     <section id="story" className="border-b border-border bg-background">
@@ -506,7 +560,10 @@ function Manifesto() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
           {/* Left Column: Heading */}
           <div className="lg:col-span-5 text-left">
-            <Reveal variant="up" className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            <Reveal
+              variant="up"
+              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+            >
               <span className="h-px w-6 bg-ink/40" />
               The Story
             </Reveal>
@@ -524,15 +581,13 @@ function Manifesto() {
           {/* Right Column: Content */}
           <div className="lg:col-span-7 space-y-8 text-base leading-relaxed text-foreground/80 sm:text-lg lg:text-xl text-left">
             <Reveal as="p" variant="up" delay={140}>
-              Every other service asks you to give something up — your car, your
-              route, your control. Ridingo starts from the opposite idea. You
-              already have a car you love. What you don't always have is the time,
-              the energy, or the licence to drive it.
+              Every other service asks you to give something up — your car, your route, your
+              control. Ridingo starts from the opposite idea. You already have a car you love. What
+              you don't always have is the time, the energy, or the licence to drive it.
             </Reveal>
             <Reveal as="p" variant="up" delay={240}>
-              So we built an agency of drivers. Not a fleet. Not a rideshare. Just
-              people. Vetted, uniformed, insured, and dispatched to your door in
-              minutes.
+              So we built an agency of drivers. Not a fleet. Not a rideshare. Just people. Vetted,
+              uniformed, insured, and dispatched to your door in minutes.
             </Reveal>
             <Reveal
               as="p"
@@ -571,17 +626,30 @@ function How() {
     <section id="how" className="border-b border-border bg-ink text-bone">
       <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal variant="up" className="text-xs font-medium uppercase tracking-[0.25em] text-taxi">
+          <Reveal
+            variant="up"
+            className="text-xs font-medium uppercase tracking-[0.25em] text-taxi"
+          >
             — How it works
           </Reveal>
-          <Reveal as="h2" variant="gradient" delay={120} className="mt-4 font-display text-5xl font-bold leading-[0.95] lg:text-6xl text-center">
+          <Reveal
+            as="h2"
+            variant="gradient"
+            delay={120}
+            className="mt-4 font-display text-5xl font-bold leading-[0.95] lg:text-6xl text-center"
+          >
             Three taps.
             <br />
             One driver.
           </Reveal>
-          <Reveal as="p" variant="up" delay={240} className="mx-auto mt-6 max-w-lg text-bone/60 text-center">
-            Bookings happen in the Ridingo app. This site is here to tell you
-            who we are before you download it.
+          <Reveal
+            as="p"
+            variant="up"
+            delay={240}
+            className="mx-auto mt-6 max-w-lg text-bone/60 text-center"
+          >
+            Bookings happen in the Ridingo app. This site is here to tell you who we are before you
+            download it.
           </Reveal>
         </div>
 
@@ -600,9 +668,7 @@ function How() {
                 <h3 className="mt-8 font-display text-2xl font-bold tracking-tight text-bone">
                   {s.t}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-bone/70 max-w-xs">
-                  {s.d}
-                </p>
+                <p className="mt-3 text-sm leading-relaxed text-bone/70 max-w-xs">{s.d}</p>
               </div>
 
               <div className="mt-8 flex justify-center">
@@ -618,7 +684,10 @@ function How() {
 
 function Standards() {
   const items = [
-    { t: "Vetted", d: "Background, licence and driving-record checks — every driver, every quarter." },
+    {
+      t: "Vetted",
+      d: "Background, licence and driving-record checks — every driver, every quarter.",
+    },
     { t: "Trained", d: "In-house academy: defensive driving, hospitality, discretion." },
     { t: "Uniformed", d: "You'll know the driver at your door is ours the moment you see them." },
     { t: "Insured", d: "Every trip is covered end-to-end. Your car stays your car." },
@@ -629,15 +698,29 @@ function Standards() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
           {/* Left Column: Heading */}
           <div className="lg:col-span-5 text-left">
-            <Reveal variant="up" className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            <Reveal
+              variant="up"
+              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+            >
               <span className="h-px w-6 bg-ink/40" />
               The Standard
             </Reveal>
-            <Reveal as="h2" variant="gradient" delay={120} className="mt-6 font-display text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl text-left">
+            <Reveal
+              as="h2"
+              variant="gradient"
+              delay={120}
+              className="mt-6 font-display text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl text-left"
+            >
               A driver you'd hand your keys to<span className="text-taxi-deep">.</span>
             </Reveal>
-            <Reveal as="p" variant="up" delay={220} className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-sm">
-              We don't send random drivers. Every single person behind your wheel goes through rigorous vetting, academy training, and complete commercial insurance.
+            <Reveal
+              as="p"
+              variant="up"
+              delay={220}
+              className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-sm"
+            >
+              We don't send random drivers. Every single person behind your wheel goes through
+              rigorous vetting, academy training, and complete commercial insurance.
             </Reveal>
           </div>
 
@@ -696,17 +779,35 @@ function Insurance() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
           {/* Left Column: Heading */}
           <div className="lg:col-span-5 text-left">
-            <Reveal variant="up" className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            <Reveal
+              variant="up"
+              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+            >
               <span className="h-px w-6 bg-ink/40" />
               Commercial Protection
             </Reveal>
-            <Reveal as="h2" variant="gradient" delay={120} className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-left">
+            <Reveal
+              as="h2"
+              variant="gradient"
+              delay={120}
+              className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-left"
+            >
               Comprehensive insurance. Every single mile<span className="text-taxi-deep">.</span>
             </Reveal>
-            <Reveal as="p" variant="up" delay={220} className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-md">
-              You keep your car. We cover the risk. Every trip booked through Ridingo includes complete commercial insurance protection while our driver is at the wheel.
+            <Reveal
+              as="p"
+              variant="up"
+              delay={220}
+              className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-md"
+            >
+              You keep your car. We cover the risk. Every trip booked through Ridingo includes
+              complete commercial insurance protection while our driver is at the wheel.
             </Reveal>
-            <Reveal variant="up" delay={300} className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-taxi/40 bg-taxi/10 p-4 text-xs font-semibold text-foreground">
+            <Reveal
+              variant="up"
+              delay={300}
+              className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-taxi/40 bg-taxi/10 p-4 text-xs font-semibold text-foreground"
+            >
               <span className="grid h-7 w-7 place-items-center rounded-full bg-ink text-taxi font-bold">
                 ✓
               </span>
@@ -727,9 +828,7 @@ function Insurance() {
                       {c.title}
                     </h3>
                   </div>
-                  <p className="text-sm leading-relaxed text-muted-foreground mt-1">
-                    {c.desc}
-                  </p>
+                  <p className="text-sm leading-relaxed text-muted-foreground mt-1">{c.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -742,11 +841,46 @@ function Insurance() {
 
 function ForWho() {
   const cards = [
-    { n: "01", tag: "Busy parents", title: "The school run,\nwithout the school run.", note: "Morning drop-offs. Ballet pick-ups. Your car in your driveway by dinner.", span: "md:col-span-4 md:row-span-2", tone: "ink" },
-    { n: "02", tag: "Executives", title: "A moving\noffice.", note: "Take the call. Close the deck. Arrive sharp.", span: "md:col-span-4", tone: "bone" },
-    { n: "03", tag: "After a drink", title: "Home safe.\nCar home too.", note: "No taxi line. No car left behind at the bar.", span: "md:col-span-4", tone: "taxi" },
-    { n: "04", tag: "Family & elders", title: "A trusted driver\nfor the days you shouldn't.", note: "Appointments, groceries, grandkids — driven by someone you'd trust with keys.", span: "md:col-span-4", tone: "bone" },
-    { n: "05", tag: "Weddings & events", title: "A chauffeured\nday — in your own car.", note: "One driver. One day. Your vehicle, treated like a limousine.", span: "md:col-span-4", tone: "ink" },
+    {
+      n: "01",
+      tag: "Busy parents",
+      title: "The school run,\nwithout the school run.",
+      note: "Morning drop-offs. Ballet pick-ups. Your car in your driveway by dinner.",
+      span: "md:col-span-4 md:row-span-2",
+      tone: "ink",
+    },
+    {
+      n: "02",
+      tag: "Executives",
+      title: "A moving\noffice.",
+      note: "Take the call. Close the deck. Arrive sharp.",
+      span: "md:col-span-4",
+      tone: "bone",
+    },
+    {
+      n: "03",
+      tag: "After a drink",
+      title: "Home safe.\nCar home too.",
+      note: "No taxi line. No car left behind at the bar.",
+      span: "md:col-span-4",
+      tone: "taxi",
+    },
+    {
+      n: "04",
+      tag: "Family & elders",
+      title: "A trusted driver\nfor the days you shouldn't.",
+      note: "Appointments, groceries, grandkids — driven by someone you'd trust with keys.",
+      span: "md:col-span-4",
+      tone: "bone",
+    },
+    {
+      n: "05",
+      tag: "Weddings & events",
+      title: "A chauffeured\nday — in your own car.",
+      note: "One driver. One day. Your vehicle, treated like a limousine.",
+      span: "md:col-span-4",
+      tone: "ink",
+    },
   ];
 
   const toneClass = (t: string) =>
@@ -760,18 +894,30 @@ function ForWho() {
     <section id="who" className="border-b border-border bg-secondary/40">
       <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal variant="up" className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+          <Reveal
+            variant="up"
+            className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+          >
             — Who it's for
           </Reveal>
-          <Reveal as="h2" variant="gradient" delay={120} className="mt-4 font-display text-5xl font-bold leading-[0.9] lg:text-7xl text-center">
+          <Reveal
+            as="h2"
+            variant="gradient"
+            delay={120}
+            className="mt-4 font-display text-5xl font-bold leading-[0.9] lg:text-7xl text-center"
+          >
             Built for the people who'd rather{" "}
-            <span className="italic font-normal text-muted-foreground">not</span>{" "}
-            be driving
+            <span className="italic font-normal text-muted-foreground">not</span> be driving
             <span className="text-taxi-deep">.</span>
           </Reveal>
-          <Reveal as="p" variant="up" delay={240} className="mx-auto mt-6 max-w-md text-muted-foreground text-center">
-            Five kinds of moments where handing over the wheel — but keeping
-            your car — just makes sense.
+          <Reveal
+            as="p"
+            variant="up"
+            delay={240}
+            className="mx-auto mt-6 max-w-md text-muted-foreground text-center"
+          >
+            Five kinds of moments where handing over the wheel — but keeping your car — just makes
+            sense.
           </Reveal>
         </div>
 
@@ -882,7 +1028,11 @@ function Packages() {
       tag: "Office, Hospital & Errands",
       lead: "Dedicated drivers for office commutes, corporate meetings, hospital & doctor visits, and daily errands.",
       unit: "Quoted in-app / Trip",
-      bullets: ["Office & Corporate Commutes", "Hospital & Doctor Visits", "Shopping & Daily Errands"],
+      bullets: [
+        "Office & Corporate Commutes",
+        "Hospital & Doctor Visits",
+        "Shopping & Daily Errands",
+      ],
       tone: "ink",
       fullDetails: {
         description:
@@ -946,14 +1096,27 @@ function Packages() {
     <section id="packages" className="border-b border-border bg-background">
       <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal variant="up" className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+          <Reveal
+            variant="up"
+            className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+          >
             — Service Packages
           </Reveal>
-          <Reveal as="h2" variant="gradient" delay={120} className="mt-4 font-display text-5xl font-bold leading-[0.9] lg:text-7xl text-center">
+          <Reveal
+            as="h2"
+            variant="gradient"
+            delay={120}
+            className="mt-4 font-display text-5xl font-bold leading-[0.9] lg:text-7xl text-center"
+          >
             Driven for every trip
             <span className="text-taxi-deep">.</span>
           </Reveal>
-          <Reveal as="p" variant="up" delay={240} className="mx-auto mt-6 max-w-md text-muted-foreground text-center">
+          <Reveal
+            as="p"
+            variant="up"
+            delay={240}
+            className="mx-auto mt-6 max-w-md text-muted-foreground text-center"
+          >
             Rates and quotes finalise inside the app — select your trip type below.
           </Reveal>
         </div>
@@ -983,9 +1146,7 @@ function Packages() {
                     <span className="inline-block rounded-full bg-taxi px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-widest text-ink shadow-md mb-3">
                       Coming Soon
                     </span>
-                    <h3 className="font-display text-2xl font-bold text-bone">
-                      {p.name}
-                    </h3>
+                    <h3 className="font-display text-2xl font-bold text-bone">{p.name}</h3>
                     <p className="mt-2 text-xs text-bone/70 max-w-[210px] leading-relaxed">
                       Highway & Intercity driver dispatches launching soon.
                     </p>
@@ -1093,18 +1254,30 @@ function Cities() {
     <section className="border-b border-border bg-ink text-bone">
       <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal variant="up" className="text-xs font-medium uppercase tracking-[0.25em] text-taxi">
+          <Reveal
+            variant="up"
+            className="text-xs font-medium uppercase tracking-[0.25em] text-taxi"
+          >
             — Where we drive
           </Reveal>
-          <Reveal as="h2" variant="gradient" delay={120} className="mt-4 font-display text-4xl font-bold leading-[0.95] lg:text-5xl text-center">
+          <Reveal
+            as="h2"
+            variant="gradient"
+            delay={120}
+            className="mt-4 font-display text-4xl font-bold leading-[0.95] lg:text-5xl text-center"
+          >
             One country.
             <br />
             Every moment.
           </Reveal>
-          <Reveal as="p" variant="up" delay={200} className="mx-auto mt-6 max-w-xl text-bone/60 text-center lg:text-lg">
-            Ridingo runs a single, tightly-held driver network — one country,
-            one standard, one number to call. Dispatch under 25 minutes,
-            from the first street to the last.
+          <Reveal
+            as="p"
+            variant="up"
+            delay={200}
+            className="mx-auto mt-6 max-w-xl text-bone/60 text-center lg:text-lg"
+          >
+            Ridingo runs a single, tightly-held driver network — one country, one standard, one
+            number to call. Dispatch under 25 minutes, from the first street to the last.
           </Reveal>
         </div>
 
@@ -1131,8 +1304,6 @@ function Cities() {
   );
 }
 
-
-
 function Testimonials() {
   const notes = [
     {
@@ -1155,10 +1326,18 @@ function Testimonials() {
     <section className="border-b border-border bg-secondary/40">
       <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal variant="up" className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+          <Reveal
+            variant="up"
+            className="text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+          >
             — People who let us drive
           </Reveal>
-          <Reveal as="h2" variant="gradient" delay={120} className="mt-4 font-display text-5xl font-bold leading-[0.95] lg:text-6xl text-center">
+          <Reveal
+            as="h2"
+            variant="gradient"
+            delay={120}
+            className="mt-4 font-display text-5xl font-bold leading-[0.95] lg:text-6xl text-center"
+          >
             Handed the keys.
             <br />
             Never looked back.
@@ -1218,15 +1397,29 @@ function FAQ() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
           {/* Left Column: Heading */}
           <div className="lg:col-span-5 text-left">
-            <Reveal variant="up" className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
+            <Reveal
+              variant="up"
+              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
+            >
               <span className="h-px w-6 bg-ink/40" />
               Answered
             </Reveal>
-            <Reveal as="h2" variant="gradient" delay={120} className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-left">
+            <Reveal
+              as="h2"
+              variant="gradient"
+              delay={120}
+              className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-left"
+            >
               Everything you'd ask<span className="text-taxi-deep">.</span>
             </Reveal>
-            <Reveal as="p" variant="up" delay={220} className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-sm">
-              Got questions before downloading? Here is how Ridingo keeps your car, trip, and keys completely safe.
+            <Reveal
+              as="p"
+              variant="up"
+              delay={220}
+              className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-sm"
+            >
+              Got questions before downloading? Here is how Ridingo keeps your car, trip, and keys
+              completely safe.
             </Reveal>
           </div>
 
@@ -1261,21 +1454,33 @@ function FAQ() {
 
 function AppCTA() {
   return (
-    <section id="app" className="relative overflow-hidden border-b border-border bg-taxi text-ink py-20 lg:py-28">
+    <section
+      id="app"
+      className="relative overflow-hidden border-b border-border bg-taxi text-ink py-20 lg:py-28"
+    >
       {/* Subtle Watermark */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.04] checker-stripe" />
-      
+
       {/* Vignette depth gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(0,0,0,0.1)_100%)]" />
 
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
           {/* Left Column: 3D Perspective Smartphones (Opposite Side 3D Angle) */}
-          <div className="lg:col-span-6 relative flex items-center justify-center lg:justify-start pt-6 lg:pt-0" style={{ perspective: '1200px' }}>
-            
+          <div
+            className="lg:col-span-6 relative flex items-center justify-center lg:justify-start pt-6 lg:pt-0"
+            style={{ perspective: "1200px" }}
+          >
             {/* Phone 1 (Back Left Smartphone - Opposite 3D Side View) */}
-            <Reveal variant="left" className="relative z-10 w-[205px] sm:w-[235px] shrink-0" style={{ transformStyle: 'preserve-3d', transform: 'perspective(1000px) rotateY(24deg) rotateX(10deg) rotateZ(-3deg)', filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.15))' }}>
+            <Reveal
+              variant="left"
+              className="relative z-10 w-[205px] sm:w-[235px] shrink-0"
+              style={{
+                transformStyle: "preserve-3d",
+                transform: "perspective(1000px) rotateY(24deg) rotateX(10deg) rotateZ(-3deg)",
+                filter: "drop-shadow(0 15px 25px rgba(0,0,0,0.15))",
+              }}
+            >
               {/* White 3D Case Frame with Side Bevel & Volume Buttons */}
               <div className="relative rounded-[40px] border-[5px] border-white bg-white p-2 shadow-none text-left">
                 {/* Right Side Volume Buttons Graphic */}
@@ -1313,7 +1518,16 @@ function AppCTA() {
             </Reveal>
 
             {/* Phone 2 (Front Right Smartphone - Opposite 3D Side View) */}
-            <Reveal variant="right" delay={150} className="relative z-20 -ml-12 sm:-ml-16 w-[220px] sm:w-[250px] shrink-0" style={{ transformStyle: 'preserve-3d', transform: 'perspective(1000px) rotateY(24deg) rotateX(10deg) rotateZ(-3deg)', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.2))' }}>
+            <Reveal
+              variant="right"
+              delay={150}
+              className="relative z-20 -ml-12 sm:-ml-16 w-[220px] sm:w-[250px] shrink-0"
+              style={{
+                transformStyle: "preserve-3d",
+                transform: "perspective(1000px) rotateY(24deg) rotateX(10deg) rotateZ(-3deg)",
+                filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.2))",
+              }}
+            >
               {/* White 3D Case Frame with Side Bevel & Volume Buttons */}
               <div className="relative rounded-[44px] border-[5px] border-white bg-white p-2 shadow-none text-left">
                 {/* Right Side Volume Buttons Graphic */}
@@ -1358,18 +1572,32 @@ function AppCTA() {
 
           {/* Right Column: Title, Description & White Side-by-Side Store Pills (matching reference image) */}
           <div className="lg:col-span-6 text-left space-y-6 z-10">
-            <Reveal variant="up" className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink/10 border border-ink/20 text-ink text-xs font-extrabold uppercase tracking-[0.2em]">
+            <Reveal
+              variant="up"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink/10 border border-ink/20 text-ink text-xs font-extrabold uppercase tracking-[0.2em]"
+            >
               <span className="w-2 h-2 rounded-full bg-ink animate-ping" />
               BOOK ONLY IN THE APP
             </Reveal>
 
-            <Reveal as="h2" variant="gradient" delay={100} className="font-display text-5xl sm:text-7xl lg:text-8xl font-black text-ink tracking-tight leading-[0.95]">
+            <Reveal
+              as="h2"
+              variant="gradient"
+              delay={100}
+              className="font-display text-5xl sm:text-7xl lg:text-8xl font-black text-ink tracking-tight leading-[0.95]"
+            >
               Download. <br />
               <span className="underline decoration-ink/20">Tap. Drive.</span>
             </Reveal>
 
-            <Reveal as="p" variant="up" delay={200} className="text-ink/85 text-base sm:text-lg leading-relaxed font-medium max-w-lg">
-              Make your chauffeur experience easier and faster. Bookings, live driver tracking, and dispatch live entirely inside the Ridingo app.
+            <Reveal
+              as="p"
+              variant="up"
+              delay={200}
+              className="text-ink/85 text-base sm:text-lg leading-relaxed font-medium max-w-lg"
+            >
+              Make your chauffeur experience easier and faster. Bookings, live driver tracking, and
+              dispatch live entirely inside the Ridingo app.
             </Reveal>
 
             {/* Side-by-Side White Pill Store Buttons */}
@@ -1378,7 +1606,6 @@ function AppCTA() {
               <WhiteStorePill store="Google Play" sub="GET IT ON" isGoogle />
             </Reveal>
           </div>
-
         </div>
       </div>
     </section>
@@ -1407,11 +1634,17 @@ function WhiteStorePill({
     >
       <div className="shrink-0 text-current">
         {isApple ? (
-          <svg className="w-6 h-6 fill-current text-ink group-hover:text-taxi transition-colors" viewBox="0 0 384 512">
+          <svg
+            className="w-6 h-6 fill-current text-ink group-hover:text-taxi transition-colors"
+            viewBox="0 0 384 512"
+          >
             <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 63.9 24.1 113.8c18.5 37.9 44.5 76.5 81.3 75.8 34.6-.7 47.9-22.3 89.2-22.3 40.5 0 52.8 22.3 89.2 21.6 37.6-.7 62.9-34.9 81-73.4 12-25.2 20.6-54 20.7-54.8-1.5-1-66.5-25.9-66.8-65.5zM260.6 86.8c15.7-19.1 27.5-45.9 24.3-73.1-23.7 1-52.1 15.9-68.4 35-14.7 17.1-27.4 44.3-23.9 70.8 26.4 2 52.8-13.6 68-32.7z" />
           </svg>
         ) : isGoogle ? (
-          <svg className="w-5 h-5 fill-current text-ink group-hover:text-taxi transition-colors" viewBox="0 0 512 512">
+          <svg
+            className="w-5 h-5 fill-current text-ink group-hover:text-taxi transition-colors"
+            viewBox="0 0 512 512"
+          >
             <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z" />
           </svg>
         ) : (
@@ -1422,7 +1655,9 @@ function WhiteStorePill({
         <span className="text-[9px] font-bold uppercase tracking-widest text-ink/60 group-hover:text-taxi/70 transition-colors">
           {sub}
         </span>
-        <span className="font-display text-base font-extrabold text-ink group-hover:text-white transition-colors">{store}</span>
+        <span className="font-display text-base font-extrabold text-ink group-hover:text-white transition-colors">
+          {store}
+        </span>
       </div>
     </a>
   );
@@ -1443,7 +1678,8 @@ function Footer() {
               />
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed text-left">
-              A driver-providing agency. Your car. Our driver. Professional, vetted, insured chauffeurs dispatched directly to your vehicle.
+              A driver-providing agency. Your car. Our driver. Professional, vetted, insured
+              chauffeurs dispatched directly to your vehicle.
             </p>
           </div>
 
@@ -1508,7 +1744,7 @@ function Footer() {
                   className="grid h-10 w-10 place-items-center rounded-full bg-ink/5 hover:bg-taxi hover:text-ink text-foreground transition-all border border-border/80 shadow-sm hover:scale-110"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.301-.15-1.785-.881-2.062-.982-.276-.101-.477-.15-.678.15-.2.301-.777.982-.953 1.183-.175.201-.351.226-.652.076-.301-.15-1.272-.469-2.424-1.496-.897-.798-1.502-1.784-1.677-2.085-.175-.301-.019-.464.131-.613.135-.134.301-.351.451-.526.15-.175.201-.301.301-.502.101-.201.05-.376-.025-.526-.075-.15-.678-1.631-.929-2.233-.244-.586-.494-.506-.678-.515-.175-.008-.376-.008-.577-.008-.201 0-.526.075-.802.376-.276.301-1.053 1.029-1.053 2.509 0 1.48 1.078 2.909 1.229 3.11.15.201 2.122 3.241 5.141 4.542.718.31 1.278.495 1.716.634.721.229 1.377.197 1.896.12.579-.086 1.785-.729 2.036-1.431.251-.702.251-1.304.175-1.431-.075-.127-.276-.201-.577-.351z"/>
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.301-.15-1.785-.881-2.062-.982-.276-.101-.477-.15-.678.15-.2.301-.777.982-.953 1.183-.175.201-.351.226-.652.076-.301-.15-1.272-.469-2.424-1.496-.897-.798-1.502-1.784-1.677-2.085-.175-.301-.019-.464.131-.613.135-.134.301-.351.451-.526.15-.175.201-.301.301-.502.101-.201.05-.376-.025-.526-.075-.15-.678-1.631-.929-2.233-.244-.586-.494-.506-.678-.515-.175-.008-.376-.008-.577-.008-.201 0-.526.075-.802.376-.276.301-1.053 1.029-1.053 2.509 0 1.48 1.078 2.909 1.229 3.11.15.201 2.122 3.241 5.141 4.542.718.31 1.278.495 1.716.634.721.229 1.377.197 1.896.12.579-.086 1.785-.729 2.036-1.431.251-.702.251-1.304.175-1.431-.075-.127-.276-.201-.577-.351z" />
                   </svg>
                 </a>
                 <a
@@ -1519,7 +1755,7 @@ function Footer() {
                   className="grid h-10 w-10 place-items-center rounded-full bg-ink/5 hover:bg-taxi hover:text-ink text-foreground transition-all border border-border/80 shadow-sm hover:scale-110"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                   </svg>
                 </a>
                 <a
@@ -1530,7 +1766,7 @@ function Footer() {
                   className="grid h-10 w-10 place-items-center rounded-full bg-ink/5 hover:bg-taxi hover:text-ink text-foreground transition-all border border-border/80 shadow-sm hover:scale-110"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                   </svg>
                 </a>
               </div>
@@ -1545,7 +1781,9 @@ function Footer() {
           </div>
           <div className="flex items-center gap-6 text-left">
             <button
-              onClick={() => alert("Terms & Conditions will be available upon official app release.")}
+              onClick={() =>
+                alert("Terms & Conditions will be available upon official app release.")
+              }
               className="hover:text-ink transition-colors text-left font-medium cursor-pointer"
             >
               Terms & Conditions

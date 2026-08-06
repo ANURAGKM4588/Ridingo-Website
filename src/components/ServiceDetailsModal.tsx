@@ -133,9 +133,7 @@ export function ServiceDetailsModal({
                   <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-taxi text-ink font-bold text-[10px] mt-0.5">
                     ✓
                   </span>
-                  <span className="text-xs text-foreground font-medium">
-                    {item}
-                  </span>
+                  <span className="text-xs text-foreground font-medium">{item}</span>
                 </div>
               ))}
             </div>
