@@ -1553,7 +1553,6 @@ function Footer() {
             <a href="#" className="hover:text-ink transition-colors">
               Privacy Policy
             </a>
-            <span className="checker-stripe h-3 w-16 opacity-70" aria-hidden />
           </div>
         </div>
       </div>
