@@ -1512,7 +1512,7 @@ function Footer() {
                   </svg>
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/ridingo_/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -1523,7 +1523,7 @@ function Footer() {
                   </svg>
                 </a>
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/profile.php?id=61592350515443"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
