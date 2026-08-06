@@ -108,7 +108,7 @@ function Nav() {
             onClick={scrollTo("app")}
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-widest text-taxi transition-transform hover:-translate-y-0.5 cursor-pointer"
           >
-            Get the app
+            Download Now
             <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
           </a>
         </div>
@@ -810,14 +810,6 @@ function ForWho() {
 }
 
 function Packages() {
-  const [activeModalPackage, setActiveModalPackage] = useState<ServicePackageDetails | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenDetails = (pkg: ServicePackageDetails) => {
-    setActiveModalPackage(pkg);
-    setIsModalOpen(true);
-  };
-
   const handleExplore = () => {
     const el = document.getElementById("app");
     if (el) {
@@ -1039,11 +1031,11 @@ function Packages() {
                   </span>
                 </div>
 
-                {/* Two Action Buttons: Explore & View More */}
-                <div className="w-full space-y-2">
+                {/* Action Button: Explore Only */}
+                <div className="w-full">
                   <button
                     onClick={handleExplore}
-                    className={`w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                    className={`w-full py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                       p.tone === "taxi"
                         ? "bg-ink text-taxi hover:bg-background hover:text-ink shadow-md"
                         : "bg-taxi text-ink hover:bg-ink hover:text-taxi shadow-md"
@@ -1051,26 +1043,12 @@ function Packages() {
                   >
                     Explore
                   </button>
-                  <button
-                    onClick={() => handleOpenDetails(p)}
-                    className="w-full py-2.5 rounded-full border border-current/25 text-xs font-semibold uppercase tracking-wider hover:bg-current/10 transition-colors cursor-pointer"
-                  >
-                    View More
-                  </button>
                 </div>
               </div>
             </Reveal>
           ))}
         </div>
       </div>
-
-      {/* Package View More Full Details Modal */}
-      <ServiceDetailsModal
-        packageData={activeModalPackage}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onExplore={handleExplore}
-      />
     </section>
   );
 }
