@@ -37,16 +37,8 @@ function Index() {
         window.history.scrollRestoration = "manual";
       }
 
-      // Scroll window to top (Hero section) immediately
+      // Initial scroll to top on initial page mount only
       window.scrollTo(0, 0);
-
-      const onBeforeUnload = () => {
-        window.scrollTo(0, 0);
-      };
-      window.addEventListener("beforeunload", onBeforeUnload);
-      return () => {
-        window.removeEventListener("beforeunload", onBeforeUnload);
-      };
     }
   }, []);
 
