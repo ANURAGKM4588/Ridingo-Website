@@ -8,7 +8,6 @@ import carBlack from "@/assets/car-black.png";
 import ridingoLogo from "@/assets/ridingo-logo.png";
 import ridingoLogoWhite from "@/assets/ridingo-logo-white.png";
 import { ServiceDetailsModal, type ServicePackageDetails } from "@/components/ServiceDetailsModal";
-import { ContactDetailsModal } from "@/components/ContactDetailsModal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,8 +31,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       if ("scrollRestoration" in window.history) {
@@ -68,11 +65,7 @@ function Index() {
       <Testimonials />
       <FAQ />
       <AppCTA />
-      <Footer onOpenContact={() => setIsContactModalOpen(true)} />
-      <ContactDetailsModal
-        isOpen={isContactModalOpen}
-        onClose={() => setIsContactModalOpen(false)}
-      />
+      <Footer />
     </div>
   );
 }
@@ -1670,7 +1663,7 @@ function WhiteStorePill({
   );
 }
 
-function Footer({ onOpenContact }: { onOpenContact?: () => void }) {
+function Footer() {
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1681,14 +1674,6 @@ function Footer({ onOpenContact }: { onOpenContact?: () => void }) {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const handleContactClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onOpenContact) {
-      onOpenContact();
     }
   };
 
@@ -1756,25 +1741,25 @@ function Footer({ onOpenContact }: { onOpenContact?: () => void }) {
                 Contact & Social
               </div>
 
-              {/* Direct clean contact links */}
+              {/* Direct clean default email & phone links */}
               <ul className="mt-4 space-y-3 text-sm text-left text-foreground/90 font-medium">
                 <li className="text-left">
-                  <button
-                    type="button"
-                    onClick={handleContactClick}
-                    className="hover:text-taxi-deep transition-colors text-left font-medium cursor-pointer text-sm"
+                  <a
+                    href="mailto:teme.ridingo@gmail.com"
+                    onClick={(e) => e.stopPropagation()}
+                    className="hover:text-taxi-deep transition-colors text-left font-medium text-sm"
                   >
                     teme.ridingo@gmail.com
-                  </button>
+                  </a>
                 </li>
                 <li className="text-left">
-                  <button
-                    type="button"
-                    onClick={handleContactClick}
-                    className="hover:text-taxi-deep transition-colors text-left font-medium cursor-pointer text-sm"
+                  <a
+                    href="tel:+918156938843"
+                    onClick={(e) => e.stopPropagation()}
+                    className="hover:text-taxi-deep transition-colors text-left font-medium text-sm"
                   >
                     +91 8156938843
-                  </button>
+                  </a>
                 </li>
               </ul>
 
