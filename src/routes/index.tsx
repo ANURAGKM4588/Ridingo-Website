@@ -1700,17 +1700,12 @@ function Footer() {
             >
               Terms & Conditions
             </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                alert("Privacy Policy will be updated upon official app release.");
-              }}
+            <Link
+              to="/privacy"
               className="hover:text-ink transition-colors text-left font-medium cursor-pointer"
             >
               Privacy Policy
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -580,7 +580,11 @@ export function TermsPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:text-foreground transition-colors">
-              {lang === "en" ? "Back to Homepage" : "ഹോം പേജിലേക്ക് മടങ്ങുക"}
+              {lang === "en" ? "Home" : "ഹോം"}
+            </Link>
+            <span>•</span>
+            <Link to="/privacy" className="hover:text-foreground transition-colors">
+              {lang === "en" ? "Privacy Policy" : "സ്വകാര്യതാ നയം"}
             </Link>
             <span>•</span>
             <button
