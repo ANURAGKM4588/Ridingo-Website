@@ -254,7 +254,7 @@ export function PrivacyPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-taxi selection:text-ink">
-      {/* Top Navigation Bar */}
+      {/* Top Navigation Bar (Fixed in English UI) */}
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1300px] items-center justify-between px-6 py-4 lg:px-10">
           {/* Logo & Brand */}
@@ -274,6 +274,7 @@ export function PrivacyPage() {
             {/* Language Switcher Pill */}
             <div className="flex items-center p-1 rounded-full bg-secondary border border-border text-xs font-semibold shadow-inner">
               <button
+                type="button"
                 onClick={() => setLang("en")}
                 className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                   lang === "en"
@@ -285,6 +286,7 @@ export function PrivacyPage() {
                 🇬🇧 English
               </button>
               <button
+                type="button"
                 onClick={() => setLang("ml")}
                 className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                   lang === "ml"
@@ -303,7 +305,7 @@ export function PrivacyPage() {
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border text-xs font-bold uppercase tracking-wider text-foreground hover:bg-secondary transition-colors"
             >
               <span>←</span>
-              <span>{lang === "en" ? "Home" : "ഹോം"}</span>
+              <span>Home</span>
             </Link>
 
             {/* Terms Link */}
@@ -311,7 +313,7 @@ export function PrivacyPage() {
               to="/terms"
               className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border/80 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
             >
-              <span>{lang === "en" ? "Terms" : "നിബന്ധനകൾ"}</span>
+              <span>Terms & Conditions</span>
             </Link>
 
             {/* App CTA */}
@@ -327,7 +329,7 @@ export function PrivacyPage() {
               }}
               className="inline-flex items-center justify-center rounded-full bg-taxi px-4 py-2 text-xs font-bold uppercase tracking-widest text-ink hover:bg-ink hover:text-taxi transition-all shadow-sm cursor-pointer"
             >
-              {lang === "en" ? "App" : "ആപ്പ്"}
+              App
             </a>
           </div>
         </div>
@@ -339,13 +341,13 @@ export function PrivacyPage() {
         <div className="space-y-4 text-left">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-extrabold uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            {lang === "en" ? "Privacy & Security" : "ഡാറ്റാ സംരക്ഷണ നയം"}
+            Privacy & Security
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
             <div>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-none">
-                {lang === "en" ? "Privacy Policy" : "സ്വകാര്യതാ നയം"}
+                Privacy Policy
               </h1>
               <p className="mt-3 text-muted-foreground text-sm sm:text-base max-w-2xl leading-relaxed">
                 {lang === "en"
@@ -357,15 +359,11 @@ export function PrivacyPage() {
             {/* Document Meta Pill */}
             <div className="shrink-0 text-left md:text-right text-xs text-muted-foreground space-y-1">
               <div>
-                <span className="font-semibold text-foreground">
-                  {lang === "en" ? "Compliance: " : "നിയമസാധുത: "}
-                </span>
+                <span className="font-semibold text-foreground">Compliance: </span>
                 DPDP Act 2023
               </div>
               <div>
-                <span className="font-semibold text-foreground">
-                  {lang === "en" ? "Last Updated: " : "അവസാനം പുതുക്കിയത്: "}
-                </span>
+                <span className="font-semibold text-foreground">Last Updated: </span>
                 {new Date().toLocaleDateString("en-IN", {
                   month: "long",
                   year: "numeric",
@@ -386,17 +384,14 @@ export function PrivacyPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={
-                lang === "en"
-                  ? "Search privacy clauses (e.g. GPS, data sharing, payments, rights)..."
-                  : "വിഷയങ്ങൾ തിരയുക (ഉദാ: ലൊക്കേഷൻ, പേയ്‌മെന്റ്, അവകാശങ്ങൾ)..."
-              }
+              placeholder="Search privacy clauses (e.g. GPS, data sharing, payments, rights)..."
               className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-background border border-border/80 focus:border-taxi focus:outline-none text-foreground placeholder:text-muted-foreground"
             />
             {searchQuery && (
               <button
+                type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
               >
                 ✕
               </button>
@@ -406,19 +401,12 @@ export function PrivacyPage() {
           {/* Expand/Collapse All Button */}
           <div className="flex items-center justify-between sm:justify-end gap-2">
             <button
+              type="button"
               onClick={isAllExpanded ? collapseAll : expandAll}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-card hover:bg-secondary text-foreground text-xs font-bold border border-border shadow-sm transition-all cursor-pointer"
             >
               <span>{isAllExpanded ? "−" : "+"}</span>
-              <span>
-                {isAllExpanded
-                  ? lang === "en"
-                    ? "Collapse All"
-                    : "എല്ലാം ചുരുക്കുക"
-                  : lang === "en"
-                    ? "Expand All"
-                    : "എല്ലാം കാണുക"}
-              </span>
+              <span>{isAllExpanded ? "Collapse All" : "Expand All"}</span>
             </button>
           </div>
         </div>
@@ -428,9 +416,7 @@ export function PrivacyPage() {
           {filteredData.length === 0 ? (
             <div className="p-12 text-center rounded-3xl border border-dashed border-border bg-card/40">
               <p className="text-muted-foreground text-sm">
-                {lang === "en"
-                  ? "No matching privacy topics found. Try a different keyword."
-                  : "നിങ്ങൾ തിരഞ്ഞ വിവരങ്ങൾ കണ്ടെത്താനായില്ല."}
+                No matching privacy topics found. Try a different keyword.
               </p>
             </div>
           ) : (
@@ -513,9 +499,7 @@ export function PrivacyPage() {
                       {/* Detailed Bullet Clauses */}
                       <div className="space-y-2.5">
                         <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                          {lang === "en"
-                            ? "Detailed Standards & Protection:"
-                            : "വിശദമായ വിവരങ്ങൾ:"}
+                          Detailed Standards & Protection:
                         </span>
                         <ul className="space-y-2.5 pt-1">
                           {(lang === "en" ? item.detailsEn : item.detailsMl).map(
@@ -549,9 +533,7 @@ export function PrivacyPage() {
             </span>
             <div>
               <h3 className="font-display text-lg font-bold text-white">
-                {lang === "en"
-                  ? "Grievance & Privacy Inquiries"
-                  : "സ്വകാര്യത സംബന്ധമായ സംശയങ്ങൾക്ക്"}
+                Grievance & Privacy Inquiries
               </h3>
               <p className="text-xs text-bone/70">
                 {lang === "en"
@@ -562,11 +544,7 @@ export function PrivacyPage() {
           </div>
 
           <div className="pt-2 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 text-xs text-bone/80">
-            <span>
-              {lang === "en"
-                ? "Official Data Protection Contact:"
-                : "ഔദ്യോഗിക ഇമെയിൽ & ഫോൺ നമ്പർ:"}
-            </span>
+            <span>Official Data Protection Contact:</span>
             <div className="flex items-center gap-3 font-semibold">
               <a
                 href="mailto:teme.ridingo@gmail.com"
@@ -583,7 +561,7 @@ export function PrivacyPage() {
         </div>
       </main>
 
-      {/* Page Footer */}
+      {/* Page Footer (Fixed in English UI) */}
       <footer className="border-t border-border bg-card/60 py-8 px-6 lg:px-10 text-xs text-muted-foreground">
         <div className="mx-auto max-w-[1100px] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
@@ -591,20 +569,21 @@ export function PrivacyPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:text-foreground transition-colors">
-              {lang === "en" ? "Home" : "ഹോം"}
+              Home
             </Link>
             <span>•</span>
             <Link to="/terms" className="hover:text-foreground transition-colors">
-              {lang === "en" ? "Terms & Conditions" : "നിയമങ്ങളും നിബന്ധനകളും"}
+              Terms & Conditions
             </Link>
             <span>•</span>
             <button
+              type="button"
               onClick={() =>
                 window.scrollTo({ top: 0, behavior: "smooth" })
               }
               className="hover:text-foreground transition-colors cursor-pointer"
             >
-              {lang === "en" ? "Top ↑" : "മുകളിലേക്ക് ↑"}
+              Top ↑
             </button>
           </div>
         </div>

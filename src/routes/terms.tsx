@@ -251,7 +251,7 @@ export function TermsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-taxi selection:text-ink">
-      {/* Top Navigation Bar */}
+      {/* Top Navigation Bar (Fixed in English UI) */}
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1300px] items-center justify-between px-6 py-4 lg:px-10">
           {/* Logo & Brand */}
@@ -271,6 +271,7 @@ export function TermsPage() {
             {/* Language Switcher Pill */}
             <div className="flex items-center p-1 rounded-full bg-secondary border border-border text-xs font-semibold shadow-inner">
               <button
+                type="button"
                 onClick={() => setLang("en")}
                 className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                   lang === "en"
@@ -282,6 +283,7 @@ export function TermsPage() {
                 🇬🇧 English
               </button>
               <button
+                type="button"
                 onClick={() => setLang("ml")}
                 className={`px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                   lang === "ml"
@@ -300,7 +302,15 @@ export function TermsPage() {
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border text-xs font-bold uppercase tracking-wider text-foreground hover:bg-secondary transition-colors"
             >
               <span>←</span>
-              <span>{lang === "en" ? "Home" : "ഹോം"}</span>
+              <span>Home</span>
+            </Link>
+
+            {/* Privacy Link */}
+            <Link
+              to="/privacy"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border/80 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            >
+              <span>Privacy Policy</span>
             </Link>
 
             {/* App CTA */}
@@ -316,7 +326,7 @@ export function TermsPage() {
               }}
               className="inline-flex items-center justify-center rounded-full bg-taxi px-4 py-2 text-xs font-bold uppercase tracking-widest text-ink hover:bg-ink hover:text-taxi transition-all shadow-sm cursor-pointer"
             >
-              {lang === "en" ? "App" : "ആപ്പ്"}
+              App
             </a>
           </div>
         </div>
@@ -328,13 +338,13 @@ export function TermsPage() {
         <div className="space-y-4 text-left">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-taxi/15 text-taxi-deep border border-taxi/30 text-xs font-extrabold uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-taxi-deep animate-pulse" />
-            {lang === "en" ? "Legal Documentation" : "നിയമപരമായ വിവരങ്ങൾ"}
+            Legal Documentation
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
             <div>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-none">
-                {lang === "en" ? "Terms & Conditions" : "നിയമങ്ങളും നിബന്ധനകളും"}
+                Terms & Conditions
               </h1>
               <p className="mt-3 text-muted-foreground text-sm sm:text-base max-w-2xl leading-relaxed">
                 {lang === "en"
@@ -346,15 +356,11 @@ export function TermsPage() {
             {/* Document Meta Pill */}
             <div className="shrink-0 text-left md:text-right text-xs text-muted-foreground space-y-1">
               <div>
-                <span className="font-semibold text-foreground">
-                  {lang === "en" ? "Version: " : "പതിപ്പ്: "}
-                </span>
+                <span className="font-semibold text-foreground">Version: </span>
                 2026.1
               </div>
               <div>
-                <span className="font-semibold text-foreground">
-                  {lang === "en" ? "Effective: " : "പ്രാബല്യത്തിൽ: "}
-                </span>
+                <span className="font-semibold text-foreground">Effective: </span>
                 {new Date().toLocaleDateString("en-IN", {
                   month: "long",
                   year: "numeric",
@@ -375,17 +381,14 @@ export function TermsPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={
-                lang === "en"
-                  ? "Search clauses (e.g. payment, cancellation, insurance)..."
-                  : "വിഷയങ്ങൾ തിരയുക (ഉദാ: പേയ്‌മെന്റ്, ഇൻഷുറൻസ്)..."
-              }
+              placeholder="Search clauses (e.g. payment, cancellation, insurance)..."
               className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-background border border-border/80 focus:border-taxi focus:outline-none text-foreground placeholder:text-muted-foreground"
             />
             {searchQuery && (
               <button
+                type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
               >
                 ✕
               </button>
@@ -395,19 +398,12 @@ export function TermsPage() {
           {/* Expand/Collapse All Button */}
           <div className="flex items-center justify-between sm:justify-end gap-2">
             <button
+              type="button"
               onClick={isAllExpanded ? collapseAll : expandAll}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-card hover:bg-secondary text-foreground text-xs font-bold border border-border shadow-sm transition-all cursor-pointer"
             >
               <span>{isAllExpanded ? "−" : "+"}</span>
-              <span>
-                {isAllExpanded
-                  ? lang === "en"
-                    ? "Collapse All"
-                    : "എല്ലാം ചുരുക്കുക"
-                  : lang === "en"
-                    ? "Expand All"
-                    : "എല്ലാം കാണുക"}
-              </span>
+              <span>{isAllExpanded ? "Collapse All" : "Expand All"}</span>
             </button>
           </div>
         </div>
@@ -417,9 +413,7 @@ export function TermsPage() {
           {filteredTerms.length === 0 ? (
             <div className="p-12 text-center rounded-3xl border border-dashed border-border bg-card/40">
               <p className="text-muted-foreground text-sm">
-                {lang === "en"
-                  ? "No matching terms found. Try clearing your search query."
-                  : "നിങ്ങൾ തിരഞ്ഞ വിവരങ്ങൾ കണ്ടെത്താനായില്ല."}
+                No matching terms found. Try clearing your search query.
               </p>
             </div>
           ) : (
@@ -502,9 +496,7 @@ export function TermsPage() {
                       {/* Detailed Bullet Clauses */}
                       <div className="space-y-2.5">
                         <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                          {lang === "en"
-                            ? "Detailed Specifications & Terms:"
-                            : "വിശദമായ വ്യവസ്ഥകൾ:"}
+                          Detailed Specifications & Terms:
                         </span>
                         <ul className="space-y-2.5 pt-1">
                           {(lang === "en" ? item.detailsEn : item.detailsMl).map(
@@ -538,9 +530,7 @@ export function TermsPage() {
             </span>
             <div>
               <h3 className="font-display text-lg font-bold text-white">
-                {lang === "en"
-                  ? "User Agreement & Acceptance"
-                  : "ഉപയോക്തൃ ഉടമ്പടി"}
+                User Agreement & Acceptance
               </h3>
               <p className="text-xs text-bone/70">
                 {lang === "en"
@@ -551,11 +541,7 @@ export function TermsPage() {
           </div>
 
           <div className="pt-2 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 text-xs text-bone/80">
-            <span>
-              {lang === "en"
-                ? "Need support or clarification on any clause?"
-                : "കൂടുതൽ വിവരങ്ങൾക്കായി ഞങ്ങളെ ബന്ധപ്പെടുക:"}
-            </span>
+            <span>Need support or clarification on any clause?</span>
             <div className="flex items-center gap-3 font-semibold">
               <a
                 href="mailto:teme.ridingo@gmail.com"
@@ -572,7 +558,7 @@ export function TermsPage() {
         </div>
       </main>
 
-      {/* Page Footer */}
+      {/* Page Footer (Fixed in English UI) */}
       <footer className="border-t border-border bg-card/60 py-8 px-6 lg:px-10 text-xs text-muted-foreground">
         <div className="mx-auto max-w-[1100px] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
@@ -580,20 +566,21 @@ export function TermsPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:text-foreground transition-colors">
-              {lang === "en" ? "Home" : "ഹോം"}
+              Home
             </Link>
             <span>•</span>
             <Link to="/privacy" className="hover:text-foreground transition-colors">
-              {lang === "en" ? "Privacy Policy" : "സ്വകാര്യതാ നയം"}
+              Privacy Policy
             </Link>
             <span>•</span>
             <button
+              type="button"
               onClick={() =>
                 window.scrollTo({ top: 0, behavior: "smooth" })
               }
               className="hover:text-foreground transition-colors cursor-pointer"
             >
-              {lang === "en" ? "Top ↑" : "മുകളിലേക്ക് ↑"}
+              Top ↑
             </button>
           </div>
         </div>
