@@ -1318,19 +1318,30 @@ function FAQ() {
           <div className="lg:col-span-7 divide-y divide-border border-y border-border text-left w-full">
             {faqs.map((f, i) => (
               <Reveal key={f.q} variant="up" delay={i * 80}>
-                <details className="group py-6">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6">
-                    <span className="font-display text-lg font-semibold tracking-tight text-ink lg:text-xl text-left">
+                <details className="group py-6 select-none focus:outline-none">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 select-none outline-none focus:outline-none [&::-webkit-details-marker]:hidden">
+                    <span className="font-display text-lg font-semibold tracking-tight text-ink lg:text-xl text-left select-none">
                       {f.q}
                     </span>
-                    <span
-                      aria-hidden
-                      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-taxi transition-transform duration-500 group-open:rotate-45"
+                    <div
+                      aria-hidden="true"
+                      className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-taxi pointer-events-none select-none transition-transform duration-300 group-open:rotate-45 shadow-sm"
                     >
-                      +
-                    </span>
+                      <svg
+                        className="w-3.5 h-3.5 transition-transform duration-300"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                    </div>
                   </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground lg:text-base text-left pr-6">
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground lg:text-base text-left pr-6 select-text">
                     {f.a}
                   </p>
                 </details>
