@@ -1752,64 +1752,31 @@ function Footer({ onOpenContact }: { onOpenContact?: () => void }) {
           {/* Contact & Social Column */}
           <div className="md:col-span-4 text-left">
             <div className="flex flex-col items-start text-left">
-              <div className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground text-left flex items-center gap-2">
-                <span>Contact & Social</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground text-left">
+                Contact & Social
               </div>
 
-              {/* Direct interactive contact links */}
+              {/* Direct clean contact links */}
               <ul className="mt-4 space-y-3 text-sm text-left text-foreground/90 font-medium">
                 <li className="text-left">
                   <button
                     type="button"
                     onClick={handleContactClick}
-                    className="hover:text-taxi-deep transition-colors text-left font-medium cursor-pointer inline-flex items-center gap-2 group text-sm"
-                    title="Click to view contact options or send email"
+                    className="hover:text-taxi-deep transition-colors text-left font-medium cursor-pointer text-sm"
                   >
-                    <span className="font-semibold text-foreground group-hover:text-taxi-deep transition-colors">
-                      teme.ridingo@gmail.com
-                    </span>
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-taxi/15 text-taxi-deep border border-taxi/20 opacity-90 group-hover:opacity-100 transition-opacity">
-                      Email Us
-                    </span>
+                    teme.ridingo@gmail.com
                   </button>
                 </li>
                 <li className="text-left">
                   <button
                     type="button"
                     onClick={handleContactClick}
-                    className="hover:text-taxi-deep transition-colors text-left font-medium cursor-pointer inline-flex items-center gap-2 group text-sm"
-                    title="Click to view contact options or call"
+                    className="hover:text-taxi-deep transition-colors text-left font-medium cursor-pointer text-sm"
                   >
-                    <span className="font-semibold text-foreground group-hover:text-taxi-deep transition-colors">
-                      +91 8156938843
-                    </span>
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 opacity-90 group-hover:opacity-100 transition-opacity">
-                      Call / 24x7
-                    </span>
+                    +91 8156938843
                   </button>
                 </li>
               </ul>
-
-              {/* Quick direct contact action buttons */}
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleContactClick}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink text-taxi font-bold text-xs uppercase tracking-wider hover:bg-taxi hover:text-ink transition-all shadow-sm cursor-pointer"
-                >
-                  <span>📞 Contact Options</span>
-                </button>
-                <a
-                  href="https://wa.me/918156938843?text=Hi%20Ridingo%2C%20I%20would%20like%20to%20inquire%20about%20booking%20a%20driver."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 font-bold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer"
-                >
-                  <span>💬 WhatsApp</span>
-                </a>
-              </div>
 
               {/* Social Media Icons */}
               <div className="mt-6 flex items-center gap-3">
