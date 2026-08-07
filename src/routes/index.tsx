@@ -50,7 +50,6 @@ function Index() {
       <Manifesto />
       <How />
       <Standards />
-      <Insurance />
       <ForWho />
       <Packages />
       <Cities />
@@ -108,13 +107,6 @@ function Nav() {
             Standards
           </a>
           <a
-            href="#insurance"
-            onClick={scrollTo("insurance")}
-            className="link-underline hover:text-foreground transition-colors"
-          >
-            Insurance
-          </a>
-          <a
             href="#packages"
             onClick={scrollTo("packages")}
             className="link-underline hover:text-foreground transition-colors"
@@ -133,12 +125,9 @@ function Nav() {
           <a
             href="#app"
             onClick={scrollTo("app")}
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-widest text-taxi transition-transform hover:-translate-y-0.5 cursor-pointer"
+            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-widest text-taxi transition-transform hover:-translate-y-0.5 cursor-pointer"
           >
             Download Now
-            <span aria-hidden className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
           </a>
         </div>
       </div>
@@ -732,96 +721,6 @@ function Standards() {
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-left">
                   {it.d}
                 </p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Insurance() {
-  const coverageItems = [
-    {
-      title: "Full Comprehensive & Collision",
-      tag: "$1M+ Commercial Policy",
-      desc: "Every trip is backed by master commercial insurance covering your personal vehicle against physical damage, theft, or collision while our driver is at the wheel.",
-    },
-    {
-      title: "Third-Party & Public Liability",
-      tag: "Complete Legal Protection",
-      desc: "Full coverage for third-party property damage and bodily injury liability claims, protecting vehicle owners against external claims.",
-    },
-    {
-      title: "Passenger Medical Payments",
-      tag: "Occupant Protection",
-      desc: "Medical expense coverage for all passengers, family members, and occupants inside your car during active Ridingo dispatches.",
-    },
-    {
-      title: "Zero-Deductible Guarantee",
-      tag: "100% Owner Safeguard",
-      desc: "Vehicle owners pay $0 out-of-pocket deductible in the event of an approved claim during an active booking.",
-    },
-  ];
-
-  return (
-    <section id="insurance" className="border-b border-border bg-background">
-      <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-10 lg:py-28">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
-          {/* Left Column: Heading */}
-          <div className="lg:col-span-5 text-left">
-            <Reveal
-              variant="up"
-              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground"
-            >
-              <span className="h-px w-6 bg-ink/40" />
-              Commercial Protection
-            </Reveal>
-            <Reveal
-              as="h2"
-              variant="gradient"
-              delay={120}
-              className="mt-6 font-display text-4xl font-extrabold leading-[0.95] lg:text-6xl text-left"
-            >
-              Comprehensive insurance. Every single mile<span className="text-taxi-deep">.</span>
-            </Reveal>
-            <Reveal
-              as="p"
-              variant="up"
-              delay={220}
-              className="mt-6 text-muted-foreground text-left text-base leading-relaxed max-w-md"
-            >
-              You keep your car. We cover the risk. Every trip booked through Ridingo includes
-              complete commercial insurance protection while our driver is at the wheel.
-            </Reveal>
-            <Reveal
-              variant="up"
-              delay={300}
-              className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-taxi/40 bg-taxi/10 p-4 text-xs font-semibold text-foreground"
-            >
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-ink text-taxi font-bold">
-                ✓
-              </span>
-              <span>24/7 Incident Hotline & On-Scene Claims Support</span>
-            </Reveal>
-          </div>
-
-          {/* Right Column: 2x2 Coverage Grid Cards */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 auto-rows-fr gap-6 text-left">
-            {coverageItems.map((c, i) => (
-              <Reveal key={c.title} variant="up" delay={i * 100} className="h-full">
-                <div className="group h-full flex flex-col justify-start rounded-3xl border border-border bg-card p-8 transition-all hover:border-taxi hover:shadow-lg">
-                  <div>
-                    <span className="inline-block rounded-full bg-taxi/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-taxi-deep mb-4">
-                      {c.tag}
-                    </span>
-                    <h3 className="font-display text-xl font-bold tracking-tight text-ink mb-2">
-                      {c.title}
-                    </h3>
-                  </div>
-                  <p className="text-sm leading-relaxed text-muted-foreground mt-1">{c.desc}</p>
-                </div>
               </Reveal>
             ))}
           </div>
@@ -1711,15 +1610,6 @@ function Footer() {
                     className="hover:text-taxi-deep transition-colors text-left cursor-pointer"
                   >
                     Standards
-                  </a>
-                </li>
-                <li className="text-left">
-                  <a
-                    href="#insurance"
-                    onClick={scrollTo("insurance")}
-                    className="hover:text-taxi-deep transition-colors text-left cursor-pointer"
-                  >
-                    Insurance Coverage
                   </a>
                 </li>
               </ul>
