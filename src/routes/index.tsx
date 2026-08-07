@@ -1,5 +1,5 @@
 // Main landing page route
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { ScrollCinematic } from "@/components/ScrollCinematic";
@@ -1694,17 +1694,12 @@ function Footer() {
             © {new Date().getFullYear()} Ridingo Inc. All rights reserved.
           </div>
           <div className="flex items-center gap-6 text-left">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                alert("Terms & Conditions will be available upon official app release.");
-              }}
+            <Link
+              to="/terms"
               className="hover:text-ink transition-colors text-left font-medium cursor-pointer"
             >
               Terms & Conditions
-            </button>
+            </Link>
             <button
               type="button"
               onClick={(e) => {
