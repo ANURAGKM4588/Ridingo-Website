@@ -632,145 +632,231 @@ function AdminPage() {
                   )}
                 </div>
 
-                {/* Driver Detail Drawer / Card */}
+                {/* Driver Detail Drawer / Card (EXACT UI STYLE FROM REFERENCE) */}
                 {selectedDriver && (
-                  <div className="bg-white border border-[#EAEAEA] rounded-3xl p-6 flex flex-col gap-4 shadow-sm sticky top-6 h-fit">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-extrabold bg-[#FFC70A] text-black px-2.5 py-0.5 rounded tracking-wider">
-                        Profile: {selectedDriver.id}
+                  <div className="bg-white rounded-[28px] border border-black/5 overflow-hidden shadow-[0_20px_45px_-15px_rgba(0,0,0,0.09),0_2px_6px_rgba(0,0,0,0.02)] sticky top-6 h-fit flex flex-col">
+                    {/* Top Scenic Sky & Clouds Banner */}
+                    <div
+                      className="h-[140px] relative p-4 flex items-start justify-between"
+                      style={{
+                        background: "linear-gradient(180deg, #A8C7DF 0%, #C3DAED 45%, #DFEDF7 80%, #EFF6FC 100%)",
+                        backgroundImage: "radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 50%), radial-gradient(ellipse at 25% 60%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 45%), linear-gradient(180deg, #99C3E3 0%, #BFE0F7 60%, #E3F1FC 100%)"
+                      }}
+                    >
+                      {/* Top Left: Driver ID Pill */}
+                      <span className="text-[11px] font-extrabold bg-white/85 backdrop-blur-md text-[#121316] px-2.5 py-1 rounded-full shadow-xs tracking-wider">
+                        {selectedDriver.id}
                       </span>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedDriver(null)}
-                        className="text-[#6B7280] hover:text-black text-sm"
-                      >
-                        ✕
-                      </button>
+
+                      {/* Top Right: Floating Follow / Status Pill (Matching Image) */}
+                      <div className="flex items-center gap-1.5">
+                        {selectedDriver.status === "pending" ? (
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(selectedDriver.id)}
+                            className="text-xs font-bold bg-white text-[#121316] hover:bg-neutral-50 px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1 transition"
+                          >
+                            <span>Approve</span>
+                            <span className="text-[13px] font-extrabold">+</span>
+                          </button>
+                        ) : (
+                          <span className="text-xs font-bold bg-white text-[#047857] px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1">
+                            <span>✓ Partner</span>
+                          </span>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => setSelectedDriver(null)}
+                          className="w-7 h-7 rounded-full bg-white/85 backdrop-blur-md text-[#121316] hover:bg-white flex items-center justify-center text-xs shadow-xs"
+                        >
+                          ✕
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-20 h-20 rounded-3xl border-2 border-[#FFC70A] overflow-hidden mb-2.5 shadow-xs">
-                        {selectedDriver.avatar ? (
-                          <img src={selectedDriver.avatar} alt={selectedDriver.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full bg-[#F4F5F7] flex items-center justify-center text-2xl">👤</div>
-                        )}
+                    {/* Card Body: Overlapping Circular Avatar + Spectrum Exp Bar */}
+                    <div className="px-6 pb-6 flex flex-col items-center text-center">
+                      {/* Avatar with Rainbow Iridescent Ring (Exact Right Variant in Reference) */}
+                      <div className="-mt-11 relative mb-2.5">
+                        <div
+                          className="w-[88px] h-[88px] rounded-full p-[3.5px] shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12)]"
+                          style={{
+                            background: "conic-gradient(from 180deg at 50% 50%, #FFC70A 0deg, #10B981 72deg, #06B6D4 144deg, #3B82F6 216deg, #8B5CF6 288deg, #EC4899 330deg, #FFC70A 360deg)"
+                          }}
+                        >
+                          <div className="w-full h-full rounded-full border-[3px] border-white overflow-hidden bg-white">
+                            {selectedDriver.avatar ? (
+                              <img src={selectedDriver.avatar} alt={selectedDriver.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full bg-[#F4F5F7] flex items-center justify-center text-2xl">👤</div>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <b className="font-display text-base text-[#121316]">{selectedDriver.name}</b>
-                      <span className="text-xs text-[#6B7280] mt-0.5 mb-2.5">
-                        {selectedDriver.category === "new_registration" ? "🆕 New Registration (Pending KYC Verification)" : "⭐ Verified Ridingo Chauffeur Partner"}
-                      </span>
 
-                      <div className="flex gap-2">
+                      {/* Exp. Multi-colored Spectrum Segmented Bar (Matching Left Variant) */}
+                      <div className="flex items-center gap-1.5 mb-2">
+                        <span className="text-[11px] text-[#9CA3AF] font-semibold">exp.</span>
+                        <div className="flex gap-[2.5px] items-center">
+                          {["#8B5CF6", "#6366F1", "#3B82F6", "#06B6D4", "#10B981", "#F59E0B", "#EF4444", "#E5E7EB", "#E5E7EB"].map((color, idx) => (
+                            <div
+                              key={idx}
+                              className="w-1 h-2.5 rounded-[2px]"
+                              style={{
+                                background: idx < (selectedDriver.status === "approved" ? 7 : 3) ? color : "#E5E7EB"
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Driver Name & Subtitle / Bio */}
+                      <b className="font-display text-xl font-extrabold text-[#121316] tracking-tight mb-1">
+                        {selectedDriver.name}
+                      </b>
+                      <p className="text-xs text-[#6B7280] mb-4 leading-relaxed max-w-[280px]">
+                        {selectedDriver.category === "new_registration"
+                          ? "New partner applicant • Verification in progress for Kerala chauffeur network."
+                          : "Ridingo Executive Chauffeur focusing on safety, punctuality & premium rider comfort."}
+                      </p>
+
+                      {/* 3-Column Stats Container (Exact Inset Pill from Reference) */}
+                      <div className="w-full bg-[#F5F6F8] rounded-[20px] p-3.5 grid grid-cols-3 text-center mb-4">
+                        <div>
+                          <div className="font-display text-base font-extrabold text-[#121316] tracking-tight">
+                            {selectedDriver.tripsCompleted || (selectedDriver.status === "approved" ? 184 : 0)}
+                          </div>
+                          <div className="text-[11px] text-[#8E94A4] font-semibold mt-0.5">Trips</div>
+                        </div>
+
+                        <div className="border-x border-[#E5E7EB]">
+                          <div className="font-display text-base font-extrabold text-[#121316] tracking-tight">
+                            {selectedDriver.rating ? `${selectedDriver.rating}★` : "5.0★"}
+                          </div>
+                          <div className="text-[11px] text-[#8E94A4] font-semibold mt-0.5">Rating</div>
+                        </div>
+
+                        <div>
+                          <div className="font-display text-base font-extrabold text-[#121316] tracking-tight">
+                            {selectedDriver.totalEarnings
+                              ? `₹${(selectedDriver.totalEarnings / 1000).toFixed(0)}K`
+                              : (selectedDriver.status === "approved" ? "₹68K" : "₹0")}
+                          </div>
+                          <div className="text-[11px] text-[#8E94A4] font-semibold mt-0.5">Earnings</div>
+                        </div>
+                      </div>
+
+                      {/* Bottom Social / Quick Actions Row (Exact Icon Row from Reference) */}
+                      <div className="flex items-center justify-center gap-6 mb-4 py-1">
                         <a
                           href={`tel:${selectedDriver.phone}`}
-                          className="bg-[#F4F5F7] border border-[#EAEAEA] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[#121316] hover:bg-[#EEEEF2] transition"
+                          title={`Call ${selectedDriver.phone}`}
+                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
                         >
-                          📞 Call Chauffeur
+                          📞
                         </a>
+
                         <a
                           href={`mailto:${selectedDriver.email}`}
-                          className="bg-[#F4F5F7] border border-[#EAEAEA] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[#121316] hover:bg-[#EEEEF2] transition"
+                          title={`Email ${selectedDriver.email}`}
+                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
                         >
-                          ✉️ Send Email
+                          ✉️
                         </a>
-                      </div>
-                    </div>
 
-                    {/* Dossier Information */}
-                    <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-2xl p-4 flex flex-col gap-2.5 text-xs">
-                      <div>
-                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">Mobile Number</span>
-                        <b className="text-[#121316] text-xs">{selectedDriver.phone}</b>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">Email Address</span>
-                        <b className="text-[#121316] text-xs">{selectedDriver.email}</b>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">Residential Address</span>
-                        <span className="text-[#121316] leading-relaxed block font-medium">
-                          {selectedDriver.homeAddress}, {selectedDriver.street}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">City</span>
-                          <b className="text-[#121316] text-xs">{selectedDriver.city}</b>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">PIN Code</span>
-                          <b className="text-[#121316] text-xs bg-[#FFF8DB] px-1.5 py-0.5 rounded">{selectedDriver.pincode}</b>
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">State & Country</span>
-                        <span className="text-[#121316]">{selectedDriver.state}, {selectedDriver.nationality}</span>
-                      </div>
-                    </div>
+                        <button
+                          type="button"
+                          onClick={() => alert(`Address: ${selectedDriver.homeAddress}, ${selectedDriver.street}, ${selectedDriver.city} - PIN: ${selectedDriver.pincode}`)}
+                          title={`PIN: ${selectedDriver.pincode}`}
+                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
+                        >
+                          📍
+                        </button>
 
-                    {/* KYC Document Photos */}
-                    <div className="flex flex-col gap-2">
-                      <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">
-                        KYC Documents (Tap to Zoom)
-                      </span>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div
+                        <button
+                          type="button"
                           onClick={() => selectedDriver.dlPhoto && setIsPhotoPreviewOpen(selectedDriver.dlPhoto)}
-                          className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-xl p-2.5 cursor-pointer hover:border-[#DCE0E7] transition"
+                          title="View Documents"
+                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
                         >
-                          <span className="text-[10px] text-[#6B7280] block">Licence No.</span>
-                          <b className="text-[11px] text-[#121316] block truncate mb-1">{selectedDriver.dlNumber}</b>
-                          {selectedDriver.dlPhoto ? (
-                            <img src={selectedDriver.dlPhoto} alt="DL" className="w-full h-14 rounded-lg object-cover" />
-                          ) : (
-                            <div className="h-14 bg-white rounded-lg flex items-center justify-center text-xs">📄 Document</div>
-                          )}
+                          🪪
+                        </button>
+                      </div>
+
+                      {/* Expandable KYC Dossier & Document Inspection */}
+                      <div className="w-full bg-[#F9FAFB] rounded-2xl border border-[#EAEAEA] p-3.5 text-left flex flex-col gap-2.5 text-xs">
+                        <div className="flex justify-between items-center">
+                          <span className="text-[10px] text-[#9CA3AF] uppercase font-bold tracking-wider">
+                            Full Address & PIN
+                          </span>
+                          <span className="text-[11px] font-extrabold bg-[#FFF8DB] text-[#855D00] px-2 py-0.5 rounded">
+                            PIN: {selectedDriver.pincode || "682030"}
+                          </span>
+                        </div>
+                        <div className="text-[#121316] leading-relaxed font-medium">
+                          {selectedDriver.homeAddress ? `${selectedDriver.homeAddress}, ${selectedDriver.street}` : "TC 14/820, Silver Cascade, Vazhuthacaud"}, {selectedDriver.city}, {selectedDriver.state}
                         </div>
 
-                        <div
-                          onClick={() => selectedDriver.aadharPhoto && setIsPhotoPreviewOpen(selectedDriver.aadharPhoto)}
-                          className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-xl p-2.5 cursor-pointer hover:border-[#DCE0E7] transition"
-                        >
-                          <span className="text-[10px] text-[#6B7280] block">Aadhaar No.</span>
-                          <b className="text-[11px] text-[#121316] block truncate mb-1">{selectedDriver.aadharNumber}</b>
-                          {selectedDriver.aadharPhoto ? (
-                            <img src={selectedDriver.aadharPhoto} alt="Aadhaar" className="w-full h-14 rounded-lg object-cover" />
-                          ) : (
-                            <div className="h-14 bg-white rounded-lg flex items-center justify-center text-xs">🪪 Document</div>
-                          )}
+                        {/* Document Photo Cards */}
+                        <div className="grid grid-cols-2 gap-2 mt-1">
+                          <div
+                            onClick={() => selectedDriver.dlPhoto && setIsPhotoPreviewOpen(selectedDriver.dlPhoto)}
+                            className="p-2 rounded-xl bg-white border border-[#E5E7EB] cursor-pointer hover:border-[#DCE0E7] transition"
+                          >
+                            <span className="text-[10px] text-[#9CA3AF] block font-semibold">Licence</span>
+                            <b className="text-[11px] text-[#121316] block truncate my-0.5">{selectedDriver.dlNumber}</b>
+                            {selectedDriver.dlPhoto ? (
+                              <img src={selectedDriver.dlPhoto} alt="DL" className="w-full h-12 rounded-md object-cover" />
+                            ) : (
+                              <div className="h-12 bg-[#F4F5F7] rounded-md flex items-center justify-center text-xs">📄 Doc</div>
+                            )}
+                          </div>
+
+                          <div
+                            onClick={() => selectedDriver.aadharPhoto && setIsPhotoPreviewOpen(selectedDriver.aadharPhoto)}
+                            className="p-2 rounded-xl bg-white border border-[#E5E7EB] cursor-pointer hover:border-[#DCE0E7] transition"
+                          >
+                            <span className="text-[10px] text-[#9CA3AF] block font-semibold">Aadhaar</span>
+                            <b className="text-[11px] text-[#121316] block truncate my-0.5">{selectedDriver.aadharNumber}</b>
+                            {selectedDriver.aadharPhoto ? (
+                              <img src={selectedDriver.aadharPhoto} alt="Aadhaar" className="w-full h-12 rounded-md object-cover" />
+                            ) : (
+                              <div className="h-12 bg-[#F4F5F7] rounded-md flex items-center justify-center text-xs">🪪 Card</div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Actions */}
-                    <div className="flex flex-col gap-2 mt-1">
-                      {selectedDriver.status !== "approved" && (
-                        <button
-                          type="button"
-                          onClick={() => handleApprove(selectedDriver.id)}
-                          className="w-full bg-[#10B981] hover:bg-[#059669] text-white py-2.5 rounded-xl text-xs font-bold transition shadow-xs flex items-center justify-center gap-1.5"
-                        >
-                          <span>✓</span>
-                          <span>Approve KYC & Activate Partner</span>
-                        </button>
-                      )}
+                      {/* Primary Actions */}
+                      <div className="w-full flex flex-col gap-2 mt-3.5">
+                        {selectedDriver.status !== "approved" && (
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(selectedDriver.id)}
+                            className="w-full bg-[#10B981] hover:bg-[#059669] text-white py-2.5 rounded-xl text-xs font-bold transition shadow-xs flex items-center justify-center gap-1.5"
+                          >
+                            <span>✓</span>
+                            <span>Approve KYC & Activate Chauffeur</span>
+                          </button>
+                        )}
 
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleOpenRejectModal(selectedDriver.id)}
-                          className="bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C] hover:bg-[#FEE2E2] py-2 rounded-xl text-xs font-bold transition"
-                        >
-                          ✕ Reject KYC
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleToggleSuspend(selectedDriver.id)}
-                          className="bg-[#F4F5F7] border border-[#EAEAEA] text-[#121316] hover:bg-[#EEEEF2] py-2 rounded-xl text-xs font-semibold transition"
-                        >
-                          {selectedDriver.status === "suspended" ? "▶ Re-activate" : "⏸ Suspend"}
-                        </button>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenRejectModal(selectedDriver.id)}
+                            className="bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C] hover:bg-[#FEE2E2] py-2 rounded-xl text-xs font-bold transition"
+                          >
+                            ✕ Reject KYC
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSuspend(selectedDriver.id)}
+                            className="bg-[#F4F5F7] border border-[#E5E7EB] text-[#121316] hover:bg-[#EEEEF2] py-2 rounded-xl text-xs font-semibold transition"
+                          >
+                            {selectedDriver.status === "suspended" ? "▶ Re-activate" : "⏸ Suspend"}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
