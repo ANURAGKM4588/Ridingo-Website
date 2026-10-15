@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import ridingoLogo from "@/assets/ridingo-logo.png";
-import ridingoLogoWhite from "@/assets/ridingo-logo-white.png";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -19,8 +18,6 @@ export const Route = createFileRoute("/admin")({
 interface DriverProfile {
   id: string;
   name: string;
-  firstName?: string;
-  lastName?: string;
   phone: string;
   email: string;
   homeAddress: string;
@@ -144,10 +141,26 @@ function AdminPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedDriver, setSelectedDriver] = useState<DriverProfile | null>(null);
   const [isPhotoPreviewOpen, setIsPhotoPreviewOpen] = useState<string | null>(null);
+  const [isAddDriverOpen, setIsAddDriverOpen] = useState(false);
 
-  // Simulation calculator
-  const [simFare, setSimFare] = useState(700);
+  // New Driver state
+  const [newDriverName, setNewDriverName] = useState("");
+  const [newDriverPhone, setNewDriverPhone] = useState("");
+  const [newDriverEmail, setNewDriverEmail] = useState("");
+  const [newDriverAddress, setNewDriverAddress] = useState("");
+  const [newDriverCity, setNewDriverCity] = useState("Kochi");
+  const [newDriverPin, setNewDriverPin] = useState("682030");
+  const [newDriverDl, setNewDriverDl] = useState("");
+  const [newDriverAadhar, setNewDriverAadhar] = useState("");
+
+  // Rejection modal
+  const [rejectModalDriverId, setRejectModalDriverId] = useState<string | null>(null);
+  const [rejectReasonInput, setRejectReasonInput] = useState("");
+
+  // Interactive Simulator
+  const [simFare, setSimFare] = useState(850);
   const [simCommission, setSimCommission] = useState(15);
+  const [simTripVolume, setSimTripVolume] = useState(25);
 
   const [drivers, setDrivers] = useState<DriverProfile[]>(() => {
     if (typeof window !== "undefined") {
@@ -162,7 +175,6 @@ function AdminPage() {
     return DEFAULT_DRIVERS;
   });
 
-  // Telemetry calculation
   const totalCompletedTrips = 184;
   const totalGmv = 142850;
   const netCommission = Math.round(totalGmv * 0.15);
@@ -208,11 +220,15 @@ function AdminPage() {
     }
   };
 
-  const handleReject = (id: string) => {
-    const reason = window.prompt("Reason for KYC Rejection:", "Unclear Document / Address Mismatch");
-    if (!reason) return;
+  const handleOpenRejectModal = (id: string) => {
+    setRejectModalDriverId(id);
+    setRejectReasonInput("Document photo blurry / Address mismatch");
+  };
+
+  const handleConfirmReject = () => {
+    if (!rejectModalDriverId) return;
     const updated = drivers.map(d => {
-      if (d.id === id) {
+      if (d.id === rejectModalDriverId) {
         return { ...d, status: "rejected" as const };
       }
       return d;
@@ -221,16 +237,16 @@ function AdminPage() {
     try {
       localStorage.setItem("ridingo_registered_drivers_registry", JSON.stringify(updated));
     } catch (e) {}
-    if (selectedDriver?.id === id) {
+    if (selectedDriver?.id === rejectModalDriverId) {
       setSelectedDriver(prev => prev ? { ...prev, status: "rejected" } : null);
     }
+    setRejectModalDriverId(null);
   };
 
   const handleToggleSuspend = (id: string) => {
     const updated = drivers.map(d => {
       if (d.id === id) {
-        const nextStatus = d.status === "suspended" ? (d.category === "old_registered" ? "approved" : "pending") : "suspended";
-        return { ...d, status: nextStatus as any };
+        return { ...d, status: (d.status === "suspended" ? "approved" : "suspended") as any };
       }
       return d;
     });
@@ -244,33 +260,83 @@ function AdminPage() {
     }
   };
 
+  const handleCreateDriver = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDriverName || !newDriverPhone || !newDriverEmail) return;
+
+    const newDrv: DriverProfile = {
+      id: `DRV-${Math.floor(1000 + Math.random() * 9000)}`,
+      name: newDriverName.trim(),
+      phone: newDriverPhone.trim(),
+      email: newDriverEmail.trim(),
+      homeAddress: newDriverAddress.trim() || "Residential Address",
+      street: "Main Avenue",
+      city: newDriverCity.trim() || "Kochi",
+      pincode: newDriverPin.trim() || "682030",
+      state: "Kerala",
+      nationality: "India",
+      dlNumber: newDriverDl.trim().toUpperCase() || "KL-07-20220038291",
+      aadharNumber: newDriverAadhar.trim() || "XXXX XXXX 9988",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      category: "new_registration",
+      status: "pending",
+      registeredAt: new Date().toISOString()
+    };
+
+    const updated = [newDrv, ...drivers];
+    setDrivers(updated);
+    try {
+      localStorage.setItem("ridingo_registered_drivers_registry", JSON.stringify(updated));
+    } catch (e) {}
+    setIsAddDriverOpen(false);
+    setSelectedDriver(newDrv);
+    setNewDriverName("");
+    setNewDriverPhone("");
+    setNewDriverEmail("");
+  };
+
   return (
-    <div className="min-h-screen bg-[#0A0B0E] text-white flex flex-col md:flex-row font-sans">
-      {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-[#111318] border-r border-white/10 p-5 flex flex-col justify-between shrink-0">
+    <div className="min-h-screen bg-[#FBFBFA] text-[#121316] flex flex-col md:flex-row font-sans antialiased">
+      {/* Sidebar - Modern Minimal Light Theme */}
+      <aside className="w-full md:w-68 bg-white border-r border-[#EAEAEA] p-6 flex flex-col justify-between shrink-0">
         <div>
+          {/* Logo & CRM Badge */}
           <div className="flex items-center justify-between mb-8">
             <Link to="/" className="flex items-center gap-2">
-              <img src={ridingoLogoWhite || ridingoLogo} alt="Ridingo" className="h-8 object-contain" />
+              <img src={ridingoLogo} alt="Ridingo" className="h-8 object-contain" />
             </Link>
-            <span className="text-[10px] font-extrabold uppercase bg-[#FFC70A] text-black px-2 py-0.5 rounded">
-              CRM Admin
+            <span className="font-display text-[10px] font-extrabold uppercase bg-[#FFC70A] text-black px-2 py-0.5 rounded tracking-wider">
+              CRM
             </span>
           </div>
 
-          <div className="bg-[#181A22] border border-white/10 rounded-xl p-3 mb-6">
-            <span className="text-[11px] text-gray-400 font-bold uppercase tracking-wider block mb-2">
-              Website Domain
-            </span>
-            <span className="text-xs text-white font-mono block">ridingo.in/admin</span>
+          {/* Quick Domain & Live Status */}
+          <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-2xl p-3.5 mb-6">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">
+                Production CRM
+              </span>
+              <span className="text-[11px] text-[#10B981] font-bold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] inline-block animate-pulse" />
+                Live
+              </span>
+            </div>
+            <span className="text-xs text-[#121316] font-semibold block">ridingo.in/admin</span>
           </div>
 
-          <nav className="flex flex-col gap-1.5">
+          {/* Navigation Links */}
+          <div className="mb-2">
+            <span className="text-[11px] text-[#9CA3AF] font-bold uppercase tracking-wider px-2">
+              Management
+            </span>
+          </div>
+
+          <nav className="flex flex-col gap-1">
             {[
-              { id: "drivers", label: "Drivers Management", icon: "🚗", badge: newCount > 0 ? `${newCount} New` : null },
-              { id: "telemetry", label: "Trip Calculations & CRM", icon: "📊" },
-              { id: "trips", label: "All Trips Telemetry", icon: "🗺️", badge: "184" },
-              { id: "users", label: "User App Accounts", icon: "👥", badge: "24" }
+              { id: "drivers", label: "Drivers & KYC", icon: "🚗", badge: newCount > 0 ? `${newCount} New` : null },
+              { id: "telemetry", label: "Trip Revenue Engine", icon: "📈" },
+              { id: "trips", label: "Live Telemetry & Trips", icon: "🗺️", badge: "184" },
+              { id: "users", label: "Customer Accounts", icon: "👥", badge: "24" }
             ].map(item => {
               const active = activeTab === item.id;
               return (
@@ -281,8 +347,8 @@ function AdminPage() {
                     setActiveTab(item.id as any);
                     setSelectedDriver(null);
                   }}
-                  className={`flex items-center justify-between p-3 rounded-xl text-sm font-semibold transition ${
-                    active ? "bg-[#FFC70A] text-black" : "text-gray-400 hover:text-white hover:bg-white/5"
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition ${
+                    active ? "bg-[#F4F5F7] text-[#121316] border border-[#EAEAEA]" : "text-[#6B7280] hover:text-[#121316] hover:bg-black/5"
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
@@ -291,7 +357,7 @@ function AdminPage() {
                   </div>
                   {item.badge && (
                     <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                      active ? "bg-black text-[#FFC70A]" : "bg-white/10 text-white"
+                      active ? "bg-[#FFC70A] text-black" : "bg-[#EEEEF2] text-[#121316]"
                     }`}>
                       {item.badge}
                     </span>
@@ -302,86 +368,151 @@ function AdminPage() {
           </nav>
         </div>
 
-        <div className="pt-6 border-t border-white/10 text-xs text-gray-400">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Supabase Cloud Connected</span>
-          </div>
-          <Link to="/" className="text-gray-400 hover:text-[#FFC70A] transition">
-            &larr; Return to Website Home
+        {/* Footer */}
+        <div className="border-t border-[#EAEAEA] pt-4 mt-6">
+          <Link
+            to="/"
+            className="text-xs text-[#6B7280] hover:text-[#121316] flex items-center justify-between transition py-1"
+          >
+            <span>&larr; Back to Website</span>
+            <span className="text-[11px] font-semibold text-[#FFC70A]">ridingo.in</span>
           </Link>
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Viewport */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {/* Header */}
-        <header className="h-18 border-b border-white/10 bg-[#111318] px-6 flex items-center justify-between shrink-0">
+        {/* Top Header Bar */}
+        <header className="h-[70px] bg-white border-b border-[#EAEAEA] px-8 flex items-center justify-between shrink-0">
           <div>
-            <h1 className="text-lg font-bold text-white">
-              {activeTab === "drivers" && "Chauffeur Drivers Registry"}
-              {activeTab === "telemetry" && "All Trip Calculations & Financials"}
-              {activeTab === "trips" && "Live Dispatch & Completed Trips"}
-              {activeTab === "users" && "User App Customer Accounts"}
+            <h1 className="font-display text-lg font-extrabold text-[#121316] tracking-tight">
+              {activeTab === "drivers" && "Drivers & KYC Management"}
+              {activeTab === "telemetry" && "Trip Revenue & Tariff Calculator"}
+              {activeTab === "trips" && "Live Trips & Dispatch Telemetry"}
+              {activeTab === "users" && "Customer Profiles & Accounts"}
             </h1>
-            <p className="text-xs text-gray-400">Ridingo CRM Operations Portal</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-gray-300">
-              Live Hub: Kochi, Kerala
+            <span className="text-xs text-[#6B7280]">
+              Modern Minimal CRM • Ridingo Executive Operations (Kerala Network)
             </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {activeTab === "drivers" && (
+              <button
+                type="button"
+                onClick={() => setIsAddDriverOpen(true)}
+                className="bg-[#121316] text-white hover:bg-black px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5"
+              >
+                <span>+</span>
+                <span>Register Driver</span>
+              </button>
+            )}
+
+            <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-xl px-3.5 py-1.5 text-xs text-[#6B7280] font-semibold flex items-center gap-1.5">
+              <span>📅</span>
+              <span>{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+            </div>
           </div>
         </header>
 
-        {/* Body Content */}
-        <div className="p-6 space-y-6">
-          {/* Top Metrics Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[#14161E] border border-white/10 rounded-2xl p-4.5">
-              <span className="text-xs font-semibold text-gray-400 uppercase">Gross Trip GMV</span>
-              <div className="text-2xl font-extrabold text-white mt-1">₹{totalGmv.toLocaleString("en-IN")}</div>
-              <span className="text-xs text-emerald-400 font-medium">↑ 18.4% this month</span>
+        {/* Dashboard Body */}
+        <div className="p-8 flex-1">
+          {/* Executive Metrics Ribbon */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
+            {/* GMV */}
+            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+                  Gross Trip Volume (GMV)
+                </span>
+                <span className="text-[11px] text-[#10B981] font-bold bg-[#ECFDF5] px-2 py-0.5 rounded">
+                  ↑ 18.4%
+                </span>
+              </div>
+              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+                ₹{totalGmv.toLocaleString("en-IN")}
+              </div>
+              <span className="text-xs text-[#6B7280]">
+                Total verified booking value
+              </span>
             </div>
 
-            <div className="bg-[#14161E] border border-white/10 rounded-2xl p-4.5">
-              <span className="text-xs font-semibold text-gray-400 uppercase">Net Commission (15%)</span>
-              <div className="text-2xl font-extrabold text-[#FFC70A] mt-1">₹{netCommission.toLocaleString("en-IN")}</div>
-              <span className="text-xs text-gray-400 font-medium">Platform revenue</span>
+            {/* Platform Revenue (15%) */}
+            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+                  Platform Net (15%)
+                </span>
+                <span className="text-[11px] font-extrabold bg-[#FFF8DB] text-[#855D00] px-2 py-0.5 rounded">
+                  Fee
+                </span>
+              </div>
+              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+                ₹{netCommission.toLocaleString("en-IN")}
+              </div>
+              <span className="text-xs text-[#6B7280]">
+                Retained platform earnings
+              </span>
             </div>
 
-            <div className="bg-[#14161E] border border-white/10 rounded-2xl p-4.5">
-              <span className="text-xs font-semibold text-gray-400 uppercase">Driver Payouts (85%)</span>
-              <div className="text-2xl font-extrabold text-white mt-1">₹{driverPayouts.toLocaleString("en-IN")}</div>
-              <span className="text-xs text-emerald-400 font-medium">Direct chauffeur income</span>
+            {/* Chauffeur Share (85%) */}
+            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+                  Chauffeur Payouts (85%)
+                </span>
+                <span className="text-[11px] text-[#10B981] font-bold bg-[#ECFDF5] px-2 py-0.5 rounded">
+                  ✓ Direct
+                </span>
+              </div>
+              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+                ₹{driverPayouts.toLocaleString("en-IN")}
+              </div>
+              <span className="text-xs text-[#6B7280]">
+                Settled to verified partner chauffeurs
+              </span>
             </div>
 
-            <div className="bg-[#14161E] border border-white/10 rounded-2xl p-4.5">
-              <span className="text-xs font-semibold text-gray-400 uppercase">Completed Trips</span>
-              <div className="text-2xl font-extrabold text-sky-400 mt-1">{totalCompletedTrips}</div>
-              <span className="text-xs text-gray-400 font-medium">96.8% completion rate</span>
+            {/* Completed Trips */}
+            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+                  Completed Trips
+                </span>
+                <span className="text-[11px] text-[#3B82F6] font-bold bg-[#EFF6FF] px-2 py-0.5 rounded">
+                  100%
+                </span>
+              </div>
+              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+                {totalCompletedTrips} rides
+              </div>
+              <span className="text-xs text-[#6B7280]">
+                Zero cancellation rate
+              </span>
             </div>
-          </div>
+          </section>
 
-          {/* TAB 1: DRIVERS MANAGEMENT */}
+          {/* TAB 1: DRIVERS REGISTRY */}
           {activeTab === "drivers" && (
-            <div className="space-y-4">
-              {/* Category Sub-tabs and Search */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-                <div className="flex gap-2">
+            <div>
+              {/* Category Segmented Control & Filter Bar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                {/* Segmented Control */}
+                <div className="bg-[#F4F5F7] border border-[#EAEAEA] p-1 rounded-2xl flex">
                   <button
                     type="button"
                     onClick={() => {
                       setDriverCategory("new_registration");
                       setSelectedDriver(null);
                     }}
-                    className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition ${
-                      driverCategory === "new_registration"
-                        ? "bg-[#FFC70A] text-black shadow-lg shadow-[#FFC70A]/20"
-                        : "bg-[#14161E] text-white hover:bg-white/5"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+                      driverCategory === "new_registration" ? "bg-white text-[#121316] shadow-xs" : "text-[#6B7280]"
                     }`}
                   >
                     <span>🆕 New Registration</span>
-                    <span className="bg-black/20 text-xs px-2 py-0.5 rounded-full">{newCount}</span>
+                    <span className="text-[11px] px-2 py-0.2 rounded-full bg-[#FFFBEB] text-[#B45309]">
+                      {newCount}
+                    </span>
                   </button>
 
                   <button
@@ -390,31 +521,32 @@ function AdminPage() {
                       setDriverCategory("old_registered");
                       setSelectedDriver(null);
                     }}
-                    className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition ${
-                      driverCategory === "old_registered"
-                        ? "bg-white text-black"
-                        : "bg-[#14161E] text-white hover:bg-white/5"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+                      driverCategory === "old_registered" ? "bg-white text-[#121316] shadow-xs" : "text-[#6B7280]"
                     }`}
                   >
                     <span>✅ Old Registered Drivers</span>
-                    <span className="bg-black/10 text-xs px-2 py-0.5 rounded-full">{oldCount}</span>
+                    <span className="text-[11px] px-2 py-0.2 rounded-full bg-[#ECFDF5] text-[#047857]">
+                      {oldCount}
+                    </span>
                   </button>
                 </div>
 
-                <div className="flex items-center gap-3">
+                {/* Filter and Search */}
+                <div className="flex items-center gap-2.5">
                   <input
                     type="text"
-                    placeholder="Search by ID, Name, PIN, Phone..."
+                    placeholder="Search by Name, ID, PIN, Phone..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="bg-[#14161E] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FFC70A] w-full sm:w-64"
+                    className="bg-white border border-[#EAEAEA] rounded-xl px-3.5 py-2 text-xs text-[#121316] outline-none w-64 shadow-2xs"
                   />
                   <select
                     value={statusFilter}
                     onChange={e => setStatusFilter(e.target.value)}
-                    className="bg-[#14161E] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none"
+                    className="bg-white border border-[#EAEAEA] rounded-xl px-3 py-2 text-xs text-[#121316] outline-none shadow-2xs cursor-pointer"
                   >
-                    <option value="all">All</option>
+                    <option value="all">All Statuses</option>
                     <option value="pending">Pending KYC</option>
                     <option value="approved">Approved</option>
                     <option value="suspended">Suspended</option>
@@ -422,190 +554,224 @@ function AdminPage() {
                 </div>
               </div>
 
-              {/* Grid Layout: Drivers List & Detail Card */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className={selectedDriver ? "lg:col-span-7 space-y-3" : "lg:col-span-12 space-y-3"}>
-                  {filteredDrivers.map(drv => {
-                    const isSelected = selectedDriver?.id === drv.id;
-                    return (
-                      <div
-                        key={drv.id}
-                        onClick={() => setSelectedDriver(drv)}
-                        className={`p-4 rounded-2xl bg-[#14161E] border cursor-pointer transition flex items-center justify-between ${
-                          isSelected ? "border-[#FFC70A] ring-1 ring-[#FFC70A]" : "border-white/10 hover:border-white/20"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3.5 min-w-0">
-                          <div className="w-12 h-12 rounded-xl bg-white/5 overflow-hidden shrink-0 border border-white/10 flex items-center justify-center font-bold text-lg">
-                            {drv.avatar ? (
-                              <img src={drv.avatar} alt={drv.name} className="w-full h-full object-cover" />
-                            ) : (
-                              drv.name[0]
-                            )}
-                          </div>
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-white truncate">{drv.name}</span>
-                              <span className="text-[11px] font-extrabold px-1.5 py-0.5 rounded bg-white/5 text-[#FFC70A]">
-                                {drv.id}
-                              </span>
+              {/* Drivers Grid / Split View */}
+              <div className={`grid gap-6 ${selectedDriver ? "grid-cols-1 lg:grid-cols-[1fr_420px]" : "grid-cols-1"}`}>
+                <div className="flex flex-col gap-3">
+                  {filteredDrivers.length === 0 ? (
+                    <div className="bg-white border border-[#EAEAEA] rounded-2xl p-12 text-center">
+                      <span className="text-3xl block mb-2">🔍</span>
+                      <b className="text-sm text-[#121316]">No drivers found</b>
+                      <p className="text-xs text-[#6B7280] mt-1">
+                        Try adjusting your search criteria or switch categories.
+                      </p>
+                    </div>
+                  ) : (
+                    filteredDrivers.map(drv => {
+                      const isSelected = selectedDriver?.id === drv.id;
+                      return (
+                        <div
+                          key={drv.id}
+                          onClick={() => setSelectedDriver(drv)}
+                          className={`p-4 rounded-2xl border transition cursor-pointer flex items-center justify-between shadow-2xs ${
+                            isSelected
+                              ? "bg-[#FFFCF0] border-[#FFC70A] ring-1 ring-[#FFC70A]"
+                              : "bg-white border-[#EAEAEA] hover:border-[#DCE0E7]"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3.5 min-w-0">
+                            <div className="w-12 h-12 rounded-2xl bg-[#F4F5F7] border border-[#EAEAEA] overflow-hidden flex items-center justify-center font-bold text-sm shrink-0">
+                              {drv.avatar ? (
+                                <img src={drv.avatar} alt={drv.name} className="w-full h-full object-cover" />
+                              ) : (
+                                drv.name[0]
+                              )}
                             </div>
-                            <div className="text-xs text-gray-400 flex items-center gap-3 mt-0.5">
-                              <span>📱 {drv.phone}</span>
-                              <span>📍 {drv.city} (PIN: {drv.pincode})</span>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2 mb-0.5">
+                                <b className="text-sm text-[#121316] truncate">{drv.name}</b>
+                                <span className="text-[11px] font-extrabold bg-[#F4F5F7] px-2 py-0.5 rounded text-[#121316]">
+                                  {drv.id}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3 text-xs text-[#6B7280]">
+                                <span>📱 {drv.phone}</span>
+                                <span>📍 {drv.city} (PIN: <strong className="text-[#121316]">{drv.pincode}</strong>)</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="flex items-center gap-3">
-                          <span className={`text-[11px] font-bold uppercase px-2.5 py-1 rounded-lg ${
-                            drv.status === "approved" ? "bg-emerald-500/10 text-emerald-400" :
-                            drv.status === "pending" ? "bg-amber-500/10 text-amber-400" :
-                            "bg-red-500/10 text-red-400"
-                          }`}>
-                            {drv.status === "pending" ? "Pending KYC" : drv.status}
-                          </span>
-                          {drv.category === "new_registration" && drv.status === "pending" && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleApprove(drv.id);
-                              }}
-                              className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg"
-                            >
-                              ✓ Approve
-                            </button>
-                          )}
+                          <div className="flex items-center gap-3">
+                            <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${
+                              drv.status === "approved"
+                                ? "bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]"
+                                : drv.status === "pending"
+                                ? "bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]"
+                                : "bg-[#FEF2F2] text-[#B91C1C] border-[#FECACA]"
+                            }`}>
+                              {drv.status === "pending" ? "⏳ Pending KYC" : drv.status}
+                            </span>
+
+                            {drv.status === "pending" && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleApprove(drv.id);
+                                }}
+                                className="bg-[#10B981] hover:bg-[#059669] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs"
+                              >
+                                ✓ Approve
+                              </button>
+                            )}
+
+                            <span className="text-xs text-[#9CA3AF]">&rarr;</span>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  )}
                 </div>
 
-                {/* Selected Driver Profile Card */}
+                {/* Driver Detail Drawer / Card */}
                 {selectedDriver && (
-                  <div className="lg:col-span-5 bg-[#14161E] border border-white/10 rounded-2xl p-5 space-y-4 h-fit">
+                  <div className="bg-white border border-[#EAEAEA] rounded-3xl p-6 flex flex-col gap-4 shadow-sm sticky top-6 h-fit">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-extrabold uppercase bg-[#FFC70A] text-black px-2.5 py-1 rounded">
-                        Profile ID: {selectedDriver.id}
+                      <span className="text-[11px] font-extrabold bg-[#FFC70A] text-black px-2.5 py-0.5 rounded tracking-wider">
+                        Profile: {selectedDriver.id}
                       </span>
                       <button
                         type="button"
                         onClick={() => setSelectedDriver(null)}
-                        className="text-gray-400 hover:text-white text-sm"
+                        className="text-[#6B7280] hover:text-black text-sm"
                       >
-                        ✕ Close
+                        ✕
                       </button>
                     </div>
 
                     <div className="flex flex-col items-center text-center">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-[#FFC70A] mb-2.5">
+                      <div className="w-20 h-20 rounded-3xl border-2 border-[#FFC70A] overflow-hidden mb-2.5 shadow-xs">
                         {selectedDriver.avatar ? (
                           <img src={selectedDriver.avatar} alt={selectedDriver.name} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-2xl bg-white/5">👤</div>
+                          <div className="w-full h-full bg-[#F4F5F7] flex items-center justify-center text-2xl">👤</div>
                         )}
                       </div>
-                      <h2 className="text-base font-bold text-white">{selectedDriver.name}</h2>
-                      <span className="text-xs text-gray-400">
-                        {selectedDriver.category === "new_registration" ? "🆕 New Applicant" : "⭐ Verified Chauffeur"}
+                      <b className="font-display text-base text-[#121316]">{selectedDriver.name}</b>
+                      <span className="text-xs text-[#6B7280] mt-0.5 mb-2.5">
+                        {selectedDriver.category === "new_registration" ? "🆕 New Registration (Pending KYC Verification)" : "⭐ Verified Ridingo Chauffeur Partner"}
                       </span>
 
-                      <div className="flex gap-2 mt-2">
-                        <a href={`tel:${selectedDriver.phone}`} className="text-xs bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 text-white font-medium">
-                          📞 Call
+                      <div className="flex gap-2">
+                        <a
+                          href={`tel:${selectedDriver.phone}`}
+                          className="bg-[#F4F5F7] border border-[#EAEAEA] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[#121316] hover:bg-[#EEEEF2] transition"
+                        >
+                          📞 Call Chauffeur
                         </a>
-                        <a href={`mailto:${selectedDriver.email}`} className="text-xs bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 text-white font-medium">
-                          ✉️ Email
+                        <a
+                          href={`mailto:${selectedDriver.email}`}
+                          className="bg-[#F4F5F7] border border-[#EAEAEA] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[#121316] hover:bg-[#EEEEF2] transition"
+                        >
+                          ✉️ Send Email
                         </a>
                       </div>
                     </div>
 
-                    <div className="bg-[#0E1015] rounded-xl p-3.5 space-y-2.5 text-xs">
+                    {/* Dossier Information */}
+                    <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-2xl p-4 flex flex-col gap-2.5 text-xs">
                       <div>
-                        <span className="text-gray-400 block font-semibold">Address & Locality</span>
-                        <span className="text-white">{selectedDriver.homeAddress}, {selectedDriver.street}</span>
+                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">Mobile Number</span>
+                        <b className="text-[#121316] text-xs">{selectedDriver.phone}</b>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">Email Address</span>
+                        <b className="text-[#121316] text-xs">{selectedDriver.email}</b>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">Residential Address</span>
+                        <span className="text-[#121316] leading-relaxed block font-medium">
+                          {selectedDriver.homeAddress}, {selectedDriver.street}
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <span className="text-gray-400 block font-semibold">City</span>
-                          <span className="text-white font-bold">{selectedDriver.city}</span>
+                          <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">City</span>
+                          <b className="text-[#121316] text-xs">{selectedDriver.city}</b>
                         </div>
                         <div>
-                          <span className="text-gray-400 block font-semibold">PIN Code</span>
-                          <span className="text-[#FFC70A] font-bold">{selectedDriver.pincode}</span>
+                          <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">PIN Code</span>
+                          <b className="text-[#121316] text-xs bg-[#FFF8DB] px-1.5 py-0.5 rounded">{selectedDriver.pincode}</b>
                         </div>
                       </div>
                       <div>
-                        <span className="text-gray-400 block font-semibold">State & Country</span>
-                        <span className="text-white">{selectedDriver.state}, {selectedDriver.nationality}</span>
+                        <span className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-wider block">State & Country</span>
+                        <span className="text-[#121316]">{selectedDriver.state}, {selectedDriver.nationality}</span>
                       </div>
                     </div>
 
-                    {/* Documents */}
-                    <div className="space-y-2">
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">
-                        KYC Documents Attached
+                    {/* KYC Document Photos */}
+                    <div className="flex flex-col gap-2">
+                      <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">
+                        KYC Documents (Tap to Zoom)
                       </span>
                       <div className="grid grid-cols-2 gap-2">
                         <div
                           onClick={() => selectedDriver.dlPhoto && setIsPhotoPreviewOpen(selectedDriver.dlPhoto)}
-                          className="bg-[#0E1015] border border-white/10 rounded-xl p-2 cursor-pointer hover:border-white/20"
+                          className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-xl p-2.5 cursor-pointer hover:border-[#DCE0E7] transition"
                         >
-                          <span className="text-[11px] text-gray-400 block">Licence No.</span>
-                          <span className="text-xs font-bold text-white block mb-1.5">{selectedDriver.dlNumber}</span>
+                          <span className="text-[10px] text-[#6B7280] block">Licence No.</span>
+                          <b className="text-[11px] text-[#121316] block truncate mb-1">{selectedDriver.dlNumber}</b>
                           {selectedDriver.dlPhoto ? (
-                            <img src={selectedDriver.dlPhoto} alt="DL" className="w-full h-12 object-cover rounded-lg" />
+                            <img src={selectedDriver.dlPhoto} alt="DL" className="w-full h-14 rounded-lg object-cover" />
                           ) : (
-                            <div className="h-12 bg-white/5 rounded-lg flex items-center justify-center text-xs text-gray-400">📄 Doc</div>
+                            <div className="h-14 bg-white rounded-lg flex items-center justify-center text-xs">📄 Document</div>
                           )}
                         </div>
 
                         <div
                           onClick={() => selectedDriver.aadharPhoto && setIsPhotoPreviewOpen(selectedDriver.aadharPhoto)}
-                          className="bg-[#0E1015] border border-white/10 rounded-xl p-2 cursor-pointer hover:border-white/20"
+                          className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-xl p-2.5 cursor-pointer hover:border-[#DCE0E7] transition"
                         >
-                          <span className="text-[11px] text-gray-400 block">Aadhaar No.</span>
-                          <span className="text-xs font-bold text-white block mb-1.5">{selectedDriver.aadharNumber}</span>
+                          <span className="text-[10px] text-[#6B7280] block">Aadhaar No.</span>
+                          <b className="text-[11px] text-[#121316] block truncate mb-1">{selectedDriver.aadharNumber}</b>
                           {selectedDriver.aadharPhoto ? (
-                            <img src={selectedDriver.aadharPhoto} alt="Aadhaar" className="w-full h-12 object-cover rounded-lg" />
+                            <img src={selectedDriver.aadharPhoto} alt="Aadhaar" className="w-full h-14 rounded-lg object-cover" />
                           ) : (
-                            <div className="h-12 bg-white/5 rounded-lg flex items-center justify-center text-xs text-gray-400">🪪 Card</div>
+                            <div className="h-14 bg-white rounded-lg flex items-center justify-center text-xs">🪪 Document</div>
                           )}
                         </div>
                       </div>
                     </div>
 
-                    {/* Action Controls */}
-                    <div className="space-y-2 pt-2">
+                    {/* Actions */}
+                    <div className="flex flex-col gap-2 mt-1">
                       {selectedDriver.status !== "approved" && (
                         <button
                           type="button"
                           onClick={() => handleApprove(selectedDriver.id)}
-                          className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs uppercase tracking-wide"
+                          className="w-full bg-[#10B981] hover:bg-[#059669] text-white py-2.5 rounded-xl text-xs font-bold transition shadow-xs flex items-center justify-center gap-1.5"
                         >
-                          ✓ Approve KYC Documents & Move to Active
+                          <span>✓</span>
+                          <span>Approve KYC & Activate Partner</span>
                         </button>
                       )}
 
-                      {selectedDriver.status === "pending" && (
+                      <div className="grid grid-cols-2 gap-2">
                         <button
                           type="button"
-                          onClick={() => handleReject(selectedDriver.id)}
-                          className="w-full py-2 rounded-xl border border-red-500 text-red-400 hover:bg-red-500/10 font-bold text-xs"
+                          onClick={() => handleOpenRejectModal(selectedDriver.id)}
+                          className="bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C] hover:bg-[#FEE2E2] py-2 rounded-xl text-xs font-bold transition"
                         >
-                          ✕ Reject Application
+                          ✕ Reject KYC
                         </button>
-                      )}
-
-                      <button
-                        type="button"
-                        onClick={() => handleToggleSuspend(selectedDriver.id)}
-                        className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium text-xs"
-                      >
-                        {selectedDriver.status === "suspended" ? "▶ Activate Account" : "⏸ Suspend Account"}
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => handleToggleSuspend(selectedDriver.id)}
+                          className="bg-[#F4F5F7] border border-[#EAEAEA] text-[#121316] hover:bg-[#EEEEF2] py-2 rounded-xl text-xs font-semibold transition"
+                        >
+                          {selectedDriver.status === "suspended" ? "▶ Re-activate" : "⏸ Suspend"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -613,63 +779,116 @@ function AdminPage() {
             </div>
           )}
 
-          {/* TAB 2: TRIP CALCULATIONS CRM */}
+          {/* TAB 2: TRIP REVENUE & CALCULATOR */}
           {activeTab === "telemetry" && (
-            <div className="space-y-6">
-              <div className="bg-[#14161E] border border-white/10 rounded-2xl p-6">
-                <h2 className="text-base font-bold text-white">Tariff & Revenue Commission Simulation Engine</h2>
-                <p className="text-xs text-gray-400 mt-1">Adjust parameters to forecast platform margins and driver earnings.</p>
+            <div className="bg-white border border-[#EAEAEA] rounded-3xl p-7 shadow-xs">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="font-display text-base font-extrabold text-[#121316]">
+                    Interactive Tariff & Commission Engine
+                  </h2>
+                  <span className="text-xs text-[#6B7280]">
+                    Real-time modeling for GMV, Platform 15% Take-rate, and Driver Payouts
+                  </span>
+                </div>
+                <span className="text-xs font-bold bg-[#FFF8DB] text-[#855D00] px-3 py-1 rounded-lg">
+                  15% Standard Fee
+                </span>
+              </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 items-center">
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-400">Ride Tariff Amount:</span>
-                        <span className="text-white font-bold">₹{simFare}</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="250"
-                        max="3000"
-                        step="50"
-                        value={simFare}
-                        onChange={e => setSimFare(Number(e.target.value))}
-                        className="w-full accent-[#FFC70A]"
-                      />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="flex flex-col gap-5">
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold text-[#121316] mb-2">
+                      <span>Average Trip Fare</span>
+                      <b>₹{simFare}</b>
                     </div>
-
-                    <div>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-400">Platform Commission %:</span>
-                        <span className="text-[#FFC70A] font-bold">{simCommission}%</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="5"
-                        max="30"
-                        step="1"
-                        value={simCommission}
-                        onChange={e => setSimCommission(Number(e.target.value))}
-                        className="w-full accent-[#FFC70A]"
-                      />
+                    <input
+                      type="range"
+                      min="200"
+                      max="5000"
+                      step="50"
+                      value={simFare}
+                      onChange={e => setSimFare(Number(e.target.value))}
+                      className="w-full accent-[#FFC70A]"
+                    />
+                    <div className="flex justify-between text-[11px] text-[#9CA3AF] mt-1">
+                      <span>₹200 (Short Ride)</span>
+                      <span>₹5,000 (Airport / Outstation)</span>
                     </div>
                   </div>
 
-                  <div className="bg-[#0E1015] rounded-xl p-4 grid grid-cols-2 gap-4">
-                    <div>
-                      <span className="text-[11px] text-gray-400 uppercase font-semibold">Ridingo Take</span>
-                      <div className="text-2xl font-extrabold text-[#FFC70A] mt-1">
-                        ₹{Math.round((simFare * simCommission) / 100)}
-                      </div>
-                      <span className="text-[11px] text-gray-500">Gross fee per ride</span>
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold text-[#121316] mb-2">
+                      <span>Platform Commission Rate</span>
+                      <b>{simCommission}%</b>
                     </div>
+                    <input
+                      type="range"
+                      min="5"
+                      max="30"
+                      step="1"
+                      value={simCommission}
+                      onChange={e => setSimCommission(Number(e.target.value))}
+                      className="w-full accent-[#FFC70A]"
+                    />
+                    <div className="flex justify-between text-[11px] text-[#9CA3AF] mt-1">
+                      <span>5% (Promotional Tier)</span>
+                      <span>30% (Surge / Premium)</span>
+                    </div>
+                  </div>
 
-                    <div>
-                      <span className="text-[11px] text-gray-400 uppercase font-semibold">Chauffeur Share</span>
-                      <div className="text-2xl font-extrabold text-emerald-400 mt-1">
-                        ₹{simFare - Math.round((simFare * simCommission) / 100)}
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold text-[#121316] mb-2">
+                      <span>Daily Completed Trips</span>
+                      <b>{simTripVolume} trips/day</b>
+                    </div>
+                    <input
+                      type="range"
+                      min="5"
+                      max="100"
+                      step="5"
+                      value={simTripVolume}
+                      onChange={e => setSimTripVolume(Number(e.target.value))}
+                      className="w-full accent-[#FFC70A]"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">
+                      Per-Ride Revenue Breakdown
+                    </span>
+                    <div className="flex flex-col gap-2.5 mt-3.5">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#6B7280]">Gross Booking Fare:</span>
+                        <b className="text-[#121316]">₹{simFare}</b>
                       </div>
-                      <span className="text-[11px] text-gray-500">Direct partner payout</span>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#855D00] font-semibold">Ridingo Commission ({simCommission}%):</span>
+                        <b className="text-[#855D00]">+ ₹{Math.round(simFare * (simCommission / 100))}</b>
+                      </div>
+                      <div className="flex justify-between text-xs">
+                        <span className="text-[#047857] font-semibold">Chauffeur Share ({100 - simCommission}%):</span>
+                        <b className="text-[#047857]">₹{Math.round(simFare * ((100 - simCommission) / 100))}</b>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-[#EAEAEA] pt-4 mt-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider block">
+                          Monthly Platform Net
+                        </span>
+                        <div className="font-display text-xl font-extrabold text-[#121316] tracking-tight mt-0.5">
+                          ₹{Math.round(simFare * (simCommission / 100) * simTripVolume * 30).toLocaleString("en-IN")}
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-[#047857] bg-[#ECFDF5] px-2.5 py-1 rounded-md">
+                        ✓ Projected
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -677,68 +896,101 @@ function AdminPage() {
             </div>
           )}
 
-          {/* TAB 3: TRIPS */}
+          {/* TAB 3: LIVE TRIPS & DISPATCH */}
           {activeTab === "trips" && (
-            <div className="bg-[#14161E] border border-white/10 rounded-2xl p-6">
-              <h2 className="text-base font-bold text-white mb-4">Completed & Dispatched Trips</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border-collapse">
-                  <thead>
-                    <tr className="border-b border-white/10 text-gray-400">
-                      <th className="py-2.5 px-3">Trip ID</th>
-                      <th className="py-2.5 px-3">Pickup & Drop</th>
-                      <th className="py-2.5 px-3">Fare</th>
-                      <th className="py-2.5 px-3">Commission (15%)</th>
-                      <th className="py-2.5 px-3">Driver Share</th>
-                      <th className="py-2.5 px-3">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {[
-                      { id: "TRP-8419", pickup: "Edappally Toll", drop: "Cochin Airport T3", fare: 850 },
-                      { id: "TRP-8420", pickup: "Kaloor Stadium", drop: "Lulu Mall Edappally", fare: 450 },
-                      { id: "TRP-8421", pickup: "Marine Drive", drop: "Infopark Kakkanad", fare: 650 }
-                    ].map(t => (
-                      <tr key={t.id}>
-                        <td className="py-3 px-3 font-bold text-white">{t.id}</td>
-                        <td className="py-3 px-3 text-gray-300">{t.pickup} &rarr; {t.drop}</td>
-                        <td className="py-3 px-3 font-bold text-white">₹{t.fare}</td>
-                        <td className="py-3 px-3 text-[#FFC70A] font-bold">₹{Math.round(t.fare * 0.15)}</td>
-                        <td className="py-3 px-3 text-emerald-400 font-bold">₹{t.fare - Math.round(t.fare * 0.15)}</td>
-                        <td className="py-3 px-3"><span className="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-bold">Completed</span></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="bg-white border border-[#EAEAEA] rounded-3xl p-6 shadow-xs">
+              <div className="flex items-center justify-between mb-5">
+                <div>
+                  <h2 className="font-display text-base font-extrabold text-[#121316]">
+                    Live Trips & Dispatch Logs
+                  </h2>
+                  <span className="text-xs text-[#6B7280]">
+                    Verified ride telemetry across Kochi and Thiruvananthapuram routes
+                  </span>
+                </div>
+                <span className="text-xs font-bold text-[#10B981] bg-[#ECFDF5] px-2.5 py-1 rounded-md">
+                  ● Real-time
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-2.5">
+                {[
+                  { id: "TRP-9481", from: "Kakkanad Infopark Phase 2", to: "Cochin International Airport (COK)", fare: 850, time: "12 mins ago" },
+                  { id: "TRP-9480", from: "Marine Drive Walkway", to: "Lulu Mall, Edappally", fare: 320, time: "28 mins ago" },
+                  { id: "TRP-9479", from: "Panampilly Nagar Main Ave", to: "Fort Kochi Beach", fare: 450, time: "42 mins ago" },
+                  { id: "TRP-9478", from: "Vytilla Mobility Hub", to: "Aluva Metro Station", fare: 520, time: "1 hour ago" },
+                  { id: "TRP-9477", from: "Thampanoor Central", to: "Technopark Phase 3", fare: 680, time: "2 hours ago" }
+                ].map(trip => (
+                  <div key={trip.id} className="p-3.5 rounded-xl bg-[#F4F5F7] border border-[#EAEAEA] flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-base">🚕</div>
+                      <div>
+                        <b className="text-xs text-[#121316]">Trip #{trip.id}</b>
+                        <div className="text-[11px] text-[#6B7280]">
+                          <span>{trip.from}</span> &rarr; <span>{trip.to}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <b className="text-xs text-[#121316]">₹{trip.fare}</b>
+                      <span className="text-[11px] font-bold text-[#047857] bg-[#ECFDF5] px-2 py-0.5 rounded">
+                        Completed
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
-          {/* TAB 4: USERS */}
+          {/* TAB 4: CUSTOMER ACCOUNTS */}
           {activeTab === "users" && (
-            <div className="bg-[#14161E] border border-white/10 rounded-2xl p-6">
-              <h2 className="text-base font-bold text-white mb-4">Customer Accounts (24)</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="bg-white border border-[#EAEAEA] rounded-3xl p-6 shadow-xs">
+              <div className="flex items-center justify-between mb-5">
+                <div>
+                  <h2 className="font-display text-base font-extrabold text-[#121316]">
+                    Customer Profiles & Lifetime Value
+                  </h2>
+                  <span className="text-xs text-[#6B7280]">
+                    Verified rider accounts synced with Google Authentication & Supabase
+                  </span>
+                </div>
+                <span className="text-xs font-bold text-[#3B82F6] bg-[#EFF6FF] px-2.5 py-1 rounded-md">
+                  4 Active Accounts
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-2.5">
                 {[
-                  { id: "RDU-10821", name: "Anurag K M", phone: "+91 98401 23456", email: "anurag@ridingo.in", rides: 14, spent: 8450 },
-                  { id: "RDU-29401", name: "Pooja Nair", phone: "+91 97451 89201", email: "pooja.nair@gmail.com", rides: 8, spent: 4890 },
-                  { id: "RDU-38910", name: "Vishnu Das", phone: "+91 94470 19284", email: "vishnu.das@tech.in", rides: 22, spent: 17200 }
+                  { id: "RDU-10821", name: "Anurag K M", email: "anurag@ridingo.in", phone: "+91 98401 23456", city: "Kochi", rides: 14, spent: 11900 },
+                  { id: "RDU-29401", name: "Pooja Nair", email: "pooja.nair@gmail.com", phone: "+91 97451 89201", city: "Thiruvananthapuram", rides: 8, spent: 6800 },
+                  { id: "RDU-38910", name: "Vishnu Das", email: "vishnu.das@tech.in", phone: "+91 94470 19284", city: "Kozhikode", rides: 22, spent: 18700 },
+                  { id: "RDU-48192", name: "Neha Varghese", email: "neha.varghese@gmail.com", phone: "+91 98470 11928", city: "Thrissur", rides: 6, spent: 5100 }
                 ].map(usr => (
-                  <div key={usr.id} className="p-4 rounded-xl bg-[#0E1015] border border-white/10 space-y-2 text-xs">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-[#FFC70A] text-black flex items-center justify-center font-bold">
+                  <div key={usr.id} className="p-3.5 rounded-xl bg-[#F4F5F7] border border-[#EAEAEA] flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-bold text-xs text-[#121316]">
                         {usr.name[0]}
                       </div>
                       <div>
-                        <div className="font-bold text-white">{usr.name}</div>
-                        <div className="text-[11px] text-gray-500">{usr.id}</div>
+                        <div className="flex items-center gap-2">
+                          <b className="text-xs text-[#121316]">{usr.name}</b>
+                          <span className="text-[10px] bg-white px-1.5 py-0.2 rounded text-[#6B7280]">{usr.id}</span>
+                        </div>
+                        <div className="text-[11px] text-[#6B7280]">
+                          <span>📱 {usr.phone}</span> • <span>✉️ {usr.email}</span> • <span>📍 {usr.city}</span>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-gray-400 space-y-1 pt-1">
-                      <div>📱 {usr.phone}</div>
-                      <div>✉️ {usr.email}</div>
-                      <div>🚗 Rides: <strong className="text-white">{usr.rides}</strong></div>
-                      <div>💳 Spent: <strong className="text-[#FFC70A]">₹{usr.spent}</strong></div>
+                    <div className="flex items-center gap-5">
+                      <div className="text-right">
+                        <span className="text-[10px] text-[#9CA3AF] uppercase block">Rides</span>
+                        <b className="text-xs text-[#121316]">{usr.rides} rides</b>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[10px] text-[#9CA3AF] uppercase block">Total Spend</span>
+                        <b className="text-xs text-[#047857]">₹{usr.spent.toLocaleString("en-IN")}</b>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -748,15 +1000,211 @@ function AdminPage() {
         </div>
       </main>
 
-      {/* Image Preview Modal */}
+      {/* DOCUMENT ZOOM MODAL */}
       {isPhotoPreviewOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-6"
           onClick={() => setIsPhotoPreviewOpen(null)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         >
-          <div className="relative max-w-2xl max-h-[85vh]">
-            <img src={isPhotoPreviewOpen} alt="Preview" className="rounded-2xl max-h-[80vh] object-contain shadow-2xl" />
+          <div
+            onClick={e => e.stopPropagation()}
+            className="bg-white rounded-3xl p-5 max-w-xl w-full shadow-2xl flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <b className="text-xs text-[#121316]">Document Inspection Preview</b>
+              <button
+                type="button"
+                onClick={() => setIsPhotoPreviewOpen(null)}
+                className="text-[#6B7280] hover:text-black text-sm"
+              >
+                ✕
+              </button>
+            </div>
+            <img
+              src={isPhotoPreviewOpen}
+              alt="Document"
+              className="w-full max-h-[70vh] object-contain rounded-2xl"
+            />
           </div>
+        </div>
+      )}
+
+      {/* REJECT KYC MODAL */}
+      {rejectModalDriverId && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-3.5">
+            <div className="flex items-center justify-between">
+              <b className="text-sm text-[#B91C1C]">Reject Driver KYC</b>
+              <button
+                type="button"
+                onClick={() => setRejectModalDriverId(null)}
+                className="text-[#6B7280] text-sm"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-xs text-[#6B7280]">
+              Specify reason for KYC rejection for partner <strong>{rejectModalDriverId}</strong>.
+            </p>
+            <textarea
+              rows={3}
+              value={rejectReasonInput}
+              onChange={e => setRejectReasonInput(e.target.value)}
+              className="w-full p-2.5 rounded-xl border border-[#EAEAEA] text-xs outline-none"
+              placeholder="Rejection reason..."
+            />
+            <div className="flex justify-end gap-2 mt-1">
+              <button
+                type="button"
+                onClick={() => setRejectModalDriverId(null)}
+                className="px-3.5 py-1.5 rounded-xl border border-[#EAEAEA] text-xs text-[#121316]"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmReject}
+                className="px-3.5 py-1.5 rounded-xl bg-[#B91C1C] text-white text-xs font-bold"
+              >
+                Confirm Rejection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ADD DRIVER MODAL */}
+      {isAddDriverOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <form
+            onSubmit={handleCreateDriver}
+            className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl flex flex-col gap-3.5 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <b className="font-display text-base text-[#121316]">Register New Chauffeur Profile</b>
+                <span className="text-xs text-[#6B7280] block">Enters executive chauffeur into the active partner pool</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddDriverOpen(false)}
+                className="text-[#6B7280] text-sm"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-2.5 text-xs">
+              <div>
+                <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Full Legal Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Arun Madhavan"
+                  value={newDriverName}
+                  onChange={e => setNewDriverName(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Phone *</label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+91 94471 28392"
+                    value={newDriverPhone}
+                    onChange={e => setNewDriverPhone(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="driver@gmail.com"
+                    value={newDriverEmail}
+                    onChange={e => setNewDriverEmail(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Residential Address</label>
+                <input
+                  type="text"
+                  placeholder="TC 14/820, Silver Cascade"
+                  value={newDriverAddress}
+                  onChange={e => setNewDriverAddress(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">City</label>
+                  <input
+                    type="text"
+                    value={newDriverCity}
+                    onChange={e => setNewDriverCity(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">PIN Code (6-digit)</label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={newDriverPin}
+                    onChange={e => setNewDriverPin(e.target.value.replace(/\D/g, ""))}
+                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none font-bold"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Driving Licence No.</label>
+                  <input
+                    type="text"
+                    placeholder="KL-07-20210049281"
+                    value={newDriverDl}
+                    onChange={e => setNewDriverDl(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Aadhaar Number</label>
+                  <input
+                    type="text"
+                    placeholder="4829 1928 4719"
+                    value={newDriverAadhar}
+                    onChange={e => setNewDriverAadhar(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-2">
+              <button
+                type="button"
+                onClick={() => setIsAddDriverOpen(false)}
+                className="px-4 py-2 rounded-xl border border-[#EAEAEA] text-xs text-[#121316]"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-xl bg-[#FFC70A] hover:bg-[#F5BE00] text-black font-extrabold text-xs transition shadow-xs"
+              >
+                Register & Verify Chauffeur
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
