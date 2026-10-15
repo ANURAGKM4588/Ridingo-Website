@@ -386,14 +386,14 @@ function AdminPage() {
   return (
     <div className="min-h-screen bg-[#FBFBFA] text-[#121316] flex flex-col md:flex-row font-sans antialiased">
       {/* Sidebar - Modern Minimal Light Theme */}
-      <aside className="w-full md:w-70 bg-white border-r border-black/5 p-7 flex flex-col justify-between shrink-0">
+      <aside className="w-full md:w-80 bg-white border-r border-black/5 p-8 flex flex-col justify-between shrink-0">
         <div>
           {/* Logo & CRM Badge */}
           <div className="flex items-center justify-between mb-8 px-1">
             <Link to="/" className="flex items-center gap-2">
-              <img src={ridingoLogo} alt="Ridingo" className="h-8 object-contain" />
+              <img src={ridingoLogo} alt="Ridingo" className="h-9 object-contain" />
             </Link>
-            <span className="font-display text-[10.5px] font-extrabold uppercase bg-[#FFC70A] text-black px-2.5 py-1 rounded-md tracking-wider">
+            <span className="font-display text-xs font-extrabold uppercase bg-[#FFC70A] text-black px-2.5 py-1 rounded-md tracking-wider">
               CRM
             </span>
           </div>
@@ -401,7 +401,7 @@ function AdminPage() {
           {/* Quick Domain & Live Status (Inset Pill Style) */}
           <div className="bg-[#F5F6F8] border border-black/5 rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10.5px] text-[#4B5563] font-bold uppercase tracking-wider">
+              <span className="text-xs text-[#4B5563] font-bold uppercase tracking-wider">
                 Production CRM
               </span>
               <span className="text-[11px] text-[#10B981] font-bold flex items-center gap-1.5">
@@ -414,12 +414,12 @@ function AdminPage() {
 
           {/* Navigation Links */}
           <div className="mb-2 px-2">
-            <span className="text-[10.5px] text-[#6B7280] font-bold uppercase tracking-wider">
+            <span className="text-xs text-[#6B7280] font-bold uppercase tracking-wider">
               Operations
             </span>
           </div>
 
-          <nav className="flex flex-col gap-1.5">
+          <nav className="flex flex-col gap-2">
             {[
               { id: "drivers", label: "Drivers & KYC", badge: newCount > 0 ? `${newCount} New` : null },
               { id: "telemetry", label: "Trip Revenue Engine" },
@@ -435,13 +435,13 @@ function AdminPage() {
                     setActiveTab(item.id as any);
                     setSelectedDriver(null);
                   }}
-                  className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition ${
-                    active ? "bg-[#F5F6F8] text-[#121316] border border-[#E5E7EB] font-bold" : "text-[#4B5563] hover:text-[#121316] hover:bg-[#F5F6F8]/60"
+                  className={`flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15.5px] font-semibold transition ${
+                    active ? "bg-[#F5F6F8] text-[#121316] border border-[#E5E7EB] font-bold shadow-xs" : "text-[#4B5563] hover:text-[#121316] hover:bg-[#F5F6F8]/60"
                   }`}
                 >
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
+                    <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
                       active ? "bg-[#FFC70A] text-black" : "bg-[#EEEEF2] text-[#121316]"
                     }`}>
                       {item.badge}
