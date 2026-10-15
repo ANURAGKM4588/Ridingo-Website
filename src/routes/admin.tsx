@@ -15,6 +15,80 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
+// Sleek vector SVG icon system (100% emoji-free, minimal, crisp)
+const Icons = {
+  Grid: () => (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>
+    </svg>
+  ),
+  SteeringWheel: () => (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/><path d="M12 2v8"/><path d="m4.93 18.07 5.66-5.66"/><path d="m19.07 18.07-5.66-5.66"/>
+    </svg>
+  ),
+  Chart: () => (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
+    </svg>
+  ),
+  Route: () => (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a4.5 4.5 0 0 0 0-9H7a3 3 0 0 1 0-6h11"/><circle cx="18" cy="4" r="3"/>
+    </svg>
+  ),
+  Users: () => (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  Search: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+    </svg>
+  ),
+  Phone: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+  ),
+  Mail: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    </svg>
+  ),
+  MapPin: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+    </svg>
+  ),
+  IdCard: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>
+    </svg>
+  ),
+  Check: () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  ),
+  Close: () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/>
+    </svg>
+  ),
+  Calendar: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>
+    </svg>
+  ),
+  Car: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h10"/>
+    </svg>
+  )
+};
+
 interface DriverProfile {
   id: string;
   name: string;
@@ -106,16 +180,16 @@ const DEFAULT_DRIVERS: DriverProfile[] = [
     status: "approved",
     registeredAt: "2025-04-10T11:00:00Z",
     rating: 4.9,
-    tripsCompleted: 184,
-    totalEarnings: 68420
+    tripsCompleted: 242,
+    totalEarnings: 84600
   },
   {
     id: "DRV-2042",
     name: "Sujith V Nair",
     phone: "+91 97450 19283",
     email: "sujith.nair@gmail.com",
-    homeAddress: "Souparnika, SN Junction",
-    street: "Civil Line Road, Palarivattom",
+    homeAddress: "Souparnika, Civil Line Road",
+    street: "Palarivattom Junction",
     city: "Kochi",
     pincode: "682025",
     state: "Kerala",
@@ -129,21 +203,55 @@ const DEFAULT_DRIVERS: DriverProfile[] = [
     status: "approved",
     registeredAt: "2024-11-20T14:20:00Z",
     rating: 4.85,
-    tripsCompleted: 342,
-    totalEarnings: 124500
+    tripsCompleted: 184,
+    totalEarnings: 68400
+  },
+  {
+    id: "DRV-3108",
+    name: "Manoj P V",
+    phone: "+91 98470 55123",
+    email: "manoj.pv@kerala.in",
+    homeAddress: "Green Meadows, Flat 3C",
+    street: "Near Pipeline Junction",
+    city: "Kochi",
+    pincode: "682024",
+    state: "Kerala",
+    nationality: "India",
+    dlNumber: "KL-07-20150039201",
+    dlPhoto: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+    aadharNumber: "9012 4819 2810",
+    aadharPhoto: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
+    category: "old_registered",
+    status: "approved",
+    registeredAt: "2025-01-15T09:00:00Z",
+    rating: 4.95,
+    tripsCompleted: 310,
+    totalEarnings: 112000
   }
 ];
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState<"drivers" | "telemetry" | "trips" | "users">("drivers");
-  const [driverCategory, setDriverCategory] = useState<"new_registration" | "old_registered">("new_registration");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [driverCategory, setDriverCategory] = useState<"all" | "new_registration" | "old_registered">("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [drivers, setDrivers] = useState<DriverProfile[]>(() => {
+    try {
+      const saved = localStorage.getItem("ridingo_registered_drivers_registry");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return DEFAULT_DRIVERS;
+  });
+
   const [selectedDriver, setSelectedDriver] = useState<DriverProfile | null>(null);
   const [isPhotoPreviewOpen, setIsPhotoPreviewOpen] = useState<string | null>(null);
   const [isAddDriverOpen, setIsAddDriverOpen] = useState(false);
+  const [rejectModalDriverId, setRejectModalDriverId] = useState<string | null>(null);
+  const [rejectReasonInput, setRejectReasonInput] = useState("");
 
-  // New Driver state
+  // New Driver Form state
   const [newDriverName, setNewDriverName] = useState("");
   const [newDriverPhone, setNewDriverPhone] = useState("");
   const [newDriverEmail, setNewDriverEmail] = useState("");
@@ -153,50 +261,30 @@ function AdminPage() {
   const [newDriverDl, setNewDriverDl] = useState("");
   const [newDriverAadhar, setNewDriverAadhar] = useState("");
 
-  // Rejection modal
-  const [rejectModalDriverId, setRejectModalDriverId] = useState<string | null>(null);
-  const [rejectReasonInput, setRejectReasonInput] = useState("");
+  // Revenue simulator state
+  const [simFare, setSimFare] = useState<number>(850);
+  const [simCommission, setSimCommission] = useState<number>(15);
+  const [simTripVolume, setSimTripVolume] = useState<number>(20);
 
-  // Interactive Simulator
-  const [simFare, setSimFare] = useState(850);
-  const [simCommission, setSimCommission] = useState(15);
-  const [simTripVolume, setSimTripVolume] = useState(25);
+  const newCount = useMemo(() => drivers.filter(d => d.status === "pending" || d.category === "new_registration").length, [drivers]);
+  const oldCount = useMemo(() => drivers.filter(d => d.status === "approved" || d.category === "old_registered").length, [drivers]);
 
-  const [drivers, setDrivers] = useState<DriverProfile[]>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const raw = localStorage.getItem("ridingo_registered_drivers_registry");
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        }
-      } catch (e) {}
-    }
-    return DEFAULT_DRIVERS;
-  });
-
-  const totalCompletedTrips = 184;
-  const totalGmv = 142850;
-  const netCommission = Math.round(totalGmv * 0.15);
-  const driverPayouts = totalGmv - netCommission;
-
-  const newCount = useMemo(() => drivers.filter(d => d.category === "new_registration" || d.status === "pending").length, [drivers]);
-  const oldCount = useMemo(() => drivers.filter(d => d.category === "old_registered" || d.status === "approved").length, [drivers]);
+  const totalGmv = useMemo(() => drivers.reduce((acc, d) => acc + (d.totalEarnings ? d.totalEarnings / 0.85 : 0), 142850), [drivers]);
+  const netCommission = useMemo(() => Math.round(totalGmv * 0.15), [totalGmv]);
+  const driverPayouts = useMemo(() => Math.round(totalGmv * 0.85), [totalGmv]);
+  const totalCompletedTrips = useMemo(() => drivers.reduce((acc, d) => acc + (d.tripsCompleted || 0), 184), [drivers]);
 
   const filteredDrivers = useMemo(() => {
     return drivers.filter(d => {
-      const isNew = d.category === "new_registration" || d.status === "pending";
-      if (driverCategory === "new_registration" && !isNew) return false;
-      if (driverCategory === "old_registered" && isNew) return false;
-
+      if (driverCategory === "new_registration" && d.category !== "new_registration" && d.status !== "pending") return false;
+      if (driverCategory === "old_registered" && d.category !== "old_registered" && d.status !== "approved") return false;
       if (statusFilter !== "all" && d.status !== statusFilter) return false;
-
       if (!searchQuery.trim()) return true;
-      const q = searchQuery.toLowerCase().trim();
+      const q = searchQuery.toLowerCase();
       return (
         d.name.toLowerCase().includes(q) ||
         d.id.toLowerCase().includes(q) ||
-        d.phone.toLowerCase().includes(q) ||
+        d.phone.includes(q) ||
         d.email.toLowerCase().includes(q) ||
         d.city.toLowerCase().includes(q) ||
         d.pincode.includes(q)
@@ -298,26 +386,26 @@ function AdminPage() {
   return (
     <div className="min-h-screen bg-[#FBFBFA] text-[#121316] flex flex-col md:flex-row font-sans antialiased">
       {/* Sidebar - Modern Minimal Light Theme */}
-      <aside className="w-full md:w-68 bg-white border-r border-[#EAEAEA] p-6 flex flex-col justify-between shrink-0">
+      <aside className="w-full md:w-70 bg-white border-r border-black/5 p-7 flex flex-col justify-between shrink-0">
         <div>
           {/* Logo & CRM Badge */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-8 px-1">
             <Link to="/" className="flex items-center gap-2">
               <img src={ridingoLogo} alt="Ridingo" className="h-8 object-contain" />
             </Link>
-            <span className="font-display text-[10px] font-extrabold uppercase bg-[#FFC70A] text-black px-2 py-0.5 rounded tracking-wider">
+            <span className="font-display text-[10.5px] font-extrabold uppercase bg-[#FFC70A] text-black px-2.5 py-1 rounded-md tracking-wider">
               CRM
             </span>
           </div>
 
-          {/* Quick Domain & Live Status */}
-          <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-2xl p-3.5 mb-6">
+          {/* Quick Domain & Live Status (Inset Pill Style) */}
+          <div className="bg-[#F5F6F8] border border-black/5 rounded-2xl p-4 mb-6">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">
+              <span className="text-[10.5px] text-[#4B5563] font-bold uppercase tracking-wider">
                 Production CRM
               </span>
               <span className="text-[11px] text-[#10B981] font-bold flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] inline-block animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block animate-pulse" />
                 Live
               </span>
             </div>
@@ -325,18 +413,18 @@ function AdminPage() {
           </div>
 
           {/* Navigation Links */}
-          <div className="mb-2">
-            <span className="text-[11px] text-[#9CA3AF] font-bold uppercase tracking-wider px-2">
-              Management
+          <div className="mb-2 px-2">
+            <span className="text-[10.5px] text-[#6B7280] font-bold uppercase tracking-wider">
+              Operations
             </span>
           </div>
 
-          <nav className="flex flex-col gap-1">
+          <nav className="flex flex-col gap-1.5">
             {[
-              { id: "drivers", label: "Drivers & KYC", icon: "🚗", badge: newCount > 0 ? `${newCount} New` : null },
-              { id: "telemetry", label: "Trip Revenue Engine", icon: "📈" },
-              { id: "trips", label: "Live Telemetry & Trips", icon: "🗺️", badge: "184" },
-              { id: "users", label: "Customer Accounts", icon: "👥", badge: "24" }
+              { id: "drivers", label: "Drivers & KYC", icon: <Icons.SteeringWheel />, badge: newCount > 0 ? `${newCount} New` : null },
+              { id: "telemetry", label: "Trip Revenue Engine", icon: <Icons.Chart /> },
+              { id: "trips", label: "Live Trips & Dispatch", icon: <Icons.Route />, badge: "184" },
+              { id: "users", label: "Customer Accounts", icon: <Icons.Users />, badge: "24" }
             ].map(item => {
               const active = activeTab === item.id;
               return (
@@ -347,16 +435,16 @@ function AdminPage() {
                     setActiveTab(item.id as any);
                     setSelectedDriver(null);
                   }}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition ${
-                    active ? "bg-[#F4F5F7] text-[#121316] border border-[#EAEAEA]" : "text-[#6B7280] hover:text-[#121316] hover:bg-black/5"
+                  className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition ${
+                    active ? "bg-[#F5F6F8] text-[#121316] border border-[#E5E7EB] font-bold" : "text-[#4B5563] hover:text-[#121316] hover:bg-[#F5F6F8]/60"
                   }`}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span>{item.icon}</span>
+                  <div className="flex items-center gap-3">
+                    <span className={active ? "text-[#121316]" : "text-[#6B7280]"}>{item.icon}</span>
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
+                    <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
                       active ? "bg-[#FFC70A] text-black" : "bg-[#EEEEF2] text-[#121316]"
                     }`}>
                       {item.badge}
@@ -369,10 +457,10 @@ function AdminPage() {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-[#EAEAEA] pt-4 mt-6">
+        <div className="border-t border-black/5 pt-5 mt-6">
           <Link
             to="/"
-            className="text-xs text-[#6B7280] hover:text-[#121316] flex items-center justify-between transition py-1"
+            className="text-xs text-[#4B5563] hover:text-[#121316] flex items-center justify-between transition py-1"
           >
             <span>&larr; Back to Website</span>
             <span className="text-[11px] font-semibold text-[#FFC70A]">ridingo.in</span>
@@ -383,15 +471,15 @@ function AdminPage() {
       {/* Main Viewport */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Top Header Bar */}
-        <header className="h-[70px] bg-white border-b border-[#EAEAEA] px-8 flex items-center justify-between shrink-0">
+        <header className="h-[76px] bg-white border-b border-black/5 px-9 flex items-center justify-between shrink-0">
           <div>
-            <h1 className="font-display text-lg font-extrabold text-[#121316] tracking-tight">
+            <h1 className="font-display text-xl font-extrabold text-[#121316] tracking-tight">
               {activeTab === "drivers" && "Drivers & KYC Management"}
               {activeTab === "telemetry" && "Trip Revenue & Tariff Calculator"}
               {activeTab === "trips" && "Live Trips & Dispatch Telemetry"}
-              {activeTab === "users" && "Customer Profiles & Accounts"}
+              {activeTab === "users" && "Customer Profiles & Lifetime Value"}
             </h1>
-            <span className="text-xs text-[#6B7280]">
+            <span className="text-xs text-[#4B5563] mt-0.5 block">
               Modern Minimal CRM • Ridingo Executive Operations (Kerala Network)
             </span>
           </div>
@@ -401,93 +489,93 @@ function AdminPage() {
               <button
                 type="button"
                 onClick={() => setIsAddDriverOpen(true)}
-                className="bg-[#121316] text-white hover:bg-black px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5"
+                className="bg-[#121316] text-white hover:bg-black px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-2"
               >
-                <span>+</span>
+                <span className="text-sm leading-none">+</span>
                 <span>Register Driver</span>
               </button>
             )}
 
-            <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-xl px-3.5 py-1.5 text-xs text-[#6B7280] font-semibold flex items-center gap-1.5">
-              <span>📅</span>
+            <div className="bg-[#F5F6F8] border border-black/5 rounded-xl px-4 py-2 text-xs text-[#4B5563] font-semibold flex items-center gap-2">
+              <Icons.Calendar />
               <span>{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
             </div>
           </div>
         </header>
 
         {/* Dashboard Body */}
-        <div className="p-8 flex-1">
-          {/* Executive Metrics Ribbon */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
+        <div className="p-9 flex-1 flex flex-col gap-7">
+          {/* Executive Metrics Ribbon (Spacious, High-Contrast) */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* GMV */}
-            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+            <div className="bg-white border border-black/5 rounded-3xl p-6 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.07)]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] text-[#4B5563] font-bold uppercase tracking-wider">
                   Gross Trip Volume (GMV)
                 </span>
-                <span className="text-[11px] text-[#10B981] font-bold bg-[#ECFDF5] px-2 py-0.5 rounded">
-                  ↑ 18.4%
+                <span className="text-[11px] text-[#10B981] font-extrabold bg-[#ECFDF5] px-2.5 py-0.5 rounded-md">
+                  +18.4%
                 </span>
               </div>
-              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+              <div className="font-display text-[26px] font-extrabold text-[#121316] tracking-tight my-1">
                 ₹{totalGmv.toLocaleString("en-IN")}
               </div>
-              <span className="text-xs text-[#6B7280]">
+              <span className="text-xs text-[#4B5563]">
                 Total verified booking value
               </span>
             </div>
 
             {/* Platform Revenue (15%) */}
-            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+            <div className="bg-white border border-black/5 rounded-3xl p-6 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.07)]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] text-[#4B5563] font-bold uppercase tracking-wider">
                   Platform Net (15%)
                 </span>
-                <span className="text-[11px] font-extrabold bg-[#FFF8DB] text-[#855D00] px-2 py-0.5 rounded">
-                  Fee
+                <span className="text-[11px] font-extrabold bg-[#FFF8DB] text-[#855D00] px-2.5 py-0.5 rounded-md">
+                  15% Take-Rate
                 </span>
               </div>
-              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+              <div className="font-display text-[26px] font-extrabold text-[#121316] tracking-tight my-1">
                 ₹{netCommission.toLocaleString("en-IN")}
               </div>
-              <span className="text-xs text-[#6B7280]">
-                Retained platform earnings
+              <span className="text-xs text-[#4B5563]">
+                Retained platform revenue
               </span>
             </div>
 
             {/* Chauffeur Share (85%) */}
-            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+            <div className="bg-white border border-black/5 rounded-3xl p-6 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.07)]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] text-[#4B5563] font-bold uppercase tracking-wider">
                   Chauffeur Payouts (85%)
                 </span>
-                <span className="text-[11px] text-[#10B981] font-bold bg-[#ECFDF5] px-2 py-0.5 rounded">
-                  ✓ Direct
+                <span className="text-[11px] text-[#10B981] font-extrabold bg-[#ECFDF5] px-2.5 py-0.5 rounded-md">
+                  Settled
                 </span>
               </div>
-              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+              <div className="font-display text-[26px] font-extrabold text-[#121316] tracking-tight my-1">
                 ₹{driverPayouts.toLocaleString("en-IN")}
               </div>
-              <span className="text-xs text-[#6B7280]">
+              <span className="text-xs text-[#4B5563]">
                 Settled to verified partner chauffeurs
               </span>
             </div>
 
             {/* Completed Trips */}
-            <div className="bg-white border border-[#EAEAEA] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">
+            <div className="bg-white border border-black/5 rounded-3xl p-6 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.07)]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] text-[#4B5563] font-bold uppercase tracking-wider">
                   Completed Trips
                 </span>
-                <span className="text-[11px] text-[#3B82F6] font-bold bg-[#EFF6FF] px-2 py-0.5 rounded">
-                  100%
+                <span className="text-[11px] text-[#3B82F6] font-extrabold bg-[#EFF6FF] px-2.5 py-0.5 rounded-md">
+                  100% Fulfilled
                 </span>
               </div>
-              <div className="font-display text-2xl font-extrabold text-[#121316] tracking-tight my-1">
+              <div className="font-display text-[26px] font-extrabold text-[#121316] tracking-tight my-1">
                 {totalCompletedTrips} rides
               </div>
-              <span className="text-xs text-[#6B7280]">
-                Zero cancellation rate
+              <span className="text-xs text-[#4B5563]">
+                Zero cancellation rate across network
               </span>
             </div>
           </section>
@@ -496,21 +584,37 @@ function AdminPage() {
           {activeTab === "drivers" && (
             <div>
               {/* Category Segmented Control & Filter Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                 {/* Segmented Control */}
-                <div className="bg-[#F4F5F7] border border-[#EAEAEA] p-1 rounded-2xl flex">
+                <div className="bg-[#F5F6F8] border border-black/5 p-1 rounded-2xl flex">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDriverCategory("all");
+                      setSelectedDriver(null);
+                    }}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition ${
+                      driverCategory === "all" ? "bg-white text-[#121316] shadow-sm" : "text-[#4B5563]"
+                    }`}
+                  >
+                    <span>All Chauffeurs</span>
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#EEEEF2] text-[#121316]">
+                      {drivers.length}
+                    </span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => {
                       setDriverCategory("new_registration");
                       setSelectedDriver(null);
                     }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
-                      driverCategory === "new_registration" ? "bg-white text-[#121316] shadow-xs" : "text-[#6B7280]"
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition ${
+                      driverCategory === "new_registration" ? "bg-white text-[#121316] shadow-sm" : "text-[#4B5563]"
                     }`}
                   >
-                    <span>🆕 New Registration</span>
-                    <span className="text-[11px] px-2 py-0.2 rounded-full bg-[#FFFBEB] text-[#B45309]">
+                    <span>New Registrations</span>
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#FFFBEB] text-[#B45309]">
                       {newCount}
                     </span>
                   </button>
@@ -521,33 +625,35 @@ function AdminPage() {
                       setDriverCategory("old_registered");
                       setSelectedDriver(null);
                     }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
-                      driverCategory === "old_registered" ? "bg-white text-[#121316] shadow-xs" : "text-[#6B7280]"
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition ${
+                      driverCategory === "old_registered" ? "bg-white text-[#121316] shadow-sm" : "text-[#4B5563]"
                     }`}
                   >
-                    <span>✅ Old Registered Drivers</span>
-                    <span className="text-[11px] px-2 py-0.2 rounded-full bg-[#ECFDF5] text-[#047857]">
+                    <span>Verified Chauffeurs</span>
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#ECFDF5] text-[#047857]">
                       {oldCount}
                     </span>
                   </button>
                 </div>
 
                 {/* Filter and Search */}
-                <div className="flex items-center gap-2.5">
-                  <input
-                    type="text"
-                    placeholder="Search by Name, ID, PIN, Phone..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="bg-white border border-[#EAEAEA] rounded-xl px-3.5 py-2 text-xs text-[#121316] outline-none w-64 shadow-2xs"
-                  />
+                <div className="flex items-center gap-3">
+                  <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      placeholder="Search by Name, ID, PIN, Phone..."
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      className="bg-white border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-[#121316] outline-none w-72 shadow-2xs font-medium"
+                    />
+                  </div>
                   <select
                     value={statusFilter}
                     onChange={e => setStatusFilter(e.target.value)}
-                    className="bg-white border border-[#EAEAEA] rounded-xl px-3 py-2 text-xs text-[#121316] outline-none shadow-2xs cursor-pointer"
+                    className="bg-white border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs text-[#121316] outline-none shadow-2xs cursor-pointer font-medium"
                   >
                     <option value="all">All Statuses</option>
-                    <option value="pending">Pending KYC</option>
+                    <option value="pending">Pending Review</option>
                     <option value="approved">Approved</option>
                     <option value="suspended">Suspended</option>
                   </select>
@@ -556,12 +662,11 @@ function AdminPage() {
 
               {/* Drivers Grid / Split View */}
               <div className={`grid gap-6 ${selectedDriver ? "grid-cols-1 lg:grid-cols-[1fr_420px]" : "grid-cols-1"}`}>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3.5">
                   {filteredDrivers.length === 0 ? (
-                    <div className="bg-white border border-[#EAEAEA] rounded-2xl p-12 text-center">
-                      <span className="text-3xl block mb-2">🔍</span>
-                      <b className="text-sm text-[#121316]">No drivers found</b>
-                      <p className="text-xs text-[#6B7280] mt-1">
+                    <div className="bg-white border border-black/5 rounded-3xl p-14 text-center">
+                      <b className="text-base text-[#121316] block mb-1">No chauffeur records found</b>
+                      <p className="text-xs text-[#4B5563]">
                         Try adjusting your search criteria or switch categories.
                       </p>
                     </div>
@@ -572,14 +677,14 @@ function AdminPage() {
                         <div
                           key={drv.id}
                           onClick={() => setSelectedDriver(drv)}
-                          className={`p-4 rounded-2xl border transition cursor-pointer flex items-center justify-between shadow-2xs ${
+                          className={`p-4.5 rounded-2xl border transition cursor-pointer flex items-center justify-between shadow-2xs ${
                             isSelected
                               ? "bg-[#FFFCF0] border-[#FFC70A] ring-1 ring-[#FFC70A]"
-                              : "bg-white border-[#EAEAEA] hover:border-[#DCE0E7]"
+                              : "bg-white border-black/5 hover:border-[#DCE0E7]"
                           }`}
                         >
-                          <div className="flex items-center gap-3.5 min-w-0">
-                            <div className="w-12 h-12 rounded-2xl bg-[#F4F5F7] border border-[#EAEAEA] overflow-hidden flex items-center justify-center font-bold text-sm shrink-0">
+                          <div className="flex items-center gap-4 min-w-0">
+                            <div className="w-13 h-13 rounded-2xl bg-[#F5F6F8] border border-black/5 overflow-hidden flex items-center justify-center font-bold text-sm shrink-0">
                               {drv.avatar ? (
                                 <img src={drv.avatar} alt={drv.name} className="w-full h-full object-cover" />
                               ) : (
@@ -587,28 +692,28 @@ function AdminPage() {
                               )}
                             </div>
                             <div className="min-w-0">
-                              <div className="flex items-center gap-2 mb-0.5">
+                              <div className="flex items-center gap-2 mb-1">
                                 <b className="text-sm text-[#121316] truncate">{drv.name}</b>
-                                <span className="text-[11px] font-extrabold bg-[#F4F5F7] px-2 py-0.5 rounded text-[#121316]">
+                                <span className="text-[11px] font-extrabold bg-[#F5F6F8] px-2 py-0.5 rounded text-[#121316]">
                                   {drv.id}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-3 text-xs text-[#6B7280]">
-                                <span>📱 {drv.phone}</span>
-                                <span>📍 {drv.city} (PIN: <strong className="text-[#121316]">{drv.pincode}</strong>)</span>
+                              <div className="flex items-center gap-4 text-xs text-[#4B5563]">
+                                <span>{drv.phone}</span>
+                                <span>{drv.city} (PIN: <strong className="text-[#121316]">{drv.pincode}</strong>)</span>
                               </div>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-3">
-                            <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${
+                            <span className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border ${
                               drv.status === "approved"
                                 ? "bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]"
                                 : drv.status === "pending"
                                 ? "bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]"
                                 : "bg-[#FEF2F2] text-[#B91C1C] border-[#FECACA]"
                             }`}>
-                              {drv.status === "pending" ? "⏳ Pending KYC" : drv.status}
+                              {drv.status === "pending" ? "Pending Review" : drv.status}
                             </span>
 
                             {drv.status === "pending" && (
@@ -618,9 +723,10 @@ function AdminPage() {
                                   e.stopPropagation();
                                   handleApprove(drv.id);
                                 }}
-                                className="bg-[#10B981] hover:bg-[#059669] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-xs"
+                                className="bg-[#10B981] hover:bg-[#059669] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5"
                               >
-                                ✓ Approve
+                                <Icons.Check />
+                                <span>Approve</span>
                               </button>
                             )}
 
@@ -648,37 +754,38 @@ function AdminPage() {
                         {selectedDriver.id}
                       </span>
 
-                      {/* Top Right: Floating Follow / Status Pill (Matching Image) */}
+                      {/* Top Right: Status Badge & Close */}
                       <div className="flex items-center gap-1.5">
                         {selectedDriver.status === "pending" ? (
                           <button
                             type="button"
                             onClick={() => handleApprove(selectedDriver.id)}
-                            className="text-xs font-bold bg-white text-[#121316] hover:bg-neutral-50 px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1 transition"
+                            className="text-xs font-bold bg-white text-[#121316] px-3.5 py-1.5 rounded-full shadow-sm hover:scale-105 transition flex items-center gap-1"
                           >
                             <span>Approve</span>
-                            <span className="text-[13px] font-extrabold">+</span>
+                            <span className="font-extrabold text-sm">+</span>
                           </button>
                         ) : (
-                          <span className="text-xs font-bold bg-white text-[#047857] px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1">
-                            <span>✓ Partner</span>
+                          <span className="text-xs font-bold bg-white text-[#047857] px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
+                            <Icons.Check />
+                            <span>Partner</span>
                           </span>
                         )}
 
                         <button
                           type="button"
                           onClick={() => setSelectedDriver(null)}
-                          className="w-7 h-7 rounded-full bg-white/85 backdrop-blur-md text-[#121316] hover:bg-white flex items-center justify-center text-xs shadow-xs"
+                          className="w-7 h-7 rounded-full bg-white/85 backdrop-blur-md flex items-center justify-center text-xs text-[#121316] shadow-xs"
                         >
-                          ✕
+                          <Icons.Close />
                         </button>
                       </div>
                     </div>
 
-                    {/* Card Body: Overlapping Circular Avatar + Spectrum Exp Bar */}
+                    {/* Card Body */}
                     <div className="px-6 pb-6 flex flex-col items-center text-center">
-                      {/* Avatar with Rainbow Iridescent Ring (Exact Right Variant in Reference) */}
-                      <div className="-mt-11 relative mb-2.5">
+                      {/* Overlapping Circular Avatar with Rainbow Iridescent Ring */}
+                      <div className="-mt-11 mb-2.5 relative">
                         <div
                           className="w-[88px] h-[88px] rounded-full p-[3.5px] shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12)]"
                           style={{
@@ -689,14 +796,16 @@ function AdminPage() {
                             {selectedDriver.avatar ? (
                               <img src={selectedDriver.avatar} alt={selectedDriver.name} className="w-full h-full object-cover" />
                             ) : (
-                              <div className="w-full h-full bg-[#F4F5F7] flex items-center justify-center text-2xl">👤</div>
+                              <div className="w-full h-full bg-[#F5F6F8] flex items-center justify-center font-extrabold text-xl text-[#121316]">
+                                {selectedDriver.name[0]}
+                              </div>
                             )}
                           </div>
                         </div>
                       </div>
 
-                      {/* Exp. Multi-colored Spectrum Segmented Bar (Matching Left Variant) */}
-                      <div className="flex items-center gap-1.5 mb-2">
+                      {/* exp. Multi-color Segmented Progress Bar */}
+                      <div className="flex items-center gap-1.5 mb-1.5">
                         <span className="text-[11px] text-[#9CA3AF] font-semibold">exp.</span>
                         <div className="flex gap-[2.5px] items-center">
                           {["#8B5CF6", "#6366F1", "#3B82F6", "#06B6D4", "#10B981", "#F59E0B", "#EF4444", "#E5E7EB", "#E5E7EB"].map((color, idx) => (
@@ -715,26 +824,26 @@ function AdminPage() {
                       <b className="font-display text-xl font-extrabold text-[#121316] tracking-tight mb-1">
                         {selectedDriver.name}
                       </b>
-                      <p className="text-xs text-[#6B7280] mb-4 leading-relaxed max-w-[280px]">
+                      <p className="text-xs text-[#4B5563] mb-4 leading-relaxed max-w-[280px]">
                         {selectedDriver.category === "new_registration"
                           ? "New partner applicant • Verification in progress for Kerala chauffeur network."
                           : "Ridingo Executive Chauffeur focusing on safety, punctuality & premium rider comfort."}
                       </p>
 
                       {/* 3-Column Stats Container (Exact Inset Pill from Reference) */}
-                      <div className="w-full bg-[#F5F6F8] rounded-[20px] p-3.5 grid grid-cols-3 text-center mb-4">
+                      <div className="w-full bg-[#F5F6F8] rounded-[20px] p-3.5 grid grid-cols-3 text-center mb-4 border border-black/5">
                         <div>
                           <div className="font-display text-base font-extrabold text-[#121316] tracking-tight">
                             {selectedDriver.tripsCompleted || (selectedDriver.status === "approved" ? 184 : 0)}
                           </div>
-                          <div className="text-[11px] text-[#8E94A4] font-semibold mt-0.5">Trips</div>
+                          <div className="text-[11px] text-[#4B5563] font-semibold mt-0.5">Trips</div>
                         </div>
 
                         <div className="border-x border-[#E5E7EB]">
                           <div className="font-display text-base font-extrabold text-[#121316] tracking-tight">
-                            {selectedDriver.rating ? `${selectedDriver.rating}★` : "5.0★"}
+                            {selectedDriver.rating ? `${selectedDriver.rating}` : "5.0"}
                           </div>
-                          <div className="text-[11px] text-[#8E94A4] font-semibold mt-0.5">Rating</div>
+                          <div className="text-[11px] text-[#4B5563] font-semibold mt-0.5">Rating</div>
                         </div>
 
                         <div>
@@ -743,51 +852,51 @@ function AdminPage() {
                               ? `₹${(selectedDriver.totalEarnings / 1000).toFixed(0)}K`
                               : (selectedDriver.status === "approved" ? "₹68K" : "₹0")}
                           </div>
-                          <div className="text-[11px] text-[#8E94A4] font-semibold mt-0.5">Earnings</div>
+                          <div className="text-[11px] text-[#4B5563] font-semibold mt-0.5">Earnings</div>
                         </div>
                       </div>
 
-                      {/* Bottom Social / Quick Actions Row (Exact Icon Row from Reference) */}
-                      <div className="flex items-center justify-center gap-6 mb-4 py-1">
+                      {/* Bottom Quick Contact Row (Clean Outline SVG Icons) */}
+                      <div className="flex items-center justify-center gap-4 mb-4 py-1">
                         <a
                           href={`tel:${selectedDriver.phone}`}
                           title={`Call ${selectedDriver.phone}`}
-                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
+                          className="w-9 h-9 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center text-[#121316] shadow-xs hover:scale-105 transition"
                         >
-                          📞
+                          <Icons.Phone />
                         </a>
 
                         <a
                           href={`mailto:${selectedDriver.email}`}
                           title={`Email ${selectedDriver.email}`}
-                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
+                          className="w-9 h-9 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center text-[#121316] shadow-xs hover:scale-105 transition"
                         >
-                          ✉️
+                          <Icons.Mail />
                         </a>
 
                         <button
                           type="button"
                           onClick={() => alert(`Address: ${selectedDriver.homeAddress}, ${selectedDriver.street}, ${selectedDriver.city} - PIN: ${selectedDriver.pincode}`)}
-                          title={`PIN: ${selectedDriver.pincode}`}
-                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
+                          title={`Location: ${selectedDriver.city} (PIN: ${selectedDriver.pincode})`}
+                          className="w-9 h-9 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center text-[#121316] shadow-xs hover:scale-105 transition"
                         >
-                          📍
+                          <Icons.MapPin />
                         </button>
 
                         <button
                           type="button"
                           onClick={() => selectedDriver.dlPhoto && setIsPhotoPreviewOpen(selectedDriver.dlPhoto)}
-                          title="View Documents"
-                          className="w-9 h-9 rounded-full bg-white border border-[#EAEAEA] flex items-center justify-center text-sm shadow-xs hover:scale-105 transition"
+                          title="View Compliance Dossier"
+                          className="w-9 h-9 rounded-full bg-white border border-[#E5E7EB] flex items-center justify-center text-[#121316] shadow-xs hover:scale-105 transition"
                         >
-                          🪪
+                          <Icons.IdCard />
                         </button>
                       </div>
 
                       {/* Expandable KYC Dossier & Document Inspection */}
-                      <div className="w-full bg-[#F9FAFB] rounded-2xl border border-[#EAEAEA] p-3.5 text-left flex flex-col gap-2.5 text-xs">
+                      <div className="w-full bg-[#F9FAFB] rounded-2xl border border-black/5 p-4 text-left flex flex-col gap-2.5 text-xs">
                         <div className="flex justify-between items-center">
-                          <span className="text-[10px] text-[#9CA3AF] uppercase font-bold tracking-wider">
+                          <span className="text-[10px] text-[#4B5563] uppercase font-bold tracking-wider">
                             Full Address & PIN
                           </span>
                           <span className="text-[11px] font-extrabold bg-[#FFF8DB] text-[#855D00] px-2 py-0.5 rounded">
@@ -799,44 +908,44 @@ function AdminPage() {
                         </div>
 
                         {/* Document Photo Cards */}
-                        <div className="grid grid-cols-2 gap-2 mt-1">
+                        <div className="grid grid-cols-2 gap-2.5 mt-1">
                           <div
                             onClick={() => selectedDriver.dlPhoto && setIsPhotoPreviewOpen(selectedDriver.dlPhoto)}
-                            className="p-2 rounded-xl bg-white border border-[#E5E7EB] cursor-pointer hover:border-[#DCE0E7] transition"
+                            className="p-2.5 rounded-xl bg-white border border-[#E5E7EB] cursor-pointer hover:border-[#DCE0E7] transition"
                           >
-                            <span className="text-[10px] text-[#9CA3AF] block font-semibold">Licence</span>
+                            <span className="text-[10px] text-[#4B5563] block font-semibold">Licence</span>
                             <b className="text-[11px] text-[#121316] block truncate my-0.5">{selectedDriver.dlNumber}</b>
                             {selectedDriver.dlPhoto ? (
                               <img src={selectedDriver.dlPhoto} alt="DL" className="w-full h-12 rounded-md object-cover" />
                             ) : (
-                              <div className="h-12 bg-[#F4F5F7] rounded-md flex items-center justify-center text-xs">📄 Doc</div>
+                              <div className="h-12 bg-[#F5F6F8] rounded-md flex items-center justify-center text-xs text-[#4B5563]">Card</div>
                             )}
                           </div>
 
                           <div
                             onClick={() => selectedDriver.aadharPhoto && setIsPhotoPreviewOpen(selectedDriver.aadharPhoto)}
-                            className="p-2 rounded-xl bg-white border border-[#E5E7EB] cursor-pointer hover:border-[#DCE0E7] transition"
+                            className="p-2.5 rounded-xl bg-white border border-[#E5E7EB] cursor-pointer hover:border-[#DCE0E7] transition"
                           >
-                            <span className="text-[10px] text-[#9CA3AF] block font-semibold">Aadhaar</span>
+                            <span className="text-[10px] text-[#4B5563] block font-semibold">Aadhaar</span>
                             <b className="text-[11px] text-[#121316] block truncate my-0.5">{selectedDriver.aadharNumber}</b>
                             {selectedDriver.aadharPhoto ? (
                               <img src={selectedDriver.aadharPhoto} alt="Aadhaar" className="w-full h-12 rounded-md object-cover" />
                             ) : (
-                              <div className="h-12 bg-[#F4F5F7] rounded-md flex items-center justify-center text-xs">🪪 Card</div>
+                              <div className="h-12 bg-[#F5F6F8] rounded-md flex items-center justify-center text-xs text-[#4B5563]">Card</div>
                             )}
                           </div>
                         </div>
                       </div>
 
                       {/* Primary Actions */}
-                      <div className="w-full flex flex-col gap-2 mt-3.5">
+                      <div className="w-full flex flex-col gap-2 mt-4">
                         {selectedDriver.status !== "approved" && (
                           <button
                             type="button"
                             onClick={() => handleApprove(selectedDriver.id)}
                             className="w-full bg-[#10B981] hover:bg-[#059669] text-white py-2.5 rounded-xl text-xs font-bold transition shadow-xs flex items-center justify-center gap-1.5"
                           >
-                            <span>✓</span>
+                            <Icons.Check />
                             <span>Approve KYC & Activate Chauffeur</span>
                           </button>
                         )}
@@ -847,14 +956,14 @@ function AdminPage() {
                             onClick={() => handleOpenRejectModal(selectedDriver.id)}
                             className="bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C] hover:bg-[#FEE2E2] py-2 rounded-xl text-xs font-bold transition"
                           >
-                            ✕ Reject KYC
+                            Reject KYC
                           </button>
                           <button
                             type="button"
                             onClick={() => handleToggleSuspend(selectedDriver.id)}
-                            className="bg-[#F4F5F7] border border-[#E5E7EB] text-[#121316] hover:bg-[#EEEEF2] py-2 rounded-xl text-xs font-semibold transition"
+                            className="bg-[#F5F6F8] border border-[#E5E7EB] text-[#121316] hover:bg-[#EEEEF2] py-2 rounded-xl text-xs font-semibold transition"
                           >
-                            {selectedDriver.status === "suspended" ? "▶ Re-activate" : "⏸ Suspend"}
+                            {selectedDriver.status === "suspended" ? "Re-activate" : "Suspend"}
                           </button>
                         </div>
                       </div>
@@ -867,13 +976,13 @@ function AdminPage() {
 
           {/* TAB 2: TRIP REVENUE & CALCULATOR */}
           {activeTab === "telemetry" && (
-            <div className="bg-white border border-[#EAEAEA] rounded-3xl p-7 shadow-xs">
+            <div className="bg-white border border-black/5 rounded-3xl p-8 shadow-xs">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="font-display text-base font-extrabold text-[#121316]">
                     Interactive Tariff & Commission Engine
                   </h2>
-                  <span className="text-xs text-[#6B7280]">
+                  <span className="text-xs text-[#4B5563]">
                     Real-time modeling for GMV, Platform 15% Take-rate, and Driver Payouts
                   </span>
                 </div>
@@ -898,7 +1007,7 @@ function AdminPage() {
                       onChange={e => setSimFare(Number(e.target.value))}
                       className="w-full accent-[#FFC70A]"
                     />
-                    <div className="flex justify-between text-[11px] text-[#9CA3AF] mt-1">
+                    <div className="flex justify-between text-[11px] text-[#6B7280] mt-1">
                       <span>₹200 (Short Ride)</span>
                       <span>₹5,000 (Airport / Outstation)</span>
                     </div>
@@ -918,7 +1027,7 @@ function AdminPage() {
                       onChange={e => setSimCommission(Number(e.target.value))}
                       className="w-full accent-[#FFC70A]"
                     />
-                    <div className="flex justify-between text-[11px] text-[#9CA3AF] mt-1">
+                    <div className="flex justify-between text-[11px] text-[#6B7280] mt-1">
                       <span>5% (Promotional Tier)</span>
                       <span>30% (Surge / Premium)</span>
                     </div>
@@ -941,14 +1050,14 @@ function AdminPage() {
                   </div>
                 </div>
 
-                <div className="bg-[#F4F5F7] border border-[#EAEAEA] rounded-2xl p-6 flex flex-col justify-between">
+                <div className="bg-[#F5F6F8] border border-black/5 rounded-2xl p-6 flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">
+                    <span className="text-[10px] text-[#4B5563] font-bold uppercase tracking-wider">
                       Per-Ride Revenue Breakdown
                     </span>
                     <div className="flex flex-col gap-2.5 mt-3.5">
                       <div className="flex justify-between text-xs">
-                        <span className="text-[#6B7280]">Gross Booking Fare:</span>
+                        <span className="text-[#4B5563]">Gross Booking Fare:</span>
                         <b className="text-[#121316]">₹{simFare}</b>
                       </div>
                       <div className="flex justify-between text-xs">
@@ -962,10 +1071,10 @@ function AdminPage() {
                     </div>
                   </div>
 
-                  <div className="border-t border-[#EAEAEA] pt-4 mt-4">
+                  <div className="border-t border-[#E5E7EB] pt-4 mt-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <span className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider block">
+                        <span className="text-[10px] text-[#4B5563] font-bold uppercase tracking-wider block">
                           Monthly Platform Net
                         </span>
                         <div className="font-display text-xl font-extrabold text-[#121316] tracking-tight mt-0.5">
@@ -973,7 +1082,7 @@ function AdminPage() {
                         </div>
                       </div>
                       <span className="text-xs font-bold text-[#047857] bg-[#ECFDF5] px-2.5 py-1 rounded-md">
-                        ✓ Projected
+                        Projected
                       </span>
                     </div>
                   </div>
@@ -984,22 +1093,22 @@ function AdminPage() {
 
           {/* TAB 3: LIVE TRIPS & DISPATCH */}
           {activeTab === "trips" && (
-            <div className="bg-white border border-[#EAEAEA] rounded-3xl p-6 shadow-xs">
+            <div className="bg-white border border-black/5 rounded-3xl p-7 shadow-xs">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h2 className="font-display text-base font-extrabold text-[#121316]">
                     Live Trips & Dispatch Logs
                   </h2>
-                  <span className="text-xs text-[#6B7280]">
+                  <span className="text-xs text-[#4B5563]">
                     Verified ride telemetry across Kochi and Thiruvananthapuram routes
                   </span>
                 </div>
                 <span className="text-xs font-bold text-[#10B981] bg-[#ECFDF5] px-2.5 py-1 rounded-md">
-                  ● Real-time
+                  Real-time
                 </span>
               </div>
 
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-3">
                 {[
                   { id: "TRP-9481", from: "Kakkanad Infopark Phase 2", to: "Cochin International Airport (COK)", fare: 850, time: "12 mins ago" },
                   { id: "TRP-9480", from: "Marine Drive Walkway", to: "Lulu Mall, Edappally", fare: 320, time: "28 mins ago" },
@@ -1007,19 +1116,21 @@ function AdminPage() {
                   { id: "TRP-9478", from: "Vytilla Mobility Hub", to: "Aluva Metro Station", fare: 520, time: "1 hour ago" },
                   { id: "TRP-9477", from: "Thampanoor Central", to: "Technopark Phase 3", fare: 680, time: "2 hours ago" }
                 ].map(trip => (
-                  <div key={trip.id} className="p-3.5 rounded-xl bg-[#F4F5F7] border border-[#EAEAEA] flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-base">🚕</div>
+                  <div key={trip.id} className="p-4 rounded-xl bg-[#F5F6F8] border border-black/5 flex items-center justify-between">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-[#121316] shadow-xs">
+                        <Icons.Car />
+                      </div>
                       <div>
                         <b className="text-xs text-[#121316]">Trip #{trip.id}</b>
-                        <div className="text-[11px] text-[#6B7280]">
+                        <div className="text-[11px] text-[#4B5563] mt-0.5">
                           <span>{trip.from}</span> &rarr; <span>{trip.to}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <b className="text-xs text-[#121316]">₹{trip.fare}</b>
-                      <span className="text-[11px] font-bold text-[#047857] bg-[#ECFDF5] px-2 py-0.5 rounded">
+                      <span className="text-[11px] font-bold text-[#047857] bg-[#ECFDF5] px-2.5 py-1 rounded-md">
                         Completed
                       </span>
                     </div>
@@ -1031,13 +1142,13 @@ function AdminPage() {
 
           {/* TAB 4: CUSTOMER ACCOUNTS */}
           {activeTab === "users" && (
-            <div className="bg-white border border-[#EAEAEA] rounded-3xl p-6 shadow-xs">
+            <div className="bg-white border border-black/5 rounded-3xl p-7 shadow-xs">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h2 className="font-display text-base font-extrabold text-[#121316]">
                     Customer Profiles & Lifetime Value
                   </h2>
-                  <span className="text-xs text-[#6B7280]">
+                  <span className="text-xs text-[#4B5563]">
                     Verified rider accounts synced with Google Authentication & Supabase
                   </span>
                 </div>
@@ -1046,35 +1157,35 @@ function AdminPage() {
                 </span>
               </div>
 
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-3">
                 {[
                   { id: "RDU-10821", name: "Anurag K M", email: "anurag@ridingo.in", phone: "+91 98401 23456", city: "Kochi", rides: 14, spent: 11900 },
                   { id: "RDU-29401", name: "Pooja Nair", email: "pooja.nair@gmail.com", phone: "+91 97451 89201", city: "Thiruvananthapuram", rides: 8, spent: 6800 },
                   { id: "RDU-38910", name: "Vishnu Das", email: "vishnu.das@tech.in", phone: "+91 94470 19284", city: "Kozhikode", rides: 22, spent: 18700 },
                   { id: "RDU-48192", name: "Neha Varghese", email: "neha.varghese@gmail.com", phone: "+91 98470 11928", city: "Thrissur", rides: 6, spent: 5100 }
                 ].map(usr => (
-                  <div key={usr.id} className="p-3.5 rounded-xl bg-[#F4F5F7] border border-[#EAEAEA] flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-bold text-xs text-[#121316]">
+                  <div key={usr.id} className="p-4 rounded-xl bg-[#F5F6F8] border border-black/5 flex items-center justify-between">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-bold text-xs text-[#121316] shadow-xs">
                         {usr.name[0]}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <b className="text-xs text-[#121316]">{usr.name}</b>
-                          <span className="text-[10px] bg-white px-1.5 py-0.2 rounded text-[#6B7280]">{usr.id}</span>
+                          <span className="text-[10px] bg-white px-1.5 py-0.5 rounded text-[#4B5563]">{usr.id}</span>
                         </div>
-                        <div className="text-[11px] text-[#6B7280]">
-                          <span>📱 {usr.phone}</span> • <span>✉️ {usr.email}</span> • <span>📍 {usr.city}</span>
+                        <div className="text-[11px] text-[#4B5563] mt-0.5">
+                          <span>{usr.phone}</span> • <span>{usr.email}</span> • <span>{usr.city}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-5">
                       <div className="text-right">
-                        <span className="text-[10px] text-[#9CA3AF] uppercase block">Rides</span>
+                        <span className="text-[10px] text-[#6B7280] uppercase block font-semibold">Rides</span>
                         <b className="text-xs text-[#121316]">{usr.rides} rides</b>
                       </div>
                       <div className="text-right">
-                        <span className="text-[10px] text-[#9CA3AF] uppercase block">Total Spend</span>
+                        <span className="text-[10px] text-[#6B7280] uppercase block font-semibold">Total Spend</span>
                         <b className="text-xs text-[#047857]">₹{usr.spent.toLocaleString("en-IN")}</b>
                       </div>
                     </div>
@@ -1094,16 +1205,16 @@ function AdminPage() {
         >
           <div
             onClick={e => e.stopPropagation()}
-            className="bg-white rounded-3xl p-5 max-w-xl w-full shadow-2xl flex flex-col gap-3"
+            className="bg-white rounded-3xl p-6 max-w-xl w-full shadow-2xl flex flex-col gap-3"
           >
             <div className="flex items-center justify-between">
               <b className="text-xs text-[#121316]">Document Inspection Preview</b>
               <button
                 type="button"
                 onClick={() => setIsPhotoPreviewOpen(null)}
-                className="text-[#6B7280] hover:text-black text-sm"
+                className="text-[#4B5563] hover:text-black"
               >
-                ✕
+                <Icons.Close />
               </button>
             </div>
             <img
@@ -1124,26 +1235,26 @@ function AdminPage() {
               <button
                 type="button"
                 onClick={() => setRejectModalDriverId(null)}
-                className="text-[#6B7280] text-sm"
+                className="text-[#4B5563]"
               >
-                ✕
+                <Icons.Close />
               </button>
             </div>
-            <p className="text-xs text-[#6B7280]">
+            <p className="text-xs text-[#4B5563]">
               Specify reason for KYC rejection for partner <strong>{rejectModalDriverId}</strong>.
             </p>
             <textarea
               rows={3}
               value={rejectReasonInput}
               onChange={e => setRejectReasonInput(e.target.value)}
-              className="w-full p-2.5 rounded-xl border border-[#EAEAEA] text-xs outline-none"
+              className="w-full p-2.5 rounded-xl border border-[#E5E7EB] text-xs outline-none"
               placeholder="Rejection reason..."
             />
             <div className="flex justify-end gap-2 mt-1">
               <button
                 type="button"
                 onClick={() => setRejectModalDriverId(null)}
-                className="px-3.5 py-1.5 rounded-xl border border-[#EAEAEA] text-xs text-[#121316]"
+                className="px-3.5 py-1.5 rounded-xl border border-[#E5E7EB] text-xs text-[#121316]"
               >
                 Cancel
               </button>
@@ -1169,107 +1280,107 @@ function AdminPage() {
             <div className="flex items-center justify-between">
               <div>
                 <b className="font-display text-base text-[#121316]">Register New Chauffeur Profile</b>
-                <span className="text-xs text-[#6B7280] block">Enters executive chauffeur into the active partner pool</span>
+                <span className="text-xs text-[#4B5563] block">Enters executive chauffeur into the active partner pool</span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsAddDriverOpen(false)}
-                className="text-[#6B7280] text-sm"
+                className="text-[#4B5563]"
               >
-                ✕
+                <Icons.Close />
               </button>
             </div>
 
             <div className="flex flex-col gap-2.5 text-xs">
               <div>
-                <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Full Legal Name *</label>
+                <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">Full Legal Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="Arun Madhavan"
                   value={newDriverName}
                   onChange={e => setNewDriverName(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Phone *</label>
+                  <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">Phone *</label>
                   <input
                     type="tel"
                     required
                     placeholder="+91 94471 28392"
                     value={newDriverPhone}
                     onChange={e => setNewDriverPhone(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Email *</label>
+                  <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">Email *</label>
                   <input
                     type="email"
                     required
                     placeholder="driver@gmail.com"
                     value={newDriverEmail}
                     onChange={e => setNewDriverEmail(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Residential Address</label>
+                <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">Residential Address</label>
                 <input
                   type="text"
                   placeholder="TC 14/820, Silver Cascade"
                   value={newDriverAddress}
                   onChange={e => setNewDriverAddress(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                  className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">City</label>
+                  <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">City</label>
                   <input
                     type="text"
                     value={newDriverCity}
                     onChange={e => setNewDriverCity(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">PIN Code (6-digit)</label>
+                  <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">PIN Code (6-digit)</label>
                   <input
                     type="text"
                     maxLength={6}
                     value={newDriverPin}
                     onChange={e => setNewDriverPin(e.target.value.replace(/\D/g, ""))}
-                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none font-bold"
+                    className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none font-bold"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Driving Licence No.</label>
+                  <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">Driving Licence No.</label>
                   <input
                     type="text"
                     placeholder="KL-07-20210049281"
                     value={newDriverDl}
                     onChange={e => setNewDriverDl(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-[#6B7280] uppercase font-bold block mb-1">Aadhaar Number</label>
+                  <label className="text-[10px] text-[#4B5563] uppercase font-bold block mb-1">Aadhaar Number</label>
                   <input
                     type="text"
                     placeholder="4829 1928 4719"
                     value={newDriverAadhar}
                     onChange={e => setNewDriverAadhar(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#EAEAEA] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-[#E5E7EB] outline-none"
                   />
                 </div>
               </div>
@@ -1279,7 +1390,7 @@ function AdminPage() {
               <button
                 type="button"
                 onClick={() => setIsAddDriverOpen(false)}
-                className="px-4 py-2 rounded-xl border border-[#EAEAEA] text-xs text-[#121316]"
+                className="px-4 py-2 rounded-xl border border-[#E5E7EB] text-xs text-[#121316]"
               >
                 Cancel
               </button>
