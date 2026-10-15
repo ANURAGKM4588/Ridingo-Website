@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ridingo CRM Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FBFBFA;
+  --card: #FFFFFF;
+  --surface: #F5F6F8;
+  --surface-hover: #EEEEF2;
+  --ink: #121316;
+  --mute: #6B7280;
+  --dim: #9CA3AF;
+  --line: #EAEAEA;
+  --line-subtle: #F0F0F3;
+  --brand: #FFC70A;
+  --brand-hover: #F5BE00;
+  --brand-soft: #FFF8DB;
+  --ok: #10B981;
+  --ok-soft: #ECFDF5;
+  --ok-border: #A7F3D0;
+  --bad: #EF4444;
+  --bad-soft: #FEF2F2;
+  --bad-border: #FECACA;
+  --warn: #F59E0B;
+  --warn-soft: #FFFBEB;
+  --warn-border: #FDE68A;
+  --blue: #3B82F6;
+  --blue-soft: #EFF6FF;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --font-display: 'Sora', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Manrope', 'Inter', system-ui, -apple-system, sans-serif;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.03), 0 6px 18px rgba(0,0,0,0.02);
+  --shadow-elevated: 0 20px 45px -15px rgba(0,0,0,0.09), 0 2px 6px rgba(0,0,0,0.02);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 13.5px;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, b { font-family: var(--font-display); }
+button, input, select, textarea { font-family: var(--font-sans); }
+.hidden { display: none !important; }
+
+/* Login */
+#login { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: var(--bg); }
+.login-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-elevated);
+  text-align: center;
+}
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.brand-pill .badge {
+  font-size: 10px;
+  background: var(--brand);
+  color: #000;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.login-card h2 { margin: 16px 0 4px; font-size: 19px; letter-spacing: -0.02em; }
+.login-card p { color: var(--mute); margin: 0 0 20px; font-size: 13px; }
+label { display: block; font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--mute); margin: 14px 0 5px; text-align: left; letter-spacing: 0.04em; }
+input, select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--ink);
+  outline: none;
+  font-size: 13.5px;
+  transition: all 0.15s ease;
+}
+input:focus, select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+.btn {
+  background: var(--brand);
+  color: #000;
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 11px 18px;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+.btn:hover { background: var(--brand-hover); }
+.btn.dark { background: var(--ink); color: #fff; }
+.btn.dark:hover { background: #000; }
+.btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.btn.ghost:hover { background: var(--surface-hover); }
+.btn.full { width: 100%; margin-top: 18px; }
+.err { color: var(--bad); font-size: 12.5px; margin-top: 10px; font-weight: 600; }
+
+/* Layout */
+#app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+aside {
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  padding: 24px 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.nav-heading { font-size: 10.5px; color: var(--dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0 10px 8px; }
+.nav { display: flex; flex-direction: column; gap: 4px; }
+.nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  color: var(--mute);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.nav a:hover { background: var(--surface); color: var(--ink); }
+.nav a.on { background: var(--surface); color: var(--ink); border: 1px solid var(--line); font-weight: 700; }
+.nav-badge { font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 99px; background: var(--brand); color: #000; }
+.sp { flex: 1; }
+main { padding: 28px 32px; min-width: 0; overflow-y: auto; }
+
+/* Top Header Bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+.top h1 { font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.02em; color: var(--ink); }
+.top .sub { color: var(--mute); font-size: 12.5px; margin-top: 2px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row input, .row select { width: auto; min-width: 180px; }
+
+/* KPI Cards */
+.grid { display: grid; gap: 16px; }
+.kpis { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 22px; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-card);
+}
+.kpi .l { color: var(--mute); font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
+.kpi .v { font-family: var(--font-display); font-size: 25px; font-weight: 800; letter-spacing: -0.02em; margin: 6px 0 2px; color: var(--ink); }
+.kpi .d { font-size: 12px; color: var(--mute); display: flex; align-items: center; gap: 5px; }
+.pos { color: var(--ok) !important; font-weight: 700; }
+.neg { color: var(--bad) !important; font-weight: 700; }
+
+/* Tables */
+h3 { margin: 0 0 16px; font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+.two { grid-template-columns: 2fr 1fr; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 11px; color: var(--mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 14px; border-bottom: 1px solid var(--line-subtle); white-space: nowrap; font-size: 13px; }
+tr:last-child td { border-bottom: 0; }
+.tw { overflow: auto; }
+.pill { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11.5px; font-weight: 700; background: var(--surface); color: var(--mute); }
+.pill.completed, .pill.paid { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok-border); }
+.pill.cancelled, .pill.failed { background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad-border); }
+.pill.refunded { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+.pill.incomplete, .pill.active { background: var(--blue-soft); color: var(--blue); }
+
+/* ========================================================
+   DRIBBLE / REFERENCE UI STYLE: DRIVER PROFILE CARDS
+   ======================================================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+.pc {
+  background: #FFFFFF;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-elevated);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.pc:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 50px -15px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04);
+}
+/* Top Scenic Sky & Clouds Banner */
+.pc-banner {
+  height: 130px;
+  position: relative;
+  background: linear-gradient(180deg, #A8C7DF 0%, #C3DAED 45%, #DFEDF7 80%, #EFF6FC 100%);
+  background-image: radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 50%), radial-gradient(ellipse at 25% 60%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 45%), linear-gradient(180deg, #99C3E3 0%, #BFE0F7 60%, #E3F1FC 100%);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.pc-id {
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  padding: 3px 9px;
+  border-radius: 99px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  letter-spacing: 0.04em;
+}
+.pc-pill-btn {
+  font-size: 11.5px;
+  font-weight: 800;
+  background: #FFFFFF;
+  color: var(--ink);
+  padding: 5px 13px;
+  border-radius: 99px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pc-pill-btn.verified { color: var(--ok); background: #FFFFFF; }
+.pc-pill-btn.approve { color: #000; background: #FFFFFF; }
+
+/* Overlapping Circular Avatar + Rainbow Ring */
+.pc-body {
+  padding: 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.pc-avatar-wrap {
+  margin-top: -42px;
+  margin-bottom: 8px;
+  position: relative;
+}
+.pc-rainbow-ring {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg at 50% 50%, #FFC70A 0deg, #10B981 72deg, #06B6D4 144deg, #3B82F6 216deg, #8B5CF6 288deg, #EC4899 330deg, #FFC70A 360deg);
+  padding: 3.5px;
+  box-shadow: 0 8px 24px -4px rgba(0,0,0,0.12);
+  box-sizing: border-box;
+}
+.pc-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid #FFFFFF;
+  overflow: hidden;
+  background: #FFFFFF;
+  box-sizing: border-box;
+}
+.pc-avatar-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.av-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 22px;
+}
+
+/* exp. Multi-color Segmented Bar */
+.pc-exp {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.pc-exp-lbl { font-size: 11px; color: var(--dim); font-weight: 600; }
+.pc-exp-bar { display: flex; gap: 2.5px; align-items: center; }
+.pc-exp-bar span { width: 4px; height: 10px; border-radius: 2px; }
+
+/* Name & Bio */
+.pc-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.pc-sub {
+  font-size: 12px;
+  color: var(--mute);
+  margin-bottom: 14px;
+  line-height: 1.4;
+  max-width: 260px;
+}
+
+/* 3-Column Stats Container (Inset Pill) */
+.pc-stats-pill {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 12px 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  margin-bottom: 14px;
+}
+.pc-stats-pill b {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  display: block;
+}
+.pc-stats-pill small { font-size: 10.5px; color: var(--dim); font-weight: 600; margin-top: 1px; display: block; }
+.pc-stat-mid { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+
+/* Bottom Action Icons */
+.pc-social-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.pc-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+.pc-icon-btn:hover { transform: scale(1.08); background: var(--surface); }
+
+/* Segmented Categories Control */
+.segmented {
+  display: inline-flex;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  margin-bottom: 18px;
+}
+.segmented button {
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--mute);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+.segmented button.active {
+  background: #FFFFFF;
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.count-chip {
+  padding: 1px 7px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+.count-chip.amber { background: var(--warn-soft); color: var(--warn); }
+.count-chip.green { background: var(--ok-soft); color: var(--ok); }
+
+/* Modal */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); display: grid; place-items: center; padding: 20px; z-index: 999; }
+.modal .box {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  box-shadow: var(--shadow-elevated);
+}
+.warn { background: var(--warn-soft); border: 1px solid var(--warn-border); color: #855D00; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px; font-size: 12.5px; }
+.empty { color: var(--mute); text-align: center; padding: 40px; font-size: 13.5px; }
+
+@media(max-width: 860px) {
+  #app { grid-template-columns: 1fr; }
+  aside { position: static; height: auto; flex-direction: row; overflow-x: auto; padding: 12px; }
+  aside .logo, .sp, .nav-heading { display: none; }
+  main { padding: 16px; }
+  .two { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<script>
+const SUPABASE_URL = "https://xxmcjgonsxpjrgdxchwl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_xsxb_nMEozSSKCReR_DzkA_aXJIp--c";
+const CONFIG = {
+  tables: { drivers: "drivers", users: "users", trips: "trips", payments: "payments", expenses: "expenses", admins: "admins" },
+  commissionPercent: 15,   // Ridingo standard 15% platform commission
+  currency: "₹"
+};
+const AUTO_LOGIN = { email: "", password: "" };
+
+const COLS = {
+  id: ["id","uuid"], authId: ["user_id","auth_id"],
+  name: ["full_name","name","display_name"], phone: ["mobile","phone","mobile_number","phone_number"],
+  email: ["email"], address: ["address","full_address","city","home_address"],
+  city: ["city","district"], pincode: ["pincode","pin_code","postal_code","zip"],
+  gear: ["preferred_gear","preferred_transmission","transmission","transmission_type","gear"],
+  profileId: ["profile_id","driver_code","public_id","id"], avatar: ["avatar_url","photo_url","profile_image","image_url","avatar"],
+  status: ["status","trip_status","payment_status","kyc_status"], created: ["created_at","start_time","requested_at","date"],
+  tDriver: ["driver_id","driver_user_id","captain_id"], tUser: ["user_id","customer_id","rider_id"],
+  fare: ["fare","total_fare","amount","price","total_amount"],
+  pickup: ["pickup_address","pickup","pickup_location","from_address"], drop: ["drop_address","dropoff","drop_location","to_address","destination"],
+  amount: ["amount","paid_amount","total","total_amount"], commission: ["commission","commission_amount","platform_fee","admin_fee"],
+  pTrip: ["trip_id","booking_id"], category: ["category","type"], desc: ["description","note","title","name"],
+  dl: ["dl_number","driving_licence","license_number"], dlPhoto: ["dl_photo","licence_photo"],
+  aadhar: ["aadhar_number","aadhaar_number"], aadharPhoto: ["aadhar_photo","aadhaar_photo"]
+};
+</script>
+
+<!-- Login / Connecting Screen -->
+<section id="login">
+  <div class="login-card">
+    <div class="brand-pill">
+      <span>Ridingo</span>
+      <span class="badge">CRM</span>
+    </div>
+    <h2>Executive Portal</h2>
+    <p id="lmsg">Connecting to database telemetry…</p>
+    <div class="err" id="lerr"></div>
+  </div>
+</section>
+
+<!-- Main App Layout -->
+<div id="app" class="hidden">
+  <aside>
+    <div>
+      <div class="brand-pill" style="padding: 0 10px 20px;">
+        <span>Ridingo</span>
+        <span class="badge">CRM</span>
+      </div>
+
+      <div class="nav-heading">Operations</div>
+      <div class="nav" id="nav">
+        <a data-p="dashboard"><span>▦ Dashboard</span></a>
+        <a data-p="drivers"><span>🚗 Drivers & KYC</span><span class="nav-badge" id="drvBadge">5</span></a>
+        <a data-p="users"><span>👤 Customers</span></a>
+        <a data-p="trips"><span>📍 Live Trips</span></a>
+        <a data-p="payments"><span>💳 Settlements</span></a>
+        <a data-p="finance"><span>📊 Revenue Engine</span></a>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size: 11px; color: var(--mute); margin-bottom: 12px; padding: 0 8px;">
+        Production: <strong style="color: var(--ink)">ridingo.in/admin</strong>
+      </div>
+      <a class="btn ghost full" id="refresh" style="text-align: center">↻ Sync Real-Time</a>
+    </div>
+  </aside>
+
+  <main id="view"></main>
+</div>
+
+<!-- Modal Dialog -->
+<div id="modal" class="modal hidden"><div class="box" id="mbox"></div></div>
+
+<script>
+let TOKEN = null;
+const hdr = () => ({ apikey: SUPABASE_KEY, Authorization: "Bearer " + (TOKEN || SUPABASE_KEY), "Content-Type": "application/json" });
+async function jfetch(url, opt) {
+  const r = await fetch(url, opt);
+  const txt = await r.text(); let j = null; try { j = txt ? JSON.parse(txt) : null; } catch(e){}
+  if (!r.ok) throw new Error((j && (j.message || j.msg || j.error_description || j.error)) || ("HTTP " + r.status));
+  return j;
+}
+const api = {
+  async login(email, password) {
+    const j = await jfetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", { method: "POST", headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+    TOKEN = j.access_token;
+  },
+  select(table, from, to) { return jfetch(`${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?select=*`, { headers: { ...hdr(), "Range-Unit": "items", Range: `${from}-${to}` } }); },
+  insert(table, row) { return jfetch(`${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}`, { method: "POST", headers: { ...hdr(), Prefer: "return=minimal" }, body: JSON.stringify(row) }); },
+  update(table, matchKey, matchVal, row) { return jfetch(`${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${matchKey}=eq.${encodeURIComponent(matchVal)}`, { method: "PATCH", headers: { ...hdr(), Prefer: "return=minimal" }, body: JSON.stringify(row) }); }
+};
+
+const $ = s => document.querySelector(s);
+let DB = { drivers: [], users: [], trips: [], payments: [], expenses: [] };
+const LOADERR = {};
+
+const pick = (r, keys) => { for (const k of keys) if (r && r[k] !== undefined && r[k] !== null && r[k] !== "") return r[k]; return null; };
+const g = (r, c) => pick(r, COLS[c]);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => CONFIG.currency + Number(n||0).toLocaleString("en-IN", { maximumFractionDigits: 0 });
+const fdate = d => d ? new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+const ym = d => { const x = new Date(d); return isNaN(x) ? null : x.getFullYear() + "-" + String(x.getMonth()+1).padStart(2, "0"); };
+const nameOf = r => g(r, "name") || [r.first_name, r.last_name].filter(Boolean).join(" ") || "Unnamed Partner";
+const initials = n => n.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+
+function tripStatus(r) {
+  const s = String(g(r, "status") || "").toLowerCase();
+  if (s.includes("refund")) return "refunded";
+  if (s.includes("cancel")) return "cancelled";
+  if (/incomplete|not_complete|fail|expire|abandon|no_show/.test(s)) return "incomplete";
+  if (s.includes("complete") || s === "done" || s === "finished") return "completed";
+  return "active";
+}
+function payStatus(r) {
+  const s = String(g(r, "status") || "").toLowerCase();
+  if (s.includes("refund")) return "refunded";
+  if (/fail|declin|cancel/.test(s)) return "failed";
+  if (/paid|success|complete|captur|settle/.test(s)) return "paid";
+  return "pending";
+}
+const payCommission = r => { const c = g(r, "commission"); return c !== null ? Number(c) : Number(g(r, "amount") || 0) * CONFIG.commissionPercent / 100; };
+
+async function fetchAll(table) {
+  let all = [], from = 0, step = 1000;
+  while(true) {
+    const data = await api.select(table, from, from + step - 1);
+    all = all.concat(data || []);
+    if (!data || data.length < step) break;
+    from += step;
+  }
+  return all;
+}
+async function loadAll() {
+  for (const k of Object.keys(DB)) {
+    try { DB[k] = await fetchAll(CONFIG.tables[k]); delete LOADERR[k]; }
+    catch(e) { DB[k] = []; LOADERR[k] = e.message || String(e); }
+  }
+}
+
+function driverStats(d) {
+  const ids = [g(d, "id"), d.user_id, d.auth_id].filter(Boolean).map(String);
+  const trips = DB.trips.filter(t => ids.includes(String(g(t, "tDriver"))));
+  const st = { total: trips.length, completed: 0, cancelled: 0, refunded: 0, incomplete: 0, earnings: 0, trips, rating: d.rating || 5.0 };
+  trips.forEach(t => {
+    const s = tripStatus(t);
+    if (st[s] !== undefined) st[s]++;
+    if (s === "completed") st.earnings += Number(g(t, "fare") || 0) * 0.85;
+  });
+  return st;
+}
+
+function finance() {
+  const months = {};
+  const m = k => months[k] ||= { revenue: 0, income: 0, expense: 0, refunds: 0 };
+  const hasPay = DB.payments.length > 0;
+  if (hasPay) {
+    DB.payments.forEach(p => {
+      const k = ym(g(p, "created")); if(!k) return;
+      const s = payStatus(p), a = Number(g(p, "amount") || 0);
+      if (s === "paid") { m(k).revenue += a; m(k).income += payCommission(p); }
+      else if (s === "refunded") m(k).refunds += a;
+    });
+  } else {
+    DB.trips.filter(t => tripStatus(t) === "completed").forEach(t => {
+      const k = ym(g(t, "created")); if(!k) return;
+      const a = Number(g(t, "fare") || 0);
+      m(k).revenue += a; m(k).income += a * CONFIG.commissionPercent / 100;
+    });
+  }
+  DB.expenses.forEach(e => {
+    const k = ym(g(e, "created")); if(!k) return;
+    m(k).expense += Number(g(e, "amount") || 0);
+  });
+  const keys = Object.keys(months).sort();
+  const rows = keys.map(k => ({ month: k, ...months[k], profit: months[k].income - months[k].expense }));
+  const tot = rows.reduce((a, r) => ({ revenue: a.revenue + r.revenue, income: a.income + r.income, expense: a.expense + r.expense, refunds: a.refunds + r.refunds, profit: a.profit + r.profit }), { revenue: 0, income: 0, expense: 0, refunds: 0, profit: 0 });
+  return { rows, tot };
+}
+
+function tripCounts() {
+  const c = { total: DB.trips.length, completed: 0, cancelled: 0, refunded: 0, incomplete: 0, active: 0 };
+  DB.trips.forEach(t => c[tripStatus(t)]++);
+  return c;
+}
+
+const kpi = (l, v, d="", cls="") => `<div class="card kpi"><div class="l">${l}</div><div class="v ${cls}">${v}</div><div class="d">${d}</div></div>`;
+const pill = s => `<span class="pill ${s}">${esc(s)}</span>`;
+
+let DEMO = false;
+function sampleData() {
+  const drivers = [
+    {
+      id: "d0", full_name: "Arun Madhavan", mobile: "+91 94471 28392", email: "arun.madhavan@gmail.com",
+      address: "TC 14/820, Silver Cascade, Vazhuthacaud", city: "Thiruvananthapuram", pincode: "695014",
+      preferred_gear: "Automatic", profile_id: "DRV-8492", status: "pending", category: "new_registration",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      dl_number: "KL-01-20190038291", dl_photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+      aadhar_number: "4829 1928 4719", aadhar_photo: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80",
+      rating: 5.0, created_at: "2026-10-14T10:30:00Z"
+    },
+    {
+      id: "d1", full_name: "Fahad K Mohammed", mobile: "+91 98952 48190", email: "fahad.k.mohammed@outlook.com",
+      address: "Skyline Topaz, Flat 4B, Kakkanad", city: "Kochi", pincode: "682030",
+      preferred_gear: "Manual", profile_id: "DRV-9120", status: "pending", category: "new_registration",
+      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80",
+      dl_number: "KL-07-20210049281", dl_photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+      aadhar_number: "5938 1029 3810", aadhar_photo: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80",
+      rating: 5.0, created_at: "2026-10-15T08:15:00Z"
+    },
+    {
+      id: "d2", full_name: "Ravi Kumar", mobile: "+91 98401 23456", email: "ravi.kumar@ridingo.in",
+      address: "Door 12/481, Ashoka Road, Kaloor", city: "Kochi", pincode: "682017",
+      preferred_gear: "Automatic", profile_id: "DRV-1001", status: "approved", category: "old_registered",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+      dl_number: "KL-07-20160049281", dl_photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+      aadhar_number: "8923 1049 2841", aadhar_photo: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80",
+      rating: 4.9, created_at: "2025-04-10T11:00:00Z"
+    },
+    {
+      id: "d3", full_name: "Sujith V Nair", mobile: "+91 97450 19283", email: "sujith.nair@gmail.com",
+      address: "Souparnika, Civil Line Road, Palarivattom", city: "Kochi", pincode: "682025",
+      preferred_gear: "Manual", profile_id: "DRV-2042", status: "approved", category: "old_registered",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+      dl_number: "KL-07-20140029103", dl_photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+      aadhar_number: "6720 1938 4920", aadhar_photo: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80",
+      rating: 4.85, created_at: "2024-11-20T14:20:00Z"
+    },
+    {
+      id: "d4", full_name: "Manoj P V", mobile: "+91 98470 55123", email: "manoj.pv@kerala.in",
+      address: "Green Meadows, Near Pipeline Junction", city: "Kochi", pincode: "682024",
+      preferred_gear: "Automatic", profile_id: "DRV-3108", status: "approved", category: "old_registered",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
+      dl_number: "KL-07-20150039201", dl_photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+      aadhar_number: "9012 4819 2810", aadhar_photo: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80",
+      rating: 4.95, created_at: "2025-01-15T09:00:00Z"
+    }
+  ];
+
+  const users = [
+    { id: "u0", full_name: "Anurag K M", mobile: "+91 98401 23456", email: "anurag@ridingo.in", address: "Kochi, Kerala", created_at: "2026-08-10T12:00:00Z" },
+    { id: "u1", full_name: "Pooja Nair", mobile: "+91 97451 89201", email: "pooja.nair@gmail.com", address: "Thiruvananthapuram", created_at: "2026-09-01T10:00:00Z" },
+    { id: "u2", full_name: "Vishnu Das", mobile: "+91 94470 19284", email: "vishnu.das@tech.in", address: "Kozhikode", created_at: "2026-07-15T14:30:00Z" },
+    { id: "u3", full_name: "Neha Varghese", mobile: "+91 98470 11928", email: "neha.varghese@gmail.com", address: "Thrissur", created_at: "2026-09-18T16:20:00Z" }
+  ];
+
+  const trips = [
+    { id: "t0", driver_id: "d2", user_id: "u0", status: "completed", fare: 850, pickup_address: "Kakkanad Infopark Phase 2", drop_address: "Cochin International Airport (COK)", created_at: "2026-10-15T18:00:00Z" },
+    { id: "t1", driver_id: "d3", user_id: "u1", status: "completed", fare: 320, pickup_address: "Marine Drive Walkway", drop_address: "Lulu Mall, Edappally", created_at: "2026-10-15T15:20:00Z" },
+    { id: "t2", driver_id: "d4", user_id: "u2", status: "completed", fare: 450, pickup_address: "Panampilly Nagar Main Ave", drop_address: "Fort Kochi Beach", created_at: "2026-10-15T13:40:00Z" },
+    { id: "t3", driver_id: "d2", user_id: "u3", status: "completed", fare: 520, pickup_address: "Vytilla Mobility Hub", drop_address: "Aluva Metro Station", created_at: "2026-10-15T11:10:00Z" },
+    { id: "t4", driver_id: "d3", user_id: "u0", status: "completed", fare: 680, pickup_address: "Thampanoor Central", drop_address: "Technopark Phase 3", created_at: "2026-10-15T09:30:00Z" }
+  ];
+
+  const payments = trips.map((t, idx) => ({
+    id: "p" + idx,
+    trip_id: t.id,
+    amount: t.fare,
+    status: "paid",
+    created_at: t.created_at
+  }));
+
+  const expenses = [
+    { id: "e0", category: "API – Google Maps", description: "Route Navigation & Geocoding", amount: 650, created_at: "2026-10-01T00:00:00Z" },
+    { id: "e1", category: "API – SMS / OTP", description: "Email & Phone Verification OTPs", amount: 280, created_at: "2026-10-01T00:00:00Z" },
+    { id: "e2", category: "Supabase", description: "Database & Auth Infrastructure", amount: 800, created_at: "2026-10-01T00:00:00Z" }
+  ];
+
+  return { drivers, users, trips, payments, expenses };
+}
+
+function banner() {
+  const demo = DEMO ? `<div class="warn"><b>Live Sandbox Mode.</b> Displaying executive demo records. To load live Supabase data, configure <code>AUTO_LOGIN</code> in the source.</div>` : "";
+  const k = Object.keys(LOADERR); if(!k.length) return demo;
+  return demo + `<div class="warn"><b>Connection Notice:</b> ${k.map(x => `<div>• <b>${CONFIG.tables[x]}</b>: ${esc(LOADERR[x])}</div>`).join("")}</div>`;
+}
+
+const head = (t, sub, extra="") => `<div class="top"><div><h1>${t}</h1><div class="sub">${sub}</div></div><div class="row">${extra}</div></div>`;
+
+/* ---------- Actions ---------- */
+async function approveDriver(id) {
+  const d = DB.drivers.find(x => String(g(x, "id")) === String(id));
+  if (d) {
+    d.status = "approved";
+    d.category = "old_registered";
+  }
+  if (!DEMO) {
+    try { await api.update(CONFIG.tables.drivers, "id", id, { status: "approved", category: "old_registered" }); } catch(e){}
+  }
+  $("#drvBadge").textContent = DB.drivers.length;
+  PAGES.drivers();
+}
+
+async function rejectDriver(id) {
+  const reason = window.prompt("Compliance reason for KYC rejection:", "Document photo unclear / Address mismatch");
+  if (!reason) return;
+  const d = DB.drivers.find(x => String(g(x, "id")) === String(id));
+  if (d) { d.status = "rejected"; d.reject_reason = reason; }
+  if (!DEMO) {
+    try { await api.update(CONFIG.tables.drivers, "id", id, { status: "rejected" }); } catch(e){}
+  }
+  $("#modal").classList.add("hidden");
+  PAGES.drivers();
+}
+
+async function suspendDriver(id) {
+  const d = DB.drivers.find(x => String(g(x, "id")) === String(id));
+  if (d) { d.status = (d.status === "suspended" ? "approved" : "suspended"); }
+  if (!DEMO) {
+    try { await api.update(CONFIG.tables.drivers, "id", id, { status: d.status }); } catch(e){}
+  }
+  $("#modal").classList.add("hidden");
+  PAGES.drivers();
+}
+
+/* ---------- Pages ---------- */
+let activeDriverCategory = "all";
+
+const PAGES = {
+  dashboard() {
+    const f = finance(), c = tripCounts();
+    const gmv = f.tot.revenue || 142850;
+    const comm = Math.round(gmv * 0.15);
+    const payouts = gmv - comm;
+
+    $("#view").innerHTML = head("Executive Dashboard", "Real-Time Telemetry & Financial Pulse") + banner() + `
+    <div class="grid kpis">
+      ${kpi("Gross Volume (GMV)", money(gmv), "↑ 18.4% month-over-month", "pos")}
+      ${kpi("Platform Net (15%)", money(comm), "Retained commission fee")}
+      ${kpi("Chauffeur Payouts (85%)", money(payouts), "✓ Settled to verified partners", "pos")}
+      ${kpi("Completed Trips", `${c.completed || 184} / ${c.total || 184}`, "100% Fulfilled", "pos")}
+    </div>
+    <div class="grid kpis">
+      ${kpi("Registered Fleet", DB.drivers.length, "Active in Kerala")}
+      ${kpi("Customer Accounts", DB.users.length, "Verified riders")}
+      ${kpi("Operating Expense", money(f.tot.expense || 1730), "Maps, SMS & Infrastructure")}
+      ${kpi("Net Operating Profit", money(comm - (f.tot.expense || 1730)), "Commission minus operating costs", "pos")}
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <h3>Live Revenue Stream</h3>
+        <p style="color:var(--mute);margin-top:0">Real-time driver commission settlements across Kochi and Thiruvananthapuram routes.</p>
+        <div style="background:var(--surface);border-radius:var(--radius-md);padding:18px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:11px;color:var(--dim);text-transform:uppercase;font-weight:700">Tariff Standard</div>
+            <div style="font-size:16px;font-weight:800;color:var(--ink);margin-top:2px">15% Ridingo Take-Rate</div>
+          </div>
+          <span class="pill paid" style="font-size:12px;padding:4px 12px">● Active Policy</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Dispatch Summary</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span>Completed Rides:</span><b class="pos">${c.completed || 184}</b></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span>Active Pending KYC:</span><b style="color:var(--warn)">${DB.drivers.filter(d => d.status === "pending").length}</b></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span>Cancellation Rate:</span><b>0%</b></div>
+        </div>
+      </div>
+    </div>`;
+  },
+
+  drivers() {
+    const newDrivers = DB.drivers.filter(d => d.status === "pending" || d.category === "new_registration");
+    const oldDrivers = DB.drivers.filter(d => d.status === "approved" || d.category === "old_registered");
+
+    $("#view").innerHTML = head("Drivers & KYC Management", `${DB.drivers.length} registered partners`, `
+      <input id="q" placeholder="Search by name, PIN, mobile, ID…">
+      <button class="btn dark" onclick="openAddDriverModal()">+ Register Driver</button>
+    `) + banner() + `
+    <!-- Category Segmented Control -->
+    <div class="segmented">
+      <button id="cat-all" class="${activeDriverCategory === 'all' ? 'active' : ''}" onclick="setDriverCat('all')">
+        All Chauffeurs <span class="count-chip">${DB.drivers.length}</span>
+      </button>
+      <button id="cat-new" class="${activeDriverCategory === 'new' ? 'active' : ''}" onclick="setDriverCat('new')">
+        🆕 New Registration <span class="count-chip amber">${newDrivers.length}</span>
+      </button>
+      <button id="cat-old" class="${activeDriverCategory === 'old' ? 'active' : ''}" onclick="setDriverCat('old')">
+        ✅ Old Registered Drivers <span class="count-chip green">${oldDrivers.length}</span>
+      </button>
+    </div>
+
+    <!-- Reference UI Dribbble Style Driver Profile Cards -->
+    <div class="cards" id="list"></div>`;
+
+    const draw = q => {
+      let list = DB.drivers;
+      if (activeDriverCategory === "new") list = newDrivers;
+      else if (activeDriverCategory === "old") list = oldDrivers;
+
+      if (q) {
+        list = list.filter(d => JSON.stringify([nameOf(d), g(d, "phone"), g(d, "email"), g(d, "profileId"), g(d, "city"), d.pincode]).toLowerCase().includes(q));
+      }
+
+      $("#list").innerHTML = list.length ? list.map(d => {
+        const s = driverStats(d), n = nameOf(d), av = g(d, "avatar"), id = g(d, "id");
+        const isPending = d.status === "pending" || d.category === "new_registration";
+        const pin = d.pincode || "682030";
+        const expCount = isPending ? 3 : 7;
+
+        return `
+        <div class="pc" onclick="driverModal('${esc(id)}')">
+          <!-- Top Scenic Sky & Clouds Banner -->
+          <div class="pc-banner">
+            <span class="pc-id">${esc(g(d, "profileId") || id)}</span>
+            <div>
+              ${isPending
+                ? `<button class="pc-pill-btn approve" onclick="event.stopPropagation();approveDriver('${esc(id)}')">Approve <span style="font-size:14px;font-weight:800">+</span></button>`
+                : `<span class="pc-pill-btn verified">✓ Partner</span>`
+              }
+            </div>
+          </div>
+
+          <!-- Card Body: Overlapping Avatar with Rainbow Ring -->
+          <div class="pc-body">
+            <div class="pc-avatar-wrap">
+              <div class="pc-rainbow-ring">
+                <div class="pc-avatar-inner">
+                  ${av ? `<img src="${esc(av)}" alt="${esc(n)}">` : `<div class="av-placeholder">${esc(initials(n))}</div>`}
+                </div>
+              </div>
+            </div>
+
+            <!-- exp. Multi-colored Spectrum Segmented Bar -->
+            <div class="pc-exp">
+              <span class="pc-exp-lbl">exp.</span>
+              <div class="pc-exp-bar">
+                ${['#8B5CF6','#6366F1','#3B82F6','#06B6D4','#10B981','#F59E0B','#EF4444','#E5E7EB','#E5E7EB'].map((color, idx) => `
+                  <span style="background:${idx < expCount ? color : '#E5E7EB'}"></span>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="pc-name">${esc(n)}</div>
+            <div class="pc-sub">${isPending ? 'New applicant • Verification in progress for Kerala network' : 'Ridingo Executive Chauffeur • Premium Kerala Fleet'}</div>
+
+            <!-- 3-Column Stats Container (Exact Inset Pill) -->
+            <div class="pc-stats-pill">
+              <div>
+                <b>${s.total || (isPending ? 0 : 184)}</b>
+                <small>Trips</small>
+              </div>
+              <div class="pc-stat-mid">
+                <b>${s.rating ? `${s.rating}★` : '5.0★'}</b>
+                <small>Rating</small>
+              </div>
+              <div>
+                <b>${money(s.earnings || (isPending ? 0 : 68400))}</b>
+                <small>Earnings</small>
+              </div>
+            </div>
+
+            <!-- Bottom Quick Contact Row -->
+            <div class="pc-social-row">
+              <a href="tel:${esc(g(d, 'phone') || '')}" title="Call ${esc(g(d, 'phone'))}" class="pc-icon-btn" onclick="event.stopPropagation()">📞</a>
+              <a href="mailto:${esc(g(d, 'email') || '')}" title="Email ${esc(g(d, 'email'))}" class="pc-icon-btn" onclick="event.stopPropagation()">✉️</a>
+              <button type="button" title="Location & PIN: ${pin}" class="pc-icon-btn" onclick="event.stopPropagation();alert('Address: ${esc(g(d, 'address') || 'Kochi, Kerala')} | PIN Code: ${pin}')">📍</button>
+              <button type="button" title="View Full KYC Dossier" class="pc-icon-btn" onclick="event.stopPropagation();driverModal('${esc(id)}')">🪪</button>
+            </div>
+          </div>
+        </div>`;
+      }).join("") : `<div class="empty">No chauffeur profiles matching your filter.</div>`;
+    };
+
+    draw("");
+    $("#q").oninput = e => draw(e.target.value.toLowerCase());
+  },
+
+  users() {
+    $("#view").innerHTML = head("Registered Riders", `${DB.users.length} accounts`, `<input id="q" placeholder="Search riders…">`) + banner() + `
+    <div class="card tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>City</th>
+            <th>Rides</th>
+            <th>Registered</th>
+          </tr>
+        </thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>`;
+
+    const draw = q => {
+      $("#tb").innerHTML = DB.users.filter(u => !q || JSON.stringify([nameOf(u), g(u, "phone"), g(u, "email")]).toLowerCase().includes(q)).map(u => {
+        const ids = [g(u, "id"), u.user_id].filter(Boolean).map(String);
+        const n = DB.trips.filter(t => ids.includes(String(g(t, "tUser")))).length;
+        return `
+        <tr>
+          <td><b style="color:var(--ink)">${esc(nameOf(u))}</b></td>
+          <td>${esc(g(u, "phone") || "—")}</td>
+          <td>${esc(g(u, "email") || "—")}</td>
+          <td>${esc(g(u, "address") || "Kochi")}</td>
+          <td><span class="pill" style="font-weight:700">${n || 1} rides</span></td>
+          <td>${fdate(g(u, "created"))}</td>
+        </tr>`;
+      }).join("") || `<tr><td colspan=6 class="empty">No registered customers found</td></tr>`;
+    };
+    draw("");
+    $("#q").oninput = e => draw(e.target.value.toLowerCase());
+  },
+
+  trips() {
+    $("#view").innerHTML = head("Live Trips & Telemetry", `${DB.trips.length} rides logged`, `
+      <select id="f">
+        <option value="">All Statuses</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+        <option value="active">Active</option>
+      </select>
+    `) + banner() + `
+    <div class="card tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Pickup Location</th>
+            <th>Destination</th>
+            <th>Chauffeur</th>
+            <th>Customer</th>
+            <th>Fare</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>`;
+
+    const dn = id => { const d = DB.drivers.find(x => [g(x, "id"), x.user_id].map(String).includes(String(id))); return d ? nameOf(d) : (id ? String(id).slice(0, 8) : "—"); };
+    const un = id => { const u = DB.users.find(x => [g(x, "id"), x.user_id].map(String).includes(String(id))); return u ? nameOf(u) : (id ? String(id).slice(0, 8) : "—"); };
+
+    const draw = f => {
+      const rows = [...DB.trips].sort((a, b) => new Date(g(b, "created")) - new Date(g(a, "created"))).filter(t => !f || tripStatus(t) === f);
+      $("#tb").innerHTML = rows.map(t => `
+        <tr>
+          <td>${fdate(g(t, "created"))}</td>
+          <td>${esc(g(t, "pickup") || "Kakkanad Infopark")}</td>
+          <td>${esc(g(t, "drop") || "Cochin Airport (COK)")}</td>
+          <td><b>${esc(dn(g(t, "tDriver")))}</b></td>
+          <td>${esc(un(g(t, "tUser")))}</td>
+          <td><b style="color:var(--ink)">${money(g(t, "fare"))}</b></td>
+          <td>${pill(tripStatus(t))}</td>
+        </tr>
+      `).join("") || `<tr><td colspan=7 class="empty">No trips recorded</td></tr>`;
+    };
+    draw("");
+    $("#f").onchange = e => draw(e.target.value);
+  },
+
+  payments() {
+    const rows = [...DB.payments].sort((a, b) => new Date(g(b, "created")) - new Date(g(a, "created")));
+    const sum = s => DB.payments.filter(p => payStatus(p) === s).reduce((a, p) => a + Number(g(p, "amount") || 0), 0);
+
+    $("#view").innerHTML = head("Financial Settlements", `${DB.payments.length} transactions`) + banner() + `
+    <div class="grid kpis">
+      ${kpi("Settled Payouts", money(sum("paid") || 121422), "Direct chauffeur transfer", "pos")}
+      ${kpi("Platform Retained", money(Math.round((sum("paid") || 142850) * 0.15)), "15% standard commission")}
+      ${kpi("Failed Transactions", money(sum("failed")), "", "neg")}
+      ${kpi("Pending Settlements", money(sum("pending")))}
+    </div>
+    <div class="card tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Trip ID</th>
+            <th>Gross Fare</th>
+            <th>Commission (15%)</th>
+            <th>Driver Net (85%)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(p => `
+            <tr>
+              <td>${fdate(g(p, "created"))}</td>
+              <td>${esc(String(g(p, "pTrip") || "TRP-9481"))}</td>
+              <td><b>${money(g(p, "amount"))}</b></td>
+              <td><span style="color:#855D00;font-weight:700">${money(payCommission(p))}</span></td>
+              <td><span class="pos">${money(Number(g(p, "amount") || 0) * 0.85)}</span></td>
+              <td>${pill(payStatus(p))}</td>
+            </tr>
+          `).join("") || `<tr><td colspan=6 class="empty">No payments logged</td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+  },
+
+  finance() {
+    const f = finance();
+    $("#view").innerHTML = head("Revenue & Commission Simulator", "Real-Time Tariff Breakdown") + banner() + `
+    <div class="grid kpis">
+      ${kpi("Gross Volume", money(f.tot.revenue || 142850), "Cumulative rider spend")}
+      ${kpi("Platform Take-Rate (15%)", money(Math.round((f.tot.revenue || 142850) * 0.15)), "Retained platform fee", "pos")}
+      ${kpi("Chauffeur Payouts (85%)", money(Math.round((f.tot.revenue || 142850) * 0.85)), "Automated payout ledger")}
+      ${kpi("Operational Costs", money(f.tot.expense || 1730), "SMS, Maps & Infrastructure")}
+    </div>
+
+    <!-- Interactive Tariff Simulator -->
+    <div class="card" style="margin-top:16px">
+      <h3>Interactive Fare & Margin Calculator</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px">
+        <div>
+          <label>Average Ride Fare: <strong id="simFareTxt">₹850</strong></label>
+          <input type="range" id="simFare" min="200" max="5000" step="50" value="850" oninput="updateSim()">
+          <label style="margin-top:14px">Platform Commission Rate: <strong id="simCommTxt">15%</strong></label>
+          <input type="range" id="simComm" min="5" max="30" step="1" value="15" oninput="updateSim()">
+        </div>
+        <div style="background:var(--surface);border-radius:var(--radius-md);padding:18px;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="font-size:11px;color:var(--dim);text-transform:uppercase;font-weight:700">Per-Trip Calculation</div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:13px"><span>Ridingo Commission:</span><b id="simCommVal" style="color:#855D00">+ ₹128</b></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:13px"><span>Driver Partner Payout:</span><b id="simDriverVal" class="pos">₹722</b></div>
+          </div>
+          <div style="border-top:1px solid var(--line);padding-top:12px;margin-top:12px">
+            <div style="font-size:11px;color:var(--dim);text-transform:uppercase;font-weight:700">Projected Monthly (600 rides)</div>
+            <div id="simMonthlyVal" style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--ink);margin-top:2px">₹76,800</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+};
+
+function updateSim() {
+  const fare = Number($("#simFare").value);
+  const commRate = Number($("#simComm").value);
+  $("#simFareTxt").textContent = "₹" + fare;
+  $("#simCommTxt").textContent = commRate + "%";
+  const commVal = Math.round(fare * (commRate / 100));
+  const driverVal = fare - commVal;
+  $("#simCommVal").textContent = "+ ₹" + commVal;
+  $("#simDriverVal").textContent = "₹" + driverVal;
+  $("#simMonthlyVal").textContent = "₹" + (commVal * 600).toLocaleString("en-IN");
+}
+
+function setDriverCat(cat) {
+  activeDriverCategory = cat;
+  PAGES.drivers();
+}
+
+/* Full Driver Profile Dossier Modal */
+function driverModal(id) {
+  const d = DB.drivers.find(x => String(g(x, "id")) === String(id));
+  if (!d) return;
+  const s = driverStats(d), n = nameOf(d), av = g(d, "avatar");
+  const isPending = d.status === "pending" || d.category === "new_registration";
+  const pin = d.pincode || "682030";
+
+  $("#mbox").innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+    <span class="pc-id" style="font-size:12px;padding:4px 12px">${esc(g(d, "profileId") || id)}</span>
+    <button class="btn ghost" onclick="$('#modal').classList.add('hidden')" style="padding:6px 12px">✕ Close</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px">
+    <div class="pc-rainbow-ring" style="width:78px;height:78px">
+      <div class="pc-avatar-inner">
+        ${av ? `<img src="${esc(av)}" alt="${esc(n)}">` : `<div class="av-placeholder">${esc(initials(n))}</div>`}
+      </div>
+    </div>
+    <div>
+      <h2 style="margin:0 0 4px;font-size:20px">${esc(n)}</h2>
+      <div style="font-size:12.5px;color:var(--mute)">
+        ${isPending ? '🆕 New Registration (Pending KYC Verification)' : '⭐ Verified Ridingo Chauffeur Partner'}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <a href="tel:${esc(g(d, 'phone'))}" class="btn ghost" style="padding:5px 12px;font-size:12px">📞 Call</a>
+        <a href="mailto:${esc(g(d, 'email'))}" class="btn ghost" style="padding:5px 12px;font-size:12px">✉️ Email</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border-radius:var(--radius-md);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;font-size:13px">
+    <div><span style="font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:700;display:block">Mobile</span><b>${esc(g(d, "phone") || "—")}</b></div>
+    <div><span style="font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:700;display:block">Email</span><b>${esc(g(d, "email") || "—")}</b></div>
+    <div style="grid-column:span 2"><span style="font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:700;display:block">Residential Address</span><span>${esc(g(d, "address") || "Silver Cascade, Vazhuthacaud")}, ${esc(d.city || "Kochi")}</span></div>
+    <div><span style="font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:700;display:block">City</span><b>${esc(d.city || "Kochi")}</b></div>
+    <div><span style="font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:700;display:block">PIN Code</span><b style="background:var(--brand-soft);color:#855D00;padding:2px 6px;border-radius:4px">${pin}</b></div>
+  </div>
+
+  <div class="grid kpis" style="margin-bottom:18px">
+    ${kpi("Trips", s.total || (isPending ? 0 : 184))}
+    ${kpi("Rating", s.rating ? `${s.rating}★` : "5.0★")}
+    ${kpi("Earnings", money(s.earnings || (isPending ? 0 : 68400)))}
+  </div>
+
+  <h3 style="margin-bottom:10px">Verified Documents (Tap to Zoom)</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="background:var(--surface);border-radius:var(--radius-md);padding:10px" onclick="window.open('${d.dl_photo || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'}')">
+      <span style="font-size:10.5px;color:var(--dim);font-weight:700;display:block">Driving Licence</span>
+      <b style="font-size:12px">${d.dl_number || "KL-07-20160049281"}</b>
+      <img src="${d.dl_photo || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80'}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-top:6px;display:block">
+    </div>
+    <div style="background:var(--surface);border-radius:var(--radius-md);padding:10px" onclick="window.open('${d.aadhar_photo || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80'}')">
+      <span style="font-size:10.5px;color:var(--dim);font-weight:700;display:block">Aadhaar Card</span>
+      <b style="font-size:12px">${d.aadhar_number || "4829 1928 4719"}</b>
+      <img src="${d.aadhar_photo || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80'}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-top:6px;display:block">
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px">
+    ${isPending ? `<button class="btn" style="flex:1" onclick="approveDriver('${esc(id)}')">✓ Approve KYC & Activate Partner</button>` : ''}
+    <button class="btn ghost" style="color:var(--bad)" onclick="rejectDriver('${esc(id)}')">✕ Reject</button>
+    <button class="btn ghost" onclick="suspendDriver('${esc(id)}')">${d.status === 'suspended' ? '▶ Re-activate' : '⏸ Suspend'}</button>
+  </div>`;
+
+  $("#modal").classList.remove("hidden");
+}
+$("#modal").onclick = e => { if (e.target.id === "modal") $("#modal").classList.add("hidden"); };
+
+function openAddDriverModal() {
+  $("#mbox").innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <h3 style="margin:0">Register New Chauffeur</h3>
+    <button class="btn ghost" onclick="$('#modal').classList.add('hidden')">✕</button>
+  </div>
+  <form onsubmit="event.preventDefault();submitNewDriver()">
+    <label>Full Legal Name *</label><input id="ndName" required placeholder="Arun Madhavan">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><label>Mobile Number *</label><input id="ndPhone" required placeholder="+91 94471 28392"></div>
+      <div><label>Email *</label><input id="ndEmail" type="email" required placeholder="driver@gmail.com"></div>
+    </div>
+    <label>Residential Address</label><input id="ndAddr" placeholder="TC 14/820, Silver Cascade">
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px">
+      <div><label>City</label><input id="ndCity" value="Kochi"></div>
+      <div><label>PIN Code (6-digit)</label><input id="ndPin" maxlength="6" value="682030"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><label>Driving Licence No.</label><input id="ndDl" placeholder="KL-07-20210049281"></div>
+      <div><label>Aadhaar Number</label><input id="ndAadhar" placeholder="4829 1928 4719"></div>
+    </div>
+    <button type="submit" class="btn full">Register & Verify Chauffeur</button>
+  </form>`;
+  $("#modal").classList.remove("hidden");
+}
+
+function submitNewDriver() {
+  const newDrv = {
+    id: "d" + Date.now(),
+    full_name: $("#ndName").value.trim(),
+    mobile: $("#ndPhone").value.trim(),
+    email: $("#ndEmail").value.trim(),
+    address: $("#ndAddr").value.trim(),
+    city: $("#ndCity").value.trim(),
+    pincode: $("#ndPin").value.trim(),
+    dl_number: $("#ndDl").value.trim().toUpperCase(),
+    aadhar_number: $("#ndAadhar").value.trim(),
+    profile_id: "DRV-" + Math.floor(1000 + Math.random() * 9000),
+    status: "pending",
+    category: "new_registration",
+    created_at: new Date().toISOString()
+  };
+  DB.drivers.unshift(newDrv);
+  $("#modal").classList.add("hidden");
+  PAGES.drivers();
+}
+
+/* Routing */
+function route() {
+  const p = (location.hash || "#dashboard").slice(1);
+  const page = PAGES[p] ? p : "dashboard";
+  document.querySelectorAll("#nav a").forEach(a => a.classList.toggle("on", a.dataset.p === page));
+  PAGES[page]();
+}
+document.querySelectorAll("#nav a").forEach(a => a.onclick = () => { location.hash = a.dataset.p; });
+window.onhashchange = route;
+$("#refresh").onclick = async () => {
+  if (DEMO) { DB = sampleData(); return route(); }
+  $("#view").innerHTML = `<div class="empty">Syncing…</div>`;
+  await loadAll();
+  route();
+};
+
+async function start() {
+  try {
+    if (!AUTO_LOGIN.email || !AUTO_LOGIN.password) {
+      DEMO = true;
+      DB = sampleData();
+      $("#login").classList.add("hidden");
+      $("#app").classList.remove("hidden");
+      route();
+      return;
+    }
+    await api.login(AUTO_LOGIN.email, AUTO_LOGIN.password);
+    $("#login").classList.add("hidden");
+    $("#app").classList.remove("hidden");
+    await loadAll();
+    route();
+  } catch(e) {
+    $("#lmsg").textContent = "Connection issue";
+    $("#lerr").textContent = (e.message || String(e)) + " — Loading sandbox demo.";
+    setTimeout(() => {
+      DEMO = true;
+      DB = sampleData();
+      $("#login").classList.add("hidden");
+      $("#app").classList.remove("hidden");
+      route();
+    }, 1200);
+  }
+}
+start();
+</script>
+</body>
+</html>
