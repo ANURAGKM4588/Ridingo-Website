@@ -251,6 +251,32 @@ function AdminPage() {
   const [rejectModalDriverId, setRejectModalDriverId] = useState<string | null>(null);
   const [rejectReasonInput, setRejectReasonInput] = useState("");
 
+  // Authentication state for team.ridingo@gmail.com
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem("ridingo_admin_auth") === "true";
+  });
+  const [loginEmail, setLoginEmail] = useState("team.ridingo@gmail.com");
+  const [loginPass, setLoginPass] = useState("");
+  const [loginError, setLoginError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loginEmail.trim().toLowerCase() === "team.ridingo@gmail.com" && loginPass === "Anu@kallachi4588") {
+      sessionStorage.setItem("ridingo_admin_auth", "true");
+      setIsAuthenticated(true);
+      setLoginError("");
+    } else {
+      setLoginError("Invalid credentials. Access restricted to team.ridingo@gmail.com.");
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("ridingo_admin_auth");
+    setIsAuthenticated(false);
+    setLoginPass("");
+  };
+
   // New Driver Form state
   const [newDriverName, setNewDriverName] = useState("");
   const [newDriverPhone, setNewDriverPhone] = useState("");
@@ -375,6 +401,14 @@ function AdminPage() {
     setDrivers(updated);
     try {
       localStorage.setItem("ridingo_registered_drivers_registry", JSON.stringify(updated));
+      const notifs = JSON.parse(localStorage.getItem("ridingo_admin_notifications") || "[]");
+      notifs.unshift({
+        recipient: "team.ridingo@gmail.com",
+        subject: `New Driver KYC Registration Request: ${newDrv.name} (${newDrv.city})`,
+        driver: newDrv,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem("ridingo_admin_notifications", JSON.stringify(notifs.slice(0, 50)));
     } catch (e) {}
     setIsAddDriverOpen(false);
     setSelectedDriver(newDrv);
@@ -383,28 +417,77 @@ function AdminPage() {
     setNewDriverEmail("");
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#FBFBFA] flex items-center justify-center p-6 font-sans">
+        <div className="w-full max-w-sm bg-white rounded-3xl border border-black/5 p-8 shadow-sm text-center">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <span className="font-display font-extrabold text-2xl text-[#121316]">Ridingo</span>
+            <span className="text-[10px] bg-[#FFC70A] text-black font-extrabold px-2 py-0.5 rounded-md uppercase">CRM</span>
+          </div>
+          <h2 className="font-display font-extrabold text-lg text-[#121316] mb-1">Executive Portal</h2>
+          <p className="text-xs text-[#4B5563] mb-6">Enter authorized administrative credentials</p>
+          <form onSubmit={handleLogin} className="space-y-3.5 text-left">
+            <div>
+              <label className="text-[10.5px] uppercase font-bold text-[#6B7280] block mb-1">Admin Email</label>
+              <input
+                type="email"
+                required
+                value={loginEmail}
+                onChange={e => setLoginEmail(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E7EB] text-sm text-[#121316] outline-none focus:border-[#FFC70A]"
+              />
+            </div>
+            <div>
+              <label className="text-[10.5px] uppercase font-bold text-[#6B7280] block mb-1">Admin Password</label>
+              <input
+                type="password"
+                required
+                value={loginPass}
+                onChange={e => setLoginPass(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5E7EB] text-sm text-[#121316] outline-none focus:border-[#FFC70A]"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2.5 bg-[#FFC70A] text-[#121316] font-extrabold text-xs rounded-xl shadow-xs hover:bg-[#F5BE00] transition mt-2 cursor-pointer"
+            >
+              Sign In to Admin Portal
+            </button>
+            {loginError && (
+              <div className="text-xs text-[#DC2626] bg-[#FEF2F2] border border-[#FECACA] p-2.5 rounded-lg text-center font-medium">
+                {loginError}
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#FBFBFA] text-[#121316] flex flex-col md:flex-row font-sans antialiased">
+    <div className="min-h-screen bg-[#FBFBFA] text-[#121316] flex flex-col md:flex-row font-sans antialiased text-[13.5px]">
       {/* Sidebar - Modern Minimal Light Theme */}
-      <aside className="w-full md:w-80 bg-white border-r border-black/5 p-8 flex flex-col justify-between shrink-0">
+      <aside className="w-full md:w-68 bg-white border-r border-black/5 p-6 flex flex-col justify-between shrink-0">
         <div>
           {/* Logo & CRM Badge */}
-          <div className="flex items-center justify-between mb-8 px-1">
+          <div className="flex items-center justify-between mb-6 px-1">
             <Link to="/" className="flex items-center gap-2">
-              <img src={ridingoLogo} alt="Ridingo" className="h-9 object-contain" />
+              <img src={ridingoLogo} alt="Ridingo" className="h-8 object-contain" />
             </Link>
-            <span className="font-display text-xs font-extrabold uppercase bg-[#FFC70A] text-black px-2.5 py-1 rounded-md tracking-wider">
+            <span className="font-display text-[10px] font-extrabold uppercase bg-[#FFC70A] text-black px-2 py-0.5 rounded-md tracking-wider">
               CRM
             </span>
           </div>
 
           {/* Quick Domain & Live Status (Inset Pill Style) */}
-          <div className="bg-[#F5F6F8] border border-black/5 rounded-2xl p-4 mb-6">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs text-[#4B5563] font-bold uppercase tracking-wider">
+          <div className="bg-[#F5F6F8] border border-black/5 rounded-2xl p-3.5 mb-5">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10.5px] text-[#4B5563] font-bold uppercase tracking-wider">
                 Production CRM
               </span>
-              <span className="text-[11px] text-[#10B981] font-bold flex items-center gap-1.5">
+              <span className="text-[10.5px] text-[#10B981] font-bold flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block animate-pulse" />
                 Live
               </span>
@@ -413,13 +496,13 @@ function AdminPage() {
           </div>
 
           {/* Navigation Links */}
-          <div className="mb-2 px-2">
-            <span className="text-xs text-[#6B7280] font-bold uppercase tracking-wider">
+          <div className="mb-2 px-1">
+            <span className="text-[10.5px] text-[#6B7280] font-bold uppercase tracking-wider">
               Operations
             </span>
           </div>
 
-          <nav className="flex flex-col gap-2">
+          <nav className="flex flex-col gap-1.5">
             {[
               { id: "drivers", label: "Drivers & KYC", badge: newCount > 0 ? `${newCount} New` : null },
               { id: "telemetry", label: "Trip Revenue Engine" },
@@ -435,13 +518,13 @@ function AdminPage() {
                     setActiveTab(item.id as any);
                     setSelectedDriver(null);
                   }}
-                  className={`flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15.5px] font-semibold transition ${
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition ${
                     active ? "bg-[#F5F6F8] text-[#121316] border border-[#E5E7EB] font-bold shadow-xs" : "text-[#4B5563] hover:text-[#121316] hover:bg-[#F5F6F8]/60"
                   }`}
                 >
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
+                    <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
                       active ? "bg-[#FFC70A] text-black" : "bg-[#EEEEF2] text-[#121316]"
                     }`}>
                       {item.badge}
@@ -454,7 +537,14 @@ function AdminPage() {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-black/5 pt-5 mt-6">
+        <div className="border-t border-black/5 pt-4 mt-6 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full text-center py-2 px-3 text-xs font-semibold rounded-lg text-[#DC2626] bg-[#FEF2F2] border border-[#FECACA] hover:bg-[#FEE2E2] transition cursor-pointer"
+          >
+            Log Out
+          </button>
           <Link
             to="/"
             className="text-xs text-[#4B5563] hover:text-[#121316] flex items-center justify-between transition py-1"
