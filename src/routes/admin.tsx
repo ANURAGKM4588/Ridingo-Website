@@ -421,10 +421,10 @@ function AdminPage() {
 
           <nav className="flex flex-col gap-1.5">
             {[
-              { id: "drivers", label: "Drivers & KYC", icon: <Icons.SteeringWheel />, badge: newCount > 0 ? `${newCount} New` : null },
-              { id: "telemetry", label: "Trip Revenue Engine", icon: <Icons.Chart /> },
-              { id: "trips", label: "Live Trips & Dispatch", icon: <Icons.Route />, badge: "184" },
-              { id: "users", label: "Customer Accounts", icon: <Icons.Users />, badge: "24" }
+              { id: "drivers", label: "Drivers & KYC", badge: newCount > 0 ? `${newCount} New` : null },
+              { id: "telemetry", label: "Trip Revenue Engine" },
+              { id: "trips", label: "Live Trips & Dispatch", badge: "184" },
+              { id: "users", label: "Customer Accounts", badge: "24" }
             ].map(item => {
               const active = activeTab === item.id;
               return (
@@ -439,10 +439,7 @@ function AdminPage() {
                     active ? "bg-[#F5F6F8] text-[#121316] border border-[#E5E7EB] font-bold" : "text-[#4B5563] hover:text-[#121316] hover:bg-[#F5F6F8]/60"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className={active ? "text-[#121316]" : "text-[#6B7280]"}>{item.icon}</span>
-                    <span>{item.label}</span>
-                  </div>
+                  <span>{item.label}</span>
                   {item.badge && (
                     <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
                       active ? "bg-[#FFC70A] text-black" : "bg-[#EEEEF2] text-[#121316]"
