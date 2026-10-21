@@ -508,6 +508,126 @@ tbody tr:hover td { background: var(--surface); }
 .count-chip.amber { background: var(--warn-soft); color: var(--warn); }
 .count-chip.green { background: var(--ok-soft); color: var(--ok); }
 
+/* Offer Banners & Slides */
+.banner-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transition: all 0.15s ease;
+}
+.banner-card.paused { opacity: 0.65; }
+.banner-thumb {
+  width: 110px;
+  height: 70px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.banner-service-chip {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #FFFFFF;
+}
+.banner-res-chip {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--surface-hover);
+  color: var(--ink);
+}
+.banner-cta-chip {
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 11.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--line-strong);
+}
+.slot-box {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1.5px solid var(--line-strong);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.slot-upload-area {
+  border: 2px dashed var(--line-strong);
+  border-radius: 12px;
+  padding: 22px 14px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--surface);
+  transition: all 0.15s ease;
+}
+.slot-upload-area:hover {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+.service-pick-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--card);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+.service-pick-card:hover {
+  border-color: var(--brand);
+  transform: translateY(-1px);
+}
+.service-pick-card.active {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.cta-preset-btn {
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--card);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+.cta-preset-btn:hover { border-color: var(--brand); }
+.cta-preset-btn.active {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+@media(max-width: 860px) {
+  .banner-card { flex-direction: column; align-items: flex-start; }
+  .banner-card > div:last-child { width: 100%; justify-content: flex-end; }
+}
+
 /* Modal */
 .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); display: grid; place-items: center; padding: 20px; z-index: 9999; }
 .modal .box {
@@ -696,6 +816,10 @@ const ICONS = {
         <a data-p="finance">
           <span class="nav-label">Revenue Engine</span>
         </a>
+        <a data-p="banners">
+          <span class="nav-label">Offer Banners</span>
+          <span class="nav-badge" id="bannerBadge">3 Live</span>
+        </a>
       </div>
     </div>
 
@@ -738,8 +862,230 @@ const api = {
 };
 
 const $ = s => document.querySelector(s);
-let DB = { drivers: [], users: [], trips: [], payments: [], expenses: [] };
+let DB = { drivers: [], users: [], trips: [], payments: [], expenses: [], banners: [] };
 const LOADERR = {};
+
+const LOCAL_BANNERS_KEY = "ridingo_offer_banners_v1";
+const BANNERS_EVENT_KEY = "ridingo_banners_updated";
+
+const SERVICE_OPTIONS = [
+  { id: "airport", name: "Airport Pickup & Drop", category: "airport", emoji: "✈️", color: "#10B981", tag: "RIDINGO · AIRPORT" },
+  { id: "hourly", name: "Hourly City Driver", category: "hourly", emoji: "⏱️", color: "#F59E0B", tag: "RIDINGO · DRIVER" },
+  { id: "daily", name: "Full Day Hire", category: "daily", emoji: "☀️", color: "#3B82F6", tag: "RIDINGO · FULL DAY" },
+  { id: "outstation", name: "Outstation Highway Trip", category: "outstation", emoji: "🛣️", color: "#8B5CF6", tag: "RIDINGO · HIGHWAY" },
+  { id: "event", name: "Night & Events Driver", category: "event", emoji: "🌙", color: "#EC4899", tag: "RIDINGO · NIGHT" }
+];
+
+const CTA_COLOR_PRESETS = [
+  { id: "white", label: "Classic White", bg: "#FFFFFF", text: "#000000", border: "rgba(0,0,0,0.15)" },
+  { id: "yellow", label: "Taxi Yellow", bg: "#FFC70A", text: "#000000", border: "transparent" },
+  { id: "green", label: "Emerald Green", bg: "#10B981", text: "#FFFFFF", border: "transparent" },
+  { id: "blue", label: "Electric Blue", bg: "#3B82F6", text: "#FFFFFF", border: "transparent" },
+  { id: "amber", label: "Sunset Amber", bg: "#F59E0B", text: "#000000", border: "transparent" },
+  { id: "red", label: "Crimson Red", bg: "#EF4444", text: "#FFFFFF", border: "transparent" },
+  { id: "violet", label: "Royal Violet", bg: "#8B5CF6", text: "#FFFFFF", border: "transparent" },
+  { id: "dark", label: "Deep Obsidian", bg: "#0F172A", text: "#FFFFFF", border: "rgba(255,255,255,0.2)" }
+];
+
+const DEFAULT_SEED_BANNERS = [
+  {
+    id: "banner-airport-1",
+    title: "Airport Rides Offer",
+    headline: "5% Off Airport Rides",
+    sub: "Flight delay tracking with zero surge guarantee",
+    category: "airport",
+    serviceName: "Airport Pickup & Drop",
+    brandTag: "RIDINGO · AIRPORT",
+    tag: "5% CASHBACK",
+    tagBg: "#10B981",
+    tagColor: "#FFFFFF",
+    promoCode: "AIRPORT5",
+    cta: "Book Now",
+    ctaBgColor: "#FFFFFF",
+    ctaTextColor: "#000000",
+    showCta: true,
+    trustText: "Verified Flight Drivers",
+    icon: "plane",
+    imageMobile: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1000&auto=format&fit=crop&q=80",
+    imageTablet: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1500&auto=format&fit=crop&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1000&auto=format&fit=crop&q=80",
+    bgGradient: "linear-gradient(135deg, #061A15 0%, #0D2C24 45%, #0B1929 100%)",
+    accentBorder: "rgba(16, 185, 129, 0.4)",
+    ambientGlow: "rgba(16, 185, 129, 0.25)",
+    active: true,
+    order: 1,
+    createdAt: "2026-10-15T00:00:00Z"
+  },
+  {
+    id: "banner-hourly-2",
+    title: "City Driver Offer",
+    headline: "35% Off City Driver",
+    sub: "Errands, meetings & shopping in your own car",
+    category: "hourly",
+    serviceName: "Hourly City Driver",
+    brandTag: "RIDINGO · DRIVER",
+    tag: "35% OFF",
+    tagBg: "#F59E0B",
+    tagColor: "#000000",
+    promoCode: "FIRST35",
+    cta: "Book Now",
+    ctaBgColor: "#FFC70A",
+    ctaTextColor: "#000000",
+    showCta: true,
+    trustText: "100% Background-Checked",
+    icon: "hourly",
+    imageMobile: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1000&auto=format&fit=crop&q=80",
+    imageTablet: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1500&auto=format&fit=crop&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1000&auto=format&fit=crop&q=80",
+    bgGradient: "linear-gradient(135deg, #1A1102 0%, #2A1A05 45%, #18181B 100%)",
+    accentBorder: "rgba(245, 158, 11, 0.4)",
+    ambientGlow: "rgba(245, 158, 11, 0.25)",
+    active: true,
+    order: 2,
+    createdAt: "2026-10-15T00:00:00Z"
+  },
+  {
+    id: "banner-outstation-3",
+    title: "Highway Trips Offer",
+    headline: "Flat ₹250 Off Highway Trips",
+    sub: "Scenic hill stations & outstation road drives",
+    category: "outstation",
+    serviceName: "Outstation Highway Trip",
+    brandTag: "RIDINGO · HIGHWAY",
+    tag: "FLAT ₹250 OFF",
+    tagBg: "#3B82F6",
+    tagColor: "#FFFFFF",
+    promoCode: "HIGHWAY250",
+    cta: "Book Now",
+    ctaBgColor: "#FFFFFF",
+    ctaTextColor: "#000000",
+    showCta: true,
+    trustText: "Experienced Highway Drivers",
+    icon: "route",
+    imageMobile: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1000&auto=format&fit=crop&q=80",
+    imageTablet: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1500&auto=format&fit=crop&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1000&auto=format&fit=crop&q=80",
+    bgGradient: "linear-gradient(135deg, #091326 0%, #102246 45%, #131722 100%)",
+    accentBorder: "rgba(59, 130, 246, 0.4)",
+    ambientGlow: "rgba(59, 130, 246, 0.25)",
+    active: true,
+    order: 3,
+    createdAt: "2026-10-15T00:00:00Z"
+  }
+];
+
+function getLocalBanners() {
+  try {
+    const raw = localStorage.getItem(LOCAL_BANNERS_KEY);
+    if (!raw) {
+      localStorage.setItem(LOCAL_BANNERS_KEY, JSON.stringify(DEFAULT_SEED_BANNERS));
+      return JSON.parse(JSON.stringify(DEFAULT_SEED_BANNERS));
+    }
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.sort((a, b) => (a.order || 0) - (b.order || 0));
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_SEED_BANNERS));
+  } catch(e) {
+    return JSON.parse(JSON.stringify(DEFAULT_SEED_BANNERS));
+  }
+}
+
+async function syncBannersToCloud(banners) {
+  try {
+    localStorage.setItem(LOCAL_BANNERS_KEY, JSON.stringify(banners));
+  } catch(e) {}
+
+  try {
+    window.dispatchEvent(new CustomEvent(BANNERS_EVENT_KEY, { detail: banners }));
+  } catch(e) {}
+
+  try {
+    if ("BroadcastChannel" in window) {
+      const bc = new BroadcastChannel("ridingo_banner_sync");
+      bc.postMessage({ type: "BANNERS_UPDATED", banners });
+      bc.close();
+    }
+  } catch(e) {}
+
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/profiles?phone=eq.%2B919999999999`, {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify({
+        name: "RIDINGO_OFFER_BANNERS",
+        preferences: { banners },
+        updated_at: new Date().toISOString()
+      })
+    });
+  } catch(err) {
+    console.warn("Cloud banner sync notice:", err);
+  }
+}
+
+async function loadBannersData() {
+  let list = getLocalBanners();
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?phone=eq.%2B919999999999&select=*`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      if (data && data[0] && data[0].preferences && Array.isArray(data[0].preferences.banners) && data[0].preferences.banners.length > 0) {
+        list = data[0].preferences.banners;
+        localStorage.setItem(LOCAL_BANNERS_KEY, JSON.stringify(list));
+      }
+    }
+  } catch(e) {}
+
+  DB.banners = list;
+  updateBannerBadge();
+}
+
+function updateBannerBadge() {
+  const b = $("#bannerBadge");
+  if (!b) return;
+  const liveCount = (DB.banners || []).filter(x => x.active !== false).length;
+  b.textContent = `${liveCount} Live`;
+}
+
+async function toggleBannerActive(id) {
+  const item = (DB.banners || []).find(b => b.id === id);
+  if (!item) return;
+  item.active = !item.active;
+  await syncBannersToCloud(DB.banners);
+  updateBannerBadge();
+  PAGES.banners();
+  showToast(item.active ? "Offer banner slide is now Live on App!" : "Offer banner slide paused");
+}
+
+async function deleteBanner(id) {
+  if (!confirm("Are you sure you want to delete this offer banner slide?")) return;
+  DB.banners = (DB.banners || []).filter(b => b.id !== id);
+  await syncBannersToCloud(DB.banners);
+  updateBannerBadge();
+  PAGES.banners();
+  showToast("Offer banner removed");
+}
+
+async function moveBanner(id, dir) {
+  const list = DB.banners || [];
+  const idx = list.findIndex(b => b.id === id);
+  if (idx === -1) return;
+  const targetIdx = idx + dir;
+  if (targetIdx < 0 || targetIdx >= list.length) return;
+  const temp = list[idx];
+  list[idx] = list[targetIdx];
+  list[targetIdx] = temp;
+  list.forEach((b, i) => { b.order = i + 1; });
+  await syncBannersToCloud(list);
+  PAGES.banners();
+}
 
 const pick = (r, keys) => { for (const k of keys) if (r && r[k] !== undefined && r[k] !== null && r[k] !== "") return r[k]; return null; };
 const g = (r, c) => pick(r, COLS[c]);
@@ -900,6 +1246,10 @@ async function loadAll() {
   }
 
   if ($("#drvBadge")) $("#drvBadge").textContent = DB.drivers.length;
+
+  // 6. OFFER BANNERS
+  await loadBannersData();
+  updateBannerBadge();
 }
 
 function driverStats(d) {
@@ -1455,6 +1805,112 @@ const PAGES = {
         </div>
       </div>
     </div>`;
+  },
+
+  banners() {
+    const banners = DB.banners || [];
+    const liveCount = banners.filter(b => b.active !== false).length;
+    const catCount = new Set(banners.map(b => b.category)).size;
+
+    const extraHeader = `
+      <button type="button" class="btn" onclick="openBannerModal()" style="padding:10px 18px;border-radius:12px;font-size:13px;font-weight:800;gap:8px">
+        ${ICONS.plus}
+        <span>Create Offer Banner Slide</span>
+      </button>`;
+
+    $("#view").innerHTML = head("Offer Banners & Slides", "Manage Mobile App Promotional Slides & Navigation Routing", extraHeader) + banner() + `
+    <div class="grid kpis">
+      ${kpi("Total Banner Slides", banners.length, "Configured promotional slides", "Fleet Banners", "status-pill blue")}
+      ${kpi("Running Live on App", liveCount, "Active slides cycling on User App Home", `${liveCount} Active`, "status-pill green")}
+      ${kpi("Target Service Routes", catCount, "Direct booking navigation destinations", "Interactive", "status-pill amber")}
+      ${kpi("Asset Compatibility", "1000px / 1400px", "Optimized for Mobile Smartphones & iPad / Tablets", "Responsive", "status-pill green")}
+    </div>
+
+    <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line-strong)">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="width:40px;height:40px;border-radius:12px;background:var(--brand-soft);border:1px solid var(--brand);display:flex;align-items:center;justify-content:center;color:#000;font-size:18px">
+          📢
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:14.5px;color:var(--ink)">Real-Time In-App Marketing Banners</div>
+          <div style="color:var(--mute);font-size:12.5px;margin-top:2px">
+            Upload dual mobile & tablet banner artwork, assign targeted service booking routes, and customize CTA buttons with instant live sync.
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="status-pill green">● Instant App Sync Active</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      ${banners.length === 0 ? `
+        <div class="card empty" style="padding:48px 20px">
+          <div style="font-size:28px;margin-bottom:8px">🖼️</div>
+          <div style="font-weight:800;font-size:15px;color:var(--ink)">No Offer Banners Configured</div>
+          <div style="color:var(--mute);margin:4px 0 18px;font-size:13px">Create your first custom offer banner slide to display on the User App home tab.</div>
+          <button type="button" class="btn" onclick="openBannerModal()" style="margin:0 auto">${ICONS.plus}<span>Create Offer Banner</span></button>
+        </div>
+      ` : banners.map((b, idx) => {
+        const srv = SERVICE_OPTIONS.find(s => s.id === b.category) || SERVICE_OPTIONS[0];
+        const previewImg = b.imageMobile || b.imageUrl || b.imageTablet || "";
+        const ctaText = b.cta || "Book Now";
+        const ctaBg = b.ctaBgColor || "#FFFFFF";
+        const ctaColor = b.ctaTextColor || "#000000";
+
+        return `
+        <div class="banner-card ${b.active === false ? 'paused' : ''}">
+          <div style="display:flex;align-items:center;gap:18px;min-width:0;flex:1">
+            <div class="banner-thumb" style="${previewImg ? `background-image:url('${esc(previewImg)}')` : (b.bgGradient || 'background:#121316')}">
+              ${!previewImg ? `<span style="font-size:11px;color:#fff;font-weight:800;text-transform:uppercase">${esc(b.tag || 'Slide')}</span>` : ''}
+            </div>
+
+            <div style="min-width:0;flex:1">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+                <span class="banner-service-chip" style="background:${srv.color}">
+                  <span>➔</span>
+                  <span>Target: ${esc(srv.name)}</span>
+                </span>
+                <span style="font-size:11.5px;color:var(--dim);font-weight:700">• Slide #${idx + 1}</span>
+                <span class="banner-res-chip">📱 Mobile: ${b.imageMobile || b.imageUrl ? '✓ 1000px' : 'Pending'}</span>
+                <span class="banner-res-chip" style="${b.imageTablet ? 'color:var(--ok);font-weight:800' : ''}">📱 iPad/Tablet: ${b.imageTablet ? '✓ 1400px' : 'Auto-Scaled'}</span>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <span style="font-size:13px;color:var(--ink);font-weight:700;display:inline-flex;align-items:center;gap:6px">
+                  CTA Button:
+                  <span class="banner-cta-chip" style="background:${esc(ctaBg)};color:${esc(ctaColor)};border-color:${ctaBg === '#FFFFFF' ? 'rgba(0,0,0,0.15)' : 'transparent'}">
+                    "${esc(ctaText)}"
+                  </span>
+                </span>
+                <span style="font-size:12px;color:var(--mute)">
+                  Tapping opens <strong>${esc(srv.name)}</strong> booking modal directly in User App
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:4px">
+              <button type="button" class="btn ghost" onclick="moveBanner('${esc(b.id)}', -1)" ${idx === 0 ? 'disabled style="opacity:0.3;cursor:not-allowed;padding:6px 10px"' : 'style="padding:6px 10px"'} title="Move slide up">↑</button>
+              <button type="button" class="btn ghost" onclick="moveBanner('${esc(b.id)}', 1)" ${idx === banners.length - 1 ? 'disabled style="opacity:0.3;cursor:not-allowed;padding:6px 10px"' : 'style="padding:6px 10px"'} title="Move slide down">↓</button>
+            </div>
+
+            <button type="button" class="btn ghost" onclick="toggleBannerActive('${esc(b.id)}')" style="padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;${b.active !== false ? 'background:var(--ok-soft);color:var(--ok);border-color:var(--ok-border)' : 'color:var(--mute)'}">
+              ${b.active !== false ? '● Live on App' : '○ Paused'}
+            </button>
+
+            <button type="button" class="btn ghost" onclick="openBannerModal('${esc(b.id)}')" style="padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700">
+              Edit
+            </button>
+
+            <button type="button" class="btn ghost" onclick="deleteBanner('${esc(b.id)}')" style="padding:7px 12px;border-radius:10px;font-size:12px;font-weight:700;color:var(--bad);background:var(--bad-soft);border-color:var(--bad-border)">
+              Delete
+            </button>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`;
   }
 };
 
@@ -1656,6 +2112,507 @@ function openAddDriverModal() {
     </form>
   </div>`;
   $("#modal").classList.remove("hidden");
+}
+
+let currentEditingBannerId = null;
+let bannerForm = {
+  id: null,
+  category: "airport",
+  cta: "Book Now",
+  showCta: true,
+  ctaBgColor: "#FFFFFF",
+  ctaTextColor: "#000000",
+  imageMobile: "",
+  imageTablet: "",
+  previewMode: "mobile"
+};
+
+function openBannerModal(id = null) {
+  currentEditingBannerId = id;
+  const existing = id ? (DB.banners || []).find(b => b.id === id) : null;
+
+  if (existing) {
+    bannerForm = {
+      id: existing.id,
+      category: existing.category || "airport",
+      cta: existing.cta || "Book Now",
+      showCta: existing.showCta !== false,
+      ctaBgColor: existing.ctaBgColor || "#FFFFFF",
+      ctaTextColor: existing.ctaTextColor || "#000000",
+      imageMobile: existing.imageMobile || existing.imageUrl || "",
+      imageTablet: existing.imageTablet || "",
+      previewMode: "mobile"
+    };
+  } else {
+    bannerForm = {
+      id: null,
+      category: "airport",
+      cta: "Book Now",
+      showCta: true,
+      ctaBgColor: "#FFFFFF",
+      ctaTextColor: "#000000",
+      imageMobile: "",
+      imageTablet: "",
+      previewMode: "mobile"
+    };
+  }
+
+  renderBannerModalContent();
+  $("#modal").classList.remove("hidden");
+}
+
+function renderBannerModalContent() {
+  const isEditing = Boolean(currentEditingBannerId);
+  const srv = SERVICE_OPTIONS.find(s => s.id === bannerForm.category) || SERVICE_OPTIONS[0];
+
+  $("#mbox").innerHTML = `
+  <div class="modal-form-body" style="padding:28px 32px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px">
+      <div>
+        <h3 style="margin:0 0 4px;font-family:var(--font-display);font-size:19px;font-weight:800;color:var(--ink)">
+          ${isEditing ? 'Edit Responsive Offer Banner Slide' : 'Create Responsive Offer Banner Slide'}
+        </h3>
+        <div style="font-size:12.5px;color:var(--mute)">
+          Upload responsive graphics for mobile phones & tablets/iPads, assign target service, and configure CTA button.
+        </div>
+      </div>
+      <button type="button" class="btn ghost" onclick="$('#modal').classList.add('hidden')" style="padding:6px;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center">
+        ${ICONS.close}
+      </button>
+    </div>
+
+    <form onsubmit="event.preventDefault();submitBannerForm()" style="display:flex;flex-direction:column;gap:20px">
+      <!-- 1. MULTI-IMAGE UPLOADING (Mobile & Tablet) -->
+      <div style="background:var(--surface);padding:20px;border-radius:20px;border:1px solid var(--line)">
+        <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div>
+            <label style="font-size:12px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 2px">
+              1. Upload Banner Graphics (Mobile & Tablet)
+            </label>
+            <div style="font-size:12px;color:var(--mute)">
+              Upload separate image sizes to ensure flawless resolution on mobile smartphones and iPads/tablets without cropping.
+            </div>
+          </div>
+          <span style="font-size:11px;font-weight:800;color:var(--dim);background:var(--card);padding:3px 9px;border-radius:8px;border:1px solid var(--line-strong)">
+            Aspect Ratio: 2.5:1
+          </span>
+        </div>
+
+        <input type="file" id="bfMobileFile" accept="image/*" style="display:none" onchange="handleBannerFile('mobile', event)">
+        <input type="file" id="bfTabletFile" accept="image/*" style="display:none" onchange="handleBannerFile('tablet', event)">
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px">
+          <!-- SLOT A: Mobile Phone -->
+          <div class="slot-box" id="slotAMobile">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span>📱</span>
+                <b style="font-size:12.5px;color:var(--ink)">Mobile Phone Banner</b>
+              </div>
+              <span id="slotABadge" style="font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:6px;${bannerForm.imageMobile ? 'background:var(--ok-soft);color:var(--ok)' : 'background:var(--surface-hover);color:var(--dim)'}">
+                ${bannerForm.imageMobile ? '✓ 1000×400 Ready' : '1000 × 400 px'}
+              </span>
+            </div>
+
+            <div id="slotAContent">
+              ${bannerForm.imageMobile ? `
+                <div style="width:100%;aspect-ratio:2.5/1;border-radius:12px;overflow:hidden;border:1px solid var(--line-strong);background:#090D1A;position:relative">
+                  <img src="${esc(bannerForm.imageMobile)}" style="width:100%;height:100%;object-fit:cover;display:block">
+                </div>
+                <div style="display:flex;gap:8px;margin-top:10px">
+                  <button type="button" class="btn ghost" onclick="$('#bfMobileFile').click()" style="flex:1;padding:7px;font-size:11.5px">Replace Mobile Image</button>
+                  <button type="button" class="btn ghost" onclick="removeBannerImage('mobile')" style="padding:7px 12px;font-size:11.5px;color:var(--bad);background:var(--bad-soft);border-color:var(--bad-border)">Remove</button>
+                </div>
+              ` : `
+                <div class="slot-upload-area" onclick="$('#bfMobileFile').click()">
+                  <div style="font-size:22px;margin-bottom:4px">📸</div>
+                  <b style="font-size:12.5px;color:var(--ink);display:block">Upload Mobile Graphic</b>
+                  <span style="font-size:11px;color:var(--dim);margin-top:2px;display:block">Recommended: 1000 × 400 px (Max 3.5MB)</span>
+                </div>
+                <div style="margin-top:10px">
+                  <input type="url" id="bfMobileUrl" placeholder="Or paste mobile image URL..." value="${esc(bannerForm.imageMobile)}" oninput="updateBannerImageUrl('mobile', this.value)" style="font-size:12px;padding:8px 12px">
+                </div>
+              `}
+            </div>
+          </div>
+
+          <!-- SLOT B: iPad & Tablet -->
+          <div class="slot-box" id="slotBTablet">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span>📱</span>
+                <b style="font-size:12.5px;color:var(--ink)">iPad & Tablet Banner</b>
+              </div>
+              <span id="slotBBadge" style="font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:6px;${bannerForm.imageTablet ? 'background:var(--ok-soft);color:var(--ok)' : 'background:var(--surface-hover);color:var(--dim)'}">
+                ${bannerForm.imageTablet ? '✓ 1400×560 Ready' : '1400 × 560 px'}
+              </span>
+            </div>
+
+            <div id="slotBContent">
+              ${bannerForm.imageTablet ? `
+                <div style="width:100%;aspect-ratio:2.5/1;border-radius:12px;overflow:hidden;border:1px solid var(--line-strong);background:#090D1A;position:relative">
+                  <img src="${esc(bannerForm.imageTablet)}" style="width:100%;height:100%;object-fit:cover;display:block">
+                </div>
+                <div style="display:flex;gap:8px;margin-top:10px">
+                  <button type="button" class="btn ghost" onclick="$('#bfTabletFile').click()" style="flex:1;padding:7px;font-size:11.5px">Replace Tablet Image</button>
+                  <button type="button" class="btn ghost" onclick="removeBannerImage('tablet')" style="padding:7px 12px;font-size:11.5px;color:var(--bad);background:var(--bad-soft);border-color:var(--bad-border)">Remove</button>
+                </div>
+              ` : `
+                <div class="slot-upload-area" onclick="$('#bfTabletFile').click()">
+                  <div style="font-size:22px;margin-bottom:4px">🖼️</div>
+                  <b style="font-size:12.5px;color:var(--ink);display:block">Upload iPad / Tablet Graphic</b>
+                  <span style="font-size:11px;color:var(--dim);margin-top:2px;display:block">Recommended: 1400 × 560 px (Auto-scales mobile if empty)</span>
+                </div>
+                <div style="margin-top:10px">
+                  <input type="url" id="bfTabletUrl" placeholder="Or paste tablet image URL..." value="${esc(bannerForm.imageTablet)}" oninput="updateBannerImageUrl('tablet', this.value)" style="font-size:12px;padding:8px 12px">
+                </div>
+              `}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. TARGET SERVICE NAVIGATION SELECTOR -->
+      <div>
+        <label style="font-size:12px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 8px;display:block">
+          2. Select Target Service (Navigates to this service booking page when clicked)
+        </label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px" id="srvOptionsGrid">
+          ${SERVICE_OPTIONS.map(s => {
+            const isSel = bannerForm.category === s.id;
+            return `
+            <div class="service-pick-card ${isSel ? 'active' : ''}" onclick="selectBannerService('${s.id}')" style="${isSel ? `border-color:${s.color};background:${s.color}15;border-width:2px` : ''}">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:17px">${s.emoji}</span>
+                ${isSel ? `<span style="width:8px;height:8px;border-radius:50%;background:${s.color}"></span>` : ''}
+              </div>
+              <b style="font-size:13px;color:${isSel ? s.color : 'var(--ink)'};line-height:1.25">${esc(s.name)}</b>
+              <span style="font-size:11px;color:var(--dim)">${esc(s.category)}</span>
+            </div>`;
+          }).join("")}
+        </div>
+      </div>
+
+      <!-- 3. CTA BUTTON CONFIGURATION -->
+      <div style="background:var(--surface);padding:18px 20px;border-radius:18px;border:1px solid var(--line)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+          <div>
+            <label style="font-size:12px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:0.04em;margin:0">
+              3. CTA Button on Image (Book Now / Claim Now)
+            </label>
+            <div style="font-size:11.5px;color:var(--mute)">Select which action button is displayed directly on the banner</div>
+          </div>
+          <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--ink);margin:0">
+            <input type="checkbox" id="bfShowCta" ${bannerForm.showCta !== false ? 'checked' : ''} onchange="toggleBannerCtaVisibility(this.checked)" style="accent-color:var(--brand);width:16px;height:16px;cursor:pointer">
+            <span>Show CTA Button</span>
+          </label>
+        </div>
+
+        <div id="ctaControlsBox" style="${bannerForm.showCta !== false ? 'display:flex;flex-direction:column;gap:14px' : 'display:none'}">
+          <!-- 1-Tap Quick Selectors -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button type="button" onclick="setBannerCtaText('Book Now')" class="cta-preset-btn ${bannerForm.cta === 'Book Now' ? 'active' : ''}" style="flex:1 1 140px;justify-content:center;padding:10px 16px;font-weight:800;font-size:13px;${bannerForm.cta === 'Book Now' ? 'border-color:var(--brand);background:var(--brand-soft);border-width:2px' : ''}">
+              <span>⚡ Book Now</span>
+              ${bannerForm.cta === 'Book Now' ? '<span style="color:var(--ok);margin-left:4px">✓</span>' : ''}
+            </button>
+            <button type="button" onclick="setBannerCtaText('Claim Now')" class="cta-preset-btn ${bannerForm.cta === 'Claim Now' ? 'active' : ''}" style="flex:1 1 140px;justify-content:center;padding:10px 16px;font-weight:800;font-size:13px;${bannerForm.cta === 'Claim Now' ? 'border-color:var(--brand);background:var(--brand-soft);border-width:2px' : ''}">
+              <span>🎁 Claim Now</span>
+              ${bannerForm.cta === 'Claim Now' ? '<span style="color:var(--ok);margin-left:4px">✓</span>' : ''}
+            </button>
+          </div>
+
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;margin:0 0 5px;display:block">Custom Button Text (Optional)</label>
+            <input type="text" id="bfCtaInput" value="${esc(bannerForm.cta)}" placeholder="Book Now or Claim Now" oninput="updateBannerCtaTextInput(this.value)" style="font-size:13px;padding:9px 12px">
+          </div>
+
+          <!-- Color Presets -->
+          <div style="padding-top:12px;border-top:1px solid var(--line)">
+            <label style="font-size:11.5px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 8px;display:block">
+              Button Color Selection (Theme & Branding)
+            </label>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;margin-bottom:12px">
+              ${CTA_COLOR_PRESETS.map(p => {
+                const isSel = (bannerForm.ctaBgColor || '#FFFFFF').toUpperCase() === p.bg.toUpperCase() &&
+                              (bannerForm.ctaTextColor || '#000000').toUpperCase() === p.text.toUpperCase();
+                return `
+                <div class="cta-preset-btn ${isSel ? 'active' : ''}" onclick="selectBannerColorPreset('${p.bg}', '${p.text}')" style="${isSel ? 'border-color:var(--brand);background:var(--brand-soft);border-width:2px' : ''}">
+                  <span style="width:16px;height:16px;border-radius:50%;background:${p.bg};border:1.5px solid ${p.border};display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:${p.text};font-weight:900">
+                    ${isSel ? '✓' : ''}
+                  </span>
+                  <span style="font-size:11.5px;font-weight:${isSel ? 800 : 600};color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.label)}</span>
+                </div>`;
+              }).join("")}
+            </div>
+
+            <!-- Custom Pickers -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;align-items:center">
+              <div style="background:var(--card);padding:10px 12px;border-radius:12px;border:1px solid var(--line-strong)">
+                <label style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;margin:0 0 6px;display:block">Button Background</label>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <input type="color" id="bfBgColorPicker" value="${bannerForm.ctaBgColor || '#FFFFFF'}" oninput="updateBannerCtaColors(this.value, bannerForm.ctaTextColor)" style="width:34px;height:34px;padding:0;border:1px solid var(--line-strong);border-radius:8px;cursor:pointer">
+                  <input type="text" id="bfBgColorTxt" value="${bannerForm.ctaBgColor || '#FFFFFF'}" oninput="updateBannerCtaColors(this.value, bannerForm.ctaTextColor)" style="font-family:monospace;font-size:12px;font-weight:700;padding:6px 10px">
+                </div>
+              </div>
+
+              <div style="background:var(--card);padding:10px 12px;border-radius:12px;border:1px solid var(--line-strong)">
+                <label style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;margin:0 0 6px;display:block">Button Text & Icon</label>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <input type="color" id="bfTextColorPicker" value="${bannerForm.ctaTextColor || '#000000'}" oninput="updateBannerCtaColors(bannerForm.ctaBgColor, this.value)" style="width:34px;height:34px;padding:0;border:1px solid var(--line-strong);border-radius:8px;cursor:pointer">
+                  <input type="text" id="bfTextColorTxt" value="${bannerForm.ctaTextColor || '#000000'}" oninput="updateBannerCtaColors(bannerForm.ctaBgColor, this.value)" style="font-family:monospace;font-size:12px;font-weight:700;padding:6px 10px">
+                </div>
+              </div>
+
+              <div style="background:var(--card);padding:10px 14px;border-radius:12px;border:1px solid var(--line-strong);display:flex;flex-direction:column;justify-content:center">
+                <label style="font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;margin:0 0 6px;display:block">Button Preview</label>
+                <div>
+                  <span id="bfCtaPillPreview" style="font-size:12px;font-weight:800;color:${bannerForm.ctaTextColor || '#000000'};background:${bannerForm.ctaBgColor || '#FFFFFF'};padding:6px 16px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,0.18);display:inline-flex;align-items:center;gap:6px;border:1px solid ${bannerForm.ctaBgColor === '#FFFFFF' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)'}">
+                    <span id="bfCtaPillTxt">${esc(bannerForm.cta || 'Book Now')}</span>
+                    <span style="font-size:11px">➔</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. LIVE IN-APP PREVIEW -->
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+          <label style="font-size:11.5px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:0.04em;margin:0">
+            Live App Appearance Preview
+          </label>
+          <div style="display:flex;align-items:center;gap:4px;background:var(--surface);padding:3px;border-radius:10px;border:1px solid var(--line)">
+            <button type="button" class="btn ${bannerForm.previewMode === 'mobile' ? 'dark' : 'ghost'}" onclick="setBannerPreviewDevice('mobile')" style="padding:4px 10px;border-radius:7px;font-size:11px;font-weight:700;margin:0">
+              📱 Mobile Preview
+            </button>
+            <button type="button" class="btn ${bannerForm.previewMode === 'tablet' ? 'dark' : 'ghost'}" onclick="setBannerPreviewDevice('tablet')" style="padding:4px 10px;border-radius:7px;font-size:11px;font-weight:700;margin:0">
+              📱 iPad / Tablet Preview
+            </button>
+          </div>
+        </div>
+
+        <div id="livePreviewContainerWrap" style="max-width:${bannerForm.previewMode === 'mobile' ? '410px' : '100%'};margin:0 auto;transition:all 0.2s ease">
+          <div id="livePreviewBox" style="position:relative;aspect-ratio:2.5/1;min-height:144px;max-height:230px;border-radius:24px;overflow:hidden;border:1.5px solid rgba(255,255,255,0.25);background:#090D1A;box-shadow:0 8px 24px rgba(0,0,0,0.25)">
+            <img id="livePreviewImg" src="${esc(bannerForm.previewMode === 'tablet' ? (bannerForm.imageTablet || bannerForm.imageMobile || '') : (bannerForm.imageMobile || bannerForm.imageTablet || ''))}" style="width:100%;height:100%;object-fit:cover;display:${(bannerForm.imageMobile || bannerForm.imageTablet) ? 'block' : 'none'}">
+            <div id="livePreviewPlaceholder" style="height:100%;display:${!(bannerForm.imageMobile || bannerForm.imageTablet) ? 'flex' : 'none'};align-items:center;justify-content:center;color:#94A3B8;font-size:13px">
+              Upload an image above to see live preview
+            </div>
+
+            <!-- Gradient Scrim -->
+            <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 50%, transparent 100%);pointer-events:none"></div>
+
+            <!-- Floating CTA Button -->
+            <div id="livePreviewCtaWrap" style="position:absolute;bottom:12px;right:14px;z-index:2;display:${bannerForm.showCta !== false ? 'block' : 'none'}">
+              <span id="livePreviewCtaBtn" style="font-size:11.5px;font-weight:800;color:${esc(bannerForm.ctaTextColor || '#000000')};background:${esc(bannerForm.ctaBgColor || '#FFFFFF')};padding:5px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,0.4);display:inline-flex;align-items:center;gap:5px;border:1px solid ${bannerForm.ctaBgColor === '#FFFFFF' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)'}">
+                <span id="livePreviewCtaText">${esc(bannerForm.cta || 'Book Now')}</span>
+                <span style="font-size:11px">➔</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:6px">
+        <button type="button" class="btn ghost" onclick="$('#modal').classList.add('hidden')" style="padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600">
+          Cancel
+        </button>
+        <button type="submit" class="btn" style="padding:11px 24px;border-radius:12px;font-size:13px;font-weight:800">
+          ${isEditing ? 'Update & Publish to App' : 'Save & Publish to App'}
+        </button>
+      </div>
+    </form>
+  </div>`;
+}
+
+function handleBannerFile(slot, event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const maxMb = slot === "mobile" ? 3.5 : 4.5;
+  if (file.size > maxMb * 1024 * 1024) {
+    alert(`${slot === "mobile" ? "Mobile" : "iPad / Tablet"} banner exceeds ${maxMb}MB limit. Please choose a smaller file.`);
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const res = e.target.result;
+    if (slot === "mobile") {
+      bannerForm.imageMobile = res;
+      if (!bannerForm.imageTablet) bannerForm.imageTablet = res;
+    } else {
+      bannerForm.imageTablet = res;
+      if (!bannerForm.imageMobile) bannerForm.imageMobile = res;
+    }
+    renderBannerModalContent();
+    showToast(`${slot === "mobile" ? "Mobile banner (1000×400)" : "iPad/Tablet banner (1400×560)"} loaded!`);
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateBannerImageUrl(slot, val) {
+  if (slot === "mobile") {
+    bannerForm.imageMobile = val;
+    if (!bannerForm.imageTablet) bannerForm.imageTablet = val;
+  } else {
+    bannerForm.imageTablet = val;
+    if (!bannerForm.imageMobile) bannerForm.imageMobile = val;
+  }
+  updateLivePreviewElements();
+}
+
+function removeBannerImage(slot) {
+  if (slot === "mobile") {
+    bannerForm.imageMobile = "";
+  } else {
+    bannerForm.imageTablet = "";
+  }
+  renderBannerModalContent();
+}
+
+function selectBannerService(srvId) {
+  bannerForm.category = srvId;
+  renderBannerModalContent();
+}
+
+function toggleBannerCtaVisibility(checked) {
+  bannerForm.showCta = checked;
+  const box = $("#ctaControlsBox");
+  if (box) box.style.display = checked ? "flex" : "none";
+  const liveCta = $("#livePreviewCtaWrap");
+  if (liveCta) liveCta.style.display = checked ? "block" : "none";
+}
+
+function setBannerCtaText(text) {
+  bannerForm.cta = text;
+  const input = $("#bfCtaInput");
+  if (input) input.value = text;
+  updateLivePreviewElements();
+  renderBannerModalContent();
+}
+
+function updateBannerCtaTextInput(val) {
+  bannerForm.cta = val;
+  updateLivePreviewElements();
+}
+
+function selectBannerColorPreset(bg, text) {
+  bannerForm.ctaBgColor = bg;
+  bannerForm.ctaTextColor = text;
+  renderBannerModalContent();
+}
+
+function updateBannerCtaColors(bg, text) {
+  bannerForm.ctaBgColor = bg;
+  bannerForm.ctaTextColor = text;
+  const bgPick = $("#bfBgColorPicker");
+  const bgTxt = $("#bfBgColorTxt");
+  const txtPick = $("#bfTextColorPicker");
+  const txtTxt = $("#bfTextColorTxt");
+  if (bgPick) bgPick.value = bg;
+  if (bgTxt) bgTxt.value = bg;
+  if (txtPick) txtPick.value = text;
+  if (txtTxt) txtTxt.value = text;
+  updateLivePreviewElements();
+}
+
+function setBannerPreviewDevice(mode) {
+  bannerForm.previewMode = mode;
+  const wrap = $("#livePreviewContainerWrap");
+  if (wrap) wrap.style.maxWidth = mode === "mobile" ? "410px" : "100%";
+  updateLivePreviewElements();
+  renderBannerModalContent();
+}
+
+function updateLivePreviewElements() {
+  const currentImg = bannerForm.previewMode === "tablet"
+    ? (bannerForm.imageTablet || bannerForm.imageMobile || "")
+    : (bannerForm.imageMobile || bannerForm.imageTablet || "");
+
+  const imgEl = $("#livePreviewImg");
+  const phEl = $("#livePreviewPlaceholder");
+  if (imgEl && phEl) {
+    if (currentImg) {
+      imgEl.src = currentImg;
+      imgEl.style.display = "block";
+      phEl.style.display = "none";
+    } else {
+      imgEl.style.display = "none";
+      phEl.style.display = "flex";
+    }
+  }
+
+  const ctaBtn = $("#livePreviewCtaBtn");
+  const ctaTxt = $("#livePreviewCtaText");
+  const pillPreview = $("#bfCtaPillPreview");
+  const pillTxt = $("#bfCtaPillTxt");
+
+  if (ctaBtn && ctaTxt) {
+    ctaTxt.textContent = bannerForm.cta || "Book Now";
+    ctaBtn.style.background = bannerForm.ctaBgColor || "#FFFFFF";
+    ctaBtn.style.color = bannerForm.ctaTextColor || "#000000";
+  }
+
+  if (pillPreview && pillTxt) {
+    pillTxt.textContent = bannerForm.cta || "Book Now";
+    pillPreview.style.background = bannerForm.ctaBgColor || "#FFFFFF";
+    pillPreview.style.color = bannerForm.ctaTextColor || "#000000";
+  }
+}
+
+async function submitBannerForm() {
+  const finalMobile = bannerForm.imageMobile || bannerForm.imageTablet || "";
+  const finalTablet = bannerForm.imageTablet || bannerForm.imageMobile || "";
+
+  if (!finalMobile && !finalTablet) {
+    alert("Please upload or provide at least one offer banner image graphic");
+    return;
+  }
+
+  const srv = SERVICE_OPTIONS.find(s => s.id === bannerForm.category) || SERVICE_OPTIONS[0];
+  const isEditing = Boolean(currentEditingBannerId);
+  const id = currentEditingBannerId || ("banner-" + bannerForm.category + "-" + Date.now().toString(36));
+
+  const bannerItem = {
+    id,
+    title: `${srv.name} Offer`,
+    headline: `${srv.name} Offer`,
+    sub: srv.tag,
+    category: bannerForm.category,
+    serviceName: srv.name,
+    brandTag: srv.tag,
+    tag: srv.name.toUpperCase(),
+    tagBg: srv.color,
+    tagColor: "#FFFFFF",
+    cta: bannerForm.cta || "Book Now",
+    ctaBgColor: bannerForm.ctaBgColor || "#FFFFFF",
+    ctaTextColor: bannerForm.ctaTextColor || "#000000",
+    showCta: bannerForm.showCta !== false,
+    icon: srv.id,
+    imageMobile: finalMobile,
+    imageTablet: finalTablet,
+    imageUrl: finalMobile || finalTablet,
+    bgGradient: "linear-gradient(135deg, #061A15 0%, #0D2C24 45%, #0B1929 100%)",
+    active: true,
+    order: isEditing ? (DB.banners.find(b => b.id === id)?.order || 1) : DB.banners.length + 1,
+    updatedAt: new Date().toISOString()
+  };
+
+  if (isEditing) {
+    DB.banners = DB.banners.map(b => b.id === id ? { ...b, ...bannerItem } : b);
+  } else {
+    DB.banners.push({ ...bannerItem, createdAt: new Date().toISOString() });
+  }
+
+  DB.banners.sort((a, b) => (a.order || 0) - (b.order || 0));
+  await syncBannersToCloud(DB.banners);
+  updateBannerBadge();
+  $("#modal").classList.add("hidden");
+  PAGES.banners();
+  showToast(isEditing ? "Offer banner updated with responsive mobile/tablet assets!" : "New responsive offer banner published to app!");
 }
 
 const ADMIN_CREDS = {
