@@ -1009,20 +1009,37 @@ async function syncBannersToCloud(banners) {
   } catch(e) {}
 
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/profiles?phone=eq.%2B919999999999`, {
-      method: "PATCH",
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
+      method: "POST",
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: "Bearer " + SUPABASE_KEY,
         "Content-Type": "application/json",
-        Prefer: "return=minimal"
+        Prefer: "resolution=merge-duplicates,return=minimal"
       },
       body: JSON.stringify({
+        phone: "+919999999999",
         name: "RIDINGO_OFFER_BANNERS",
         preferences: { banners },
         updated_at: new Date().toISOString()
       })
     });
+    if (!res.ok) {
+      await fetch(`${SUPABASE_URL}/rest/v1/profiles?phone=eq.%2B919999999999`, {
+        method: "PATCH",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify({
+          name: "RIDINGO_OFFER_BANNERS",
+          preferences: { banners },
+          updated_at: new Date().toISOString()
+        })
+      });
+    }
   } catch(err) {
     console.warn("Cloud banner sync notice:", err);
   }
@@ -1031,7 +1048,7 @@ async function syncBannersToCloud(banners) {
 async function loadBannersData() {
   let list = getLocalBanners();
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?phone=eq.%2B919999999999&select=*`, {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?phone=eq.%2B919999999999&select=preferences`, {
       headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY }
     });
     if (r.ok) {
@@ -2427,30 +2444,60 @@ function renderBannerModalContent() {
   </div>`;
 }
 
+function compressAndFitImage(file, maxW, maxH, quality, onDone) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      let w = img.width;
+      let h = img.height;
+      let targetW = w;
+      let targetH = h;
+      if (w > maxW || h > maxH) {
+        const ratio = Math.min(maxW / w, maxH / h);
+        targetW = Math.round(w * ratio);
+        targetH = Math.round(h * ratio);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, targetW, targetH);
+      const compressed = canvas.toDataURL("image/jpeg", quality);
+      onDone(compressed);
+    };
+    img.onerror = function() {
+      onDone(e.target.result);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 function handleBannerFile(slot, event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
 
-  const maxMb = slot === "mobile" ? 3.5 : 4.5;
+  const maxMb = 12;
   if (file.size > maxMb * 1024 * 1024) {
-    alert(`${slot === "mobile" ? "Mobile" : "iPad / Tablet"} banner exceeds ${maxMb}MB limit. Please choose a smaller file.`);
+    alert("Image file exceeds 12MB limit. Please choose a smaller file.");
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const res = e.target.result;
+  const maxW = slot === "mobile" ? 1000 : 1400;
+  const maxH = slot === "mobile" ? 400 : 560;
+
+  compressAndFitImage(file, maxW, maxH, 0.82, function(compressedDataUrl) {
     if (slot === "mobile") {
-      bannerForm.imageMobile = res;
-      if (!bannerForm.imageTablet) bannerForm.imageTablet = res;
+      bannerForm.imageMobile = compressedDataUrl;
+      if (!bannerForm.imageTablet) bannerForm.imageTablet = compressedDataUrl;
     } else {
-      bannerForm.imageTablet = res;
-      if (!bannerForm.imageMobile) bannerForm.imageMobile = res;
+      bannerForm.imageTablet = compressedDataUrl;
+      if (!bannerForm.imageMobile) bannerForm.imageMobile = compressedDataUrl;
     }
     renderBannerModalContent();
-    showToast(`${slot === "mobile" ? "Mobile banner (1000×400)" : "iPad/Tablet banner (1400×560)"} loaded!`);
-  };
-  reader.readAsDataURL(file);
+    showToast(`${slot === "mobile" ? "Mobile banner (1000×400)" : "iPad/Tablet banner (1400×560)"} optimized & loaded!`);
+  });
 }
 
 function updateBannerImageUrl(slot, val) {
@@ -2593,8 +2640,8 @@ async function submitBannerForm() {
     showCta: bannerForm.showCta !== false,
     icon: srv.id,
     imageMobile: finalMobile,
-    imageTablet: finalTablet,
-    imageUrl: finalMobile || finalTablet,
+    imageTablet: (finalTablet && finalTablet !== finalMobile) ? finalTablet : "",
+    imageUrl: finalMobile,
     bgGradient: "linear-gradient(135deg, #061A15 0%, #0D2C24 45%, #0B1929 100%)",
     active: true,
     order: isEditing ? (DB.banners.find(b => b.id === id)?.order || 1) : DB.banners.length + 1,
