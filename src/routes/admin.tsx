@@ -259,15 +259,51 @@ function AdminPage() {
   const [loginEmail, setLoginEmail] = useState("team.ridingo@gmail.com");
   const [loginPass, setLoginPass] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginEmail.trim().toLowerCase() === "team.ridingo@gmail.com" && loginPass === "Anu@kallachi4588") {
-      sessionStorage.setItem("ridingo_admin_auth", "true");
-      setIsAuthenticated(true);
-      setLoginError("");
-    } else {
+    setIsLoggingIn(true);
+    setLoginError("");
+
+    const email = loginEmail.trim().toLowerCase();
+    const pass = loginPass.trim();
+
+    if (email !== "team.ridingo@gmail.com") {
       setLoginError("Invalid credentials. Access restricted to team.ridingo@gmail.com.");
+      setIsLoggingIn(false);
+      return;
+    }
+
+    try {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://xxmcjgonsxpjrgdxchwl.supabase.co";
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_xsxb_nMEozSSKCReR_DzkA_aXJIp--c";
+
+      const res = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+        method: "POST",
+        headers: {
+          "apikey": supabaseKey,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password: pass })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.access_token) {
+          sessionStorage.setItem("ridingo_admin_auth", "true");
+          sessionStorage.setItem("ridingo_admin_token", data.access_token);
+          setIsAuthenticated(true);
+          setLoginError("");
+          setIsLoggingIn(false);
+          return;
+        }
+      }
+      setLoginError("Invalid administrative credentials. Access denied.");
+    } catch (err) {
+      setLoginError("Authentication server unreachable.");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
